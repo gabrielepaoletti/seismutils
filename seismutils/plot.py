@@ -81,8 +81,8 @@ def plot_cross_sections(data: pd.DataFrame,
         dist = distance_point_from_plane(utmx, utmy, -data['depth'], normal_ref, center_coords[section])
         in_depth_range = (data['depth'] >= -depth_range[1]) & (data['depth'] <= -depth_range[0])
         close_and_in_depth = np.where((dist < event_distance_from_section) & in_depth_range & (np.abs(utmx - center_coords[section][0]) < map_length))
-        
-        on_section_coords = utmx[close_and_in_depth] - center_coords[section][0]
+
+        on_section_coords =+ (utmy[close_and_in_depth] - center_coords[section][1]) * normal_ref[0] - (utmx[close_and_in_depth] - center_coords[section][0])*normal_ref[1]
         
         # Plot sections
         fig = plt.figure(figsize=(15, 7))
@@ -109,7 +109,7 @@ def plot_cross_sections(data: pd.DataFrame,
         # Add the events of this section to the list if return_dataframes is True
         if return_dataframes:
             # Add on section coordinates to the dataframe
-            section_df = data.iloc[close_and_in_depth].copy()
+            section_df = data.iloc[close_and_in_depth].copy().reset_index(drop=True)
             section_df['on_section_coords'] = on_section_coords
             
             # Append section dataframes to a list
