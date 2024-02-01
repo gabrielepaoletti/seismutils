@@ -1,5 +1,5 @@
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
@@ -11,7 +11,7 @@ config = {
     'author_email': 'gabriele.paoletti@uniroma1.it',
     'version': '0.1',
     'install_requires': ['matplotlib', 'numpy', 'pandas', 'pyproj'],
-    'packages': ['seismutils'],
+    'packages': find_packages(),
     'name': 'seismutils'
 }
 
