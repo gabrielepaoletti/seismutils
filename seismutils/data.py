@@ -90,13 +90,13 @@ def cross_sections(data: pd.DataFrame,
             plt.title(f'Section {section+1}', fontsize=14, fontweight='bold')
             
             # Format plot axis
-            plt.gca().xaxis.set_major_locator(MultipleLocator(5))
+            plt.gca().xaxis.set_major_locator(MultipleLocator(map_length/5))
             plt.gca().xaxis.set_major_formatter('{x:.0f}')
-            plt.gca().xaxis.set_minor_locator(MultipleLocator(1))
+            plt.gca().xaxis.set_minor_locator(MultipleLocator(map_length/10))
             
-            plt.gca().yaxis.set_major_locator(MultipleLocator(5))
+            plt.gca().yaxis.set_major_locator(MultipleLocator(np.abs(depth_range).max()/5))
             plt.gca().yaxis.set_major_formatter('{x:.0f}')
-            plt.gca().yaxis.set_minor_locator(MultipleLocator(1))
+            plt.gca().yaxis.set_minor_locator(MultipleLocator(np.abs(depth_range).max()/10))
             
             plt.gca().set_aspect('equal')
             plt.xlabel('Distance along strike [km]', fontsize=12)
@@ -194,6 +194,15 @@ def select(data: pd.DataFrame,
         
         plt.scatter(coords[0], coords[1] if coords[1].name != 'depth' else -coords[1], marker='.', color='grey', s=0.25, alpha=0.75)
         plt.scatter(coords[0].iloc[selected_indices], coords[1].iloc[selected_indices] if coords[1].name != 'depth' else -coords[1].iloc[selected_indices], marker='.', color='blue', s=0.25, alpha=0.75)
+      
+        # Format plot axis
+        plt.gca().xaxis.set_major_locator(MultipleLocator(round(np.abs(coords[0]).max())/5))
+        plt.gca().xaxis.set_major_formatter('{x:.0f}')
+        plt.gca().xaxis.set_minor_locator(MultipleLocator(round(np.abs(coords[0]).max())/10))
+        
+        plt.gca().yaxis.set_major_locator(MultipleLocator(round(np.abs(coords[1]).max())/5))
+        plt.gca().yaxis.set_major_formatter('{x:.0f}')
+        plt.gca().yaxis.set_minor_locator(MultipleLocator(round(np.abs(coords[1]).max())/10))
       
         plt.gca().set_aspect('equal')
         plt.xlabel(f'{coords[0].name}', fontsize=12)
