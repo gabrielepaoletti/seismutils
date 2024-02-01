@@ -207,8 +207,8 @@ def select(data: pd.DataFrame,
         plt.gca().set_aspect('equal')
         plt.xlabel(f'{coords[0].name}', fontsize=12)
         plt.ylabel(f'{coords[1].name}', fontsize=12)
-        plt.xlim(coords[0].min(), coords[0].max())
-        plt.ylim(coords[1].max() if coords[1].name != 'depth' else -coords[1].max(), coords[1].min() if coords[1].name != 'depth' else -coords[1].min())
+        plt.xlim(round(coords[0].min()), round(coords[0].max()))
+        plt.ylim(round(coords[1].max()) if coords[1].name != 'depth' else -round(coords[1].max()), round(coords[1].min()) if coords[1].name != 'depth' else -round(coords[1].min()))
         plt.show()
     
     if return_indices:  
