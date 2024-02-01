@@ -205,4 +205,4 @@ def select(data: pd.DataFrame,
     if return_indices:  
         return selected_indices
     else:
-        return data.iloc[selected_indices]
+        return data.iloc[selected_indices].reset_index(drop=True)
