@@ -28,8 +28,7 @@ def cross_sections(data: pd.DataFrame,
         event_distance_from_section (int): Maximum distance (in kilometers) from a section within which an earthquake event is included.
         strike (int): The strike angle, in degrees from North, of the geological structure being studied. The sections are plotted 
                       perpendicular to this strike direction.
-        map_length (tuple): Length of the section's trace in kilometers, specified as a tuple (length_left, length_right). 
-                            'length_left' is the length to the left of the center point, and 'length_right' is the length to the right.
+        map_length (int): Length of the section's trace in kilometers, in both directions with respect to the center point.
         depth_range (tuple): Depth range for considering earthquake events, specified as (min_depth, max_depth).
         section_distance (int): Distance between adjacent sections, measured in kilometers. Default is 1 kilometer.
         return_dataframes (bool, optional): If True, returns a list of DataFrames, one for each section. Default is False.
