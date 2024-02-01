@@ -16,7 +16,7 @@ python:
 build:
   os: "ubuntu-20.04"
   tools:
-    python: "3.11.5"
+    python: "3.11"
 
 # Define how to install your project dependencies
 python:
