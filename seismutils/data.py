@@ -4,17 +4,18 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from typing import List, Tuple
 from matplotlib.ticker import MultipleLocator
 
 def cross_sections(data: pd.DataFrame,
-                   center: tuple,
-                   num_sections: tuple,
+                   center: Tuple,
+                   num_sections: Tuple,
                    event_distance_from_section: int,
                    strike: int,
-                   map_length: tuple,
-                   depth_range: tuple,
+                   map_length: Tuple,
+                   depth_range: Tuple,
                    section_distance: int = 1,
-                   return_dataframes: bool=False) -> list[pd.DataFrame]:
+                   return_dataframes: bool=False) -> List[pd.DataFrame]:
     '''
     Plots earthquake data in cross sections around a specified central point based on their orientation and position.
 
@@ -118,11 +119,11 @@ def cross_sections(data: pd.DataFrame,
             
     return section_dataframes
 
-def select(coords: tuple, 
-           center: tuple, 
-           size: tuple,
+def select(coords: Tuple, 
+           center: Tuple, 
+           size: Tuple,
            rotation: int,
-           shape_type: str) -> list:
+           shape_type: str) -> List:
     '''
     Selects and returns indices of points from a tuple of coordinates that fall within a specified geometric 
     shape (circle, oval, rectangle) around a central point, with an option to rotate the shape.
@@ -143,8 +144,8 @@ def select(coords: tuple,
     each point according to the specified rotation and shape center. It then checks if the transformed point falls 
     within the given shape (circle, oval, or rectangle).
     '''
-    def rotate_point(point: tuple,
-                     center: tuple, 
+    def rotate_point(point: Tuple,
+                     center: Tuple, 
                      angle: int) -> tuple:
         '''
         Rotates a point around a given center by a specified angle.
