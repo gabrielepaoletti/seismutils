@@ -10,12 +10,10 @@
 .. raw:: html
 
    <br>
-   <hr>
+   <br>
 
 SeismUtils is an open-source toolkit for seismology professionals aimed at enhancing productivity and simplifying workflows. 
-
 It provides a user-friendly suite of tools for the manipulation, visualization, and analysis of seismic data, minimizing processing complexity. This allows researchers to concentrate on their work rather than software intricacies.
-
 By automating routine tasks and simplifying data analysis, SeismUtils saves time and makes seismic data exploration accessible and efficient for both novices and experts.
 
 .. toctree::
