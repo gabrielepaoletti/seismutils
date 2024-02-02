@@ -18,7 +18,7 @@ Designed with a focus on simplicity and efficiency, it offers an intuitive suite
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting started:
+   :caption: Getting started
 
    installation
    tutorial

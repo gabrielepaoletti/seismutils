@@ -1,16 +1,15 @@
 API Overview
 ======================================
 
-This section provides a comprehensive overview of the entire module, detailing its primary components and their respective functionalities. Designed to cater to the nuanced needs of seismology professionals, ``seismutils`` is divided into two main submodules
+This section provides a comprehensive overview of the entire module, detailing its primary components and their respective functionalities. Designed to cater to the nuanced needs of seismology professionals, ``seismutils`` is divided into two main submodules:
 
-- ``seismutils.data`` encompasses a variety of functions designed for the efficient processing and analysis of earthquake-related data, including earthquake catalogs, geographical coordinates (latitude and longitude), and other seismic event characteristics.
+.. list-table:: 
+   :widths: 25 75
+   :header-rows: 0
 
-- ``seismutils.waveforms`` is specifically designed for the manipulation, visualization, and analysis of seismic waveform data. It provides a suite of tools that enable users to process and analyze waveform data from earthquakes.
+   * - :doc: ``seismutils.data`` </su.data/index>
+     - A collection of functions for processing and analyzing earthquake data. 
+   * - :doc: ``seismutils.waveforms`` </su.waveforms/index>
+     - Specifically designed for the manipulation, visualization, and analysis of seismic waveform data.
 
 Each submodule is tailored to facilitate specific aspects of seismic data manipulation, visualization, and analysis, ensuring an efficient and streamlined workflow for users.
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Functions
-
-   su.data/index
