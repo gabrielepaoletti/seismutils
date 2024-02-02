@@ -3,8 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. |logo| image:: /_static/nome_del_tuo_logo.png
-   :width: 100px
+.. |logo| image:: /_static/seismutils_logo.png
    :height: 100px
    :align: center
 
