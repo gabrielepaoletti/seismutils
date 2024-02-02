@@ -11,7 +11,6 @@
 
    <br>
    <hr>
-   <br>
 
 SeismUtils is an open-source toolkit for seismology professionals aimed at enhancing productivity and simplifying workflows. 
 
