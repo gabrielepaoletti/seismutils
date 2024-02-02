@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 config = {
-    'description': 'A private collection of essential functions and models for streamlined machine learning experiments.',
+    'description': 'An open-source Python toolkit offering a collection of efficient, easy-to-use functions for seismic data analysis.',
     'author': 'Gabriele Paoletti',
     'url': 'https://github.com/gabrielepaoletti/seismutils',
     'download_url': 'https://github.com/gabrielepaoletti/seismutils',
