@@ -1,4 +1,4 @@
-![Logo](/docs/_static/seismutils_logo.png)
+![Logo](/docs/source/_static/seismutils_logo.png)
 
 ------------------------------------------
 
