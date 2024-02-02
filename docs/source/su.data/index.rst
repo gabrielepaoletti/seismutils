@@ -5,4 +5,7 @@ seismutils.data
    :maxdepth: 2
    :caption: Functions
 
-   cross_sections
+   func_convert_to_geographical
+   func_convert_to_utm
+   func_cross_sections
+   func_select

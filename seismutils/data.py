@@ -4,21 +4,73 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from typing import List, Tuple
 from matplotlib.ticker import MultipleLocator
 
-def cross_sections(data, center, num_sections, event_distance_from_section, strike, map_length, depth_range, section_distance, plot=False, return_dataframes=True):
+def convert_to_geographical(utmx, utmy, zone, northern, units, ellps='WGS84', datum='WGS84'):
+    '''
+    Converts UTM (Universal Transverse Mercator) coordinates to geographical coordinates (latitude and longitude).
+
+    :param float utmx: UTM x coordinate (Easting).
+    :param float utmy: UTM y coordinate (Northing).
+    :param int zone: UTM zone number from which the coordinates are mapped.
+    :param bool northern: Boolean indicating whether the UTM coordinates are in the northern hemisphere (True) or southern (False).
+    :param str units: The units of the UTM coordinates (defaults to 'm' for meters).
+    :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
+    :param str datum: The datum used in the conversion (default is 'WGS84').
+    :return: A tuple containing the latitude and longitude.
+    :rtype: (float, float)
+
+    This function uses the `pyproj` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone,
+    hemisphere, units, and ellipsoid. This reverse conversion is useful for mapping applications that require global positioning data.
+    '''
+    # Define the geographic and UTM CRS based on the zone and hemisphere
+    utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
+    geodetic_crs = pyproj.CRS('epsg:4326')
+    
+    # Create a Transformer object to convert between CRSs
+    transformer = pyproj.Transformer.from_crs(utm_crs, geodetic_crs, always_xy=True)
+    
+    # Transform the coordinates
+    lon, lat = transformer.transform(utmx, utmy)
+    return lon, lat
+
+def convert_to_utm(lon, lat, zone, units, ellps='WGS84', datum='WGS84'):
+    '''
+    Converts geographical coordinates (latitude and longitude) to UTM (Universal Transverse Mercator) coordinates.
+
+    :param float lon: Longitude of the point(s) to convert.
+    :param float lat: Latitude of the point(s) to convert.
+    :param int zone: UTM zone number that the coordinates should be mapped into.
+    :param str units: The units of the UTM coordinates (e.g., 'm' for meters).
+    :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
+    :param str datum: The datum used in the conversion (default is 'WGS84').
+    :return: A tuple containing the UTM coordinates (utmx, utmy).
+    :rtype: (float, float)
+
+    The function uses the `pyproj` library to convert lat/lon coordinates into UTM coordinates based on the specified UTM zone,
+    units, ellipsoid, and datum. This is particularly useful for transforming geospatial data into a planar coordinate system
+    suitable for linear distance measurements and mapping applications.
+    '''
+    # Create a pyproj Proj object for UTM conversion using the given zone and ellipsoid.
+    utm_converter = pyproj.Proj(proj='utm', zone=zone, units=units, ellps=ellps, datum=datum)
+
+    # Transform the coordinates
+    utmx, utmy = utm_converter(np.array(lon), np.array(lat))
+    return utmx, utmy
+
+def cross_sections(data, center, num_sections, event_distance_from_section, strike, map_length, depth_range, section_distance, zone, plot=False, return_dataframes=True):
     '''
     Analyzes and optionally plots earthquake data in cross sections around a specified central point, based on their orientation and position relative to a geological strike.
 
    :param pd.DataFrame data: DataFrame containing earthquake event data, with columns 'lon', 'lat', 'depth', etc.
-   :param Tuple[float, float] center: Coordinates (longitude, latitude) of the central point for the primary cross section.
-   :param Tuple[int, int] num_sections: Number of additional sections to be analyzed and plotted around the primary section, specified as (num_left, num_right).
+   :param (float, float) center: Coordinates (longitude, latitude) of the central point for the primary cross section.
+   :param (int, int) num_sections: Number of additional sections to be analyzed and plotted around the primary section, specified as (num_left, num_right).
    :param int event_distance_from_section: Maximum distance (in kilometers) from a section within which an earthquake event is considered for inclusion.
    :param int strike: Strike angle in degrees from North, indicating the geological structure's orientation. Sections are plotted perpendicular to this strike direction.
    :param int map_length: Length of the section's trace in kilometers, extending equally in both directions from the center point.
-   :param Tuple[int, int] depth_range: Depth range (min_depth, max_depth) for considering earthquake events.
+   :param (int, int) depth_range: Depth range (min_depth, max_depth) for considering earthquake events.
    :param int section_distance: Distance between adjacent sections, in kilometers. Defaults to 1 kilometer.
+   :param int zone: UTM zone number that the coordinates should be mapped into.
    :param bool plot: If True, plots the cross sections with the included earthquake events. Defaults to False.
    :param bool return_dataframes: If True, returns a list of DataFrames, each representing a section with included earthquake events. Defaults to True.
    :return: A list of DataFrames, each corresponding to a section with relevant earthquake data, if 'return_dataframes' is True. Returns None otherwise.
@@ -26,11 +78,6 @@ def cross_sections(data, center, num_sections, event_distance_from_section, stri
 
    This function facilitates the analysis of earthquake events in relation to a specified geological strike. It computes cross sections perpendicular to the strike, centered around a given point, and analyzes earthquake events within these sections based on their proximity to the section plane and depth. The function optionally plots these sections, showing the spatial distribution of events, and can return the data in a structured format for further analysis.
     '''
-    # Function to convert lat/lon to UTM
-    def convert_to_utm(lon, lat):
-        utm_converter = pyproj.Proj(proj='utm', zone=33, ellps='WGS84', datum='WGS84', units='m')
-        utmx, utmy = utm_converter(np.array(lon), np.array(lat))
-        return utmx / 1000, utmy / 1000  # Convert to km
 
     # Function to calculate the distance of a point from a plane
     def distance_point_from_plane(x, y, z, normal, origin):
@@ -44,8 +91,8 @@ def cross_sections(data, center, num_sections, event_distance_from_section, stri
         return center_x + section_centers * np.cos(angle_rad), center_y + section_centers * np.sin(angle_rad)
     
     # Convert earthquake data and center to UTM coordinates
-    utmx, utmy = convert_to_utm(data['lon'], data['lat'])
-    center_utmx, center_utmy = convert_to_utm(center[0], center[1])
+    utmx, utmy = convert_to_utm(data['lon'], data['lat'], )
+    center_utmx, center_utmy = convert_to_utm(center[0], center[1], zone=zone, units='km', ellps='WGS84', datum='WGS84')
     
     # Set normal vector for the section based on the provided orientation
     normal_tostrike = strike - 90
@@ -99,51 +146,39 @@ def cross_sections(data, center, num_sections, event_distance_from_section, stri
             section_df['on_section_coords'] = on_section_coords[close_and_in_depth]
             
             # Append section dataframes to a list
-            section_dataframes.append(section_df)
-            
+            section_dataframes.append(section_df)     
+    
     return section_dataframes
 
-def select(data: pd.DataFrame,
-           coords: Tuple[pd.Series, pd.Series], 
-           center: Tuple[float, float], 
-           size: Tuple[int, int],
-           rotation: int,
-           shape_type: str,
-           plot: bool = False,
-           return_indices: bool=False) -> List:
+def select(data, coords, center, size, rotation, shape_type, plot, return_indices):
     '''
-    Selects indices of points from a set of coordinates that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point. The shape can be rotated by 
-    a specified angle.
+    Selects and optionally plots indices of points from a dataset that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point and rotated by a specified angle.
 
-    Args:
-        coords (Tuple[pd.Series, pd.Series]): A pair of Series representing x and y coordinates of points.
-        center (Tuple[float, float]): The x and y coordinates of the shape's center.
-        size (Tuple[int, int] or int): The dimensions of the shape. For circles, it's a single integer (radius); for ovals and rectangles, it's (width, height).
-        rotation (int): The counter-clockwise rotation angle of the shape in degrees from the x-axis.
-        shape_type (str): The type of geometric shape ('circle', 'oval', or 'rectangle').
-        plot (bool, optional): If True, plots the original points and the selected points. Defaults to False.
+    :param pd.DataFrame data: DataFrame containing the dataset with points to select from.
+    :param Tuple[pd.Series, pd.Series] coords: A pair of Series representing the x and y coordinates.
+    :param Tuple[float, float] center: The (x, y) coordinates of the shape's center.
+    :param Tuple[int, int] size: The dimensions of the shape (width, height) or radius if the shape is a circle.
+    :param int rotation: The counter-clockwise rotation angle of the shape in degrees from the x-axis.
+    :param str shape_type: The type of geometric shape to select within ('circle', 'oval', 'rectangle').
+    :param bool plot: If True, plots the original points and the selected points. Defaults to False.
+    :param bool return_indices: If True, returns a list of indices, otherwise returns a subset DataFrame. Defaults to False.
+    :return: A list of selected indices or a subset DataFrame, depending on the return_indices parameter.
+    :rtype: List[int] or pd.DataFrame
 
-    Returns:
-        List[int]: Indices of points within the specified shape.
-
-    This function assesses each point to determine if it lies within a rotated geometric shape centered at a specified point. It supports selection within circles, ovals, and rectangles.
-    An optional plot can be generated to visualize the selection.
+    This function determines if points lie within a specified rotated geometric shape centered at the provided coordinates.
+    Supported shapes include circles, ovals, and rectangles. The function can also visualize the selection if plotting is enabled.
     '''
-    def rotate_point(point: Tuple[float, float],
-                     center: Tuple[float, float], 
-                     angle: int) -> tuple:
+    def rotate_point(point, center, angle):
         '''
-        Rotates a point around a given center by a specified angle in the 2D plane.
+    Rotates a point around a given center by a specified angle in the 2D plane.
 
-        Args:
-            point (Tuple[float, float]): Coordinates of the point (x, y) to be rotated.
-            center (Tuple[float, float]): Coordinates of the rotation center (x, y).
-            angle (int): Rotation angle in degrees, where positive values indicate counter-clockwise rotation.
+    :param Tuple[float, float] point: The (x, y) coordinates of the point to be rotated.
+    :param Tuple[float, float] center: The (x, y) coordinates of the rotation center.
+    :param int angle: Rotation angle in degrees, positive values indicate counter-clockwise rotation.
+    :return: The (x, y) coordinates of the rotated point.
+    :rtype: tuple
 
-        Returns:
-            Tuple[float, float]: The coordinates of the rotated point (x, y).
-
-        This function computes the new coordinates of a point after rotating it around a specified center point by a given angle in degrees.
+    This helper function calculates the new position of a point after being rotated about a specified center point by a given angle in degrees.
         '''
         angle_rad = np.deg2rad(angle)
         ox, oy = center
