@@ -7,9 +7,9 @@ This section provides a comprehensive overview of the entire module, detailing i
    :widths: 25 75
    :header-rows: 0
 
-   * - :doc: ``seismutils.data <./su.data/index>``
+   * - :doc: ``seismutils.data <su.data/index>``
      - A collection of functions for processing and analyzing earthquake data. 
-   * - :doc: ``seismutils.waveforms <./su.waveforms/index>``
+   * - :doc: ``seismutils.waveforms <su.waveforms/index>``
      - Specifically designed for the manipulation, visualization, and analysis of seismic waveform data.
 
 Each submodule is tailored to facilitate specific aspects of seismic data manipulation, visualization, and analysis, ensuring an efficient and streamlined workflow for users.
