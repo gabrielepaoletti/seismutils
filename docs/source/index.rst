@@ -14,6 +14,11 @@ It provides a set of efficient and user-friendly functions for analyzing seismic
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   quick_start
+   tutorials/index
+   api/data
+   api/waveforms
 
 Indices and tables
 ==================
