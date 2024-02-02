@@ -8,3 +8,9 @@ This section provides a comprehensive overview of the entire module, detailing i
 - ``seismutils.waveforms`` is specifically designed for the manipulation, visualization, and analysis of seismic waveform data. It provides a suite of tools that enable users to process and analyze waveform data from earthquakes.
 
 Each submodule is tailored to facilitate specific aspects of seismic data manipulation, visualization, and analysis, ensuring an efficient and streamlined workflow for users.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Functions
+
+   su.data/index
