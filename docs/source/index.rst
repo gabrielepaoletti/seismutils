@@ -10,21 +10,10 @@ Documentation
 
 It provides a set of efficient and user-friendly functions for analyzing seismic data streamlining the workflow for tasks such as visualization, data manipulation, and analysis, enhancing productivity and facilitating scientific discovery.
 
-Contents:
----------
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   introduction
-   getting_started
-   installation
-   tutorials
-   usage_guide
-   contributing
-   faq
-   changelog
 
 Indices and tables
 ==================
