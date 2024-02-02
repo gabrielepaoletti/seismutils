@@ -3,9 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: /_static/seismutils_logo.png
+.. |logo| image:: /_static/nome_del_tuo_logo.png
+   :width: 100px
    :height: 100px
    :align: center
+
+.. raw:: html
+
+   <br>
 
 SeismUtils is an open-source toolkit for seismology professionals aimed at enhancing productivity and simplifying workflows. 
 
