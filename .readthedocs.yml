@@ -21,7 +21,7 @@ build:
 # Define how to install your project dependencies
 python:
   install:
-    - requirements: requirements.txt  # Path to the requirements file
+    - requirements: docs/requirements.txt  # Path to the requirements file
 
 # Optionally define the build jobs if you have multiple environments or configurations
 # jobs:
