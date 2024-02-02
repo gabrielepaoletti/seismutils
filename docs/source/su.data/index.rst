@@ -5,4 +5,4 @@ seismutils.data
    :maxdepth: 2
    :caption: Functions
 
-   su.data/cross_sections
+   cross_sections
