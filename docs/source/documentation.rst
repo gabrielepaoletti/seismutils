@@ -24,10 +24,9 @@ Here, detailed explanations of each function within the ``seismutoòs`` toolkit 
    :maxdepth: 2
    :caption: seismutils.data
 
-   su.data/func_convert_to_geographical
-   su.data/func_convert_to_utm
-   su.data/func_cross_sections
-   su.data/func_select
+   su.data/coordinate_transformations
+   su.data/seismic_visualization
+   su.data/data_querying_and_selection
 
    .. toctree::
    :maxdepth: 2
