@@ -14,7 +14,7 @@ def convert_to_geographical(utmx, utmy, zone, northern, units, ellps='WGS84', da
     :param float utmy: UTM y coordinate (Northing).
     :param int zone: UTM zone number from which the coordinates are mapped.
     :param bool northern: Boolean indicating whether the UTM coordinates are in the northern hemisphere (True) or southern (False).
-    :param str units: The units of the UTM coordinates (defaults to 'm' for meters).
+    :param str units: The units of the UTM coordinates.
     :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
     :param str datum: The datum used in the conversion (default is 'WGS84').
     :return: A tuple containing the latitude and longitude.
