@@ -18,7 +18,7 @@ An open-source Python toolkit tailored for seismology professionals seeking to e
 Designed with a focus on simplicity and efficiency, it offers an intuitive suite of tools for seamless manipulation, visualization, and analysis of seismic data minimizing the complexity often associated with data processing.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Getting started
 
    installation
