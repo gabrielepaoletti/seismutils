@@ -155,9 +155,9 @@ def select(data, coords, center, size, rotation, shape_type, plot, return_indice
     Selects and optionally plots indices of points from a dataset that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point and rotated by a specified angle.
 
     :param pd.DataFrame data: DataFrame containing the dataset with points to select from.
-    :param Tuple[pd.Series, pd.Series] coords: A pair of Series representing the x and y coordinates.
-    :param Tuple[float, float] center: The (x, y) coordinates of the shape's center.
-    :param Tuple[int, int] size: The dimensions of the shape (width, height) or radius if the shape is a circle.
+    :param (pd.Series, pd.Series) coords: A pair of Series representing the x and y coordinates.
+    :param (float, float) center: The (x, y) coordinates of the shape's center.
+    :param (int, int) size: The dimensions of the shape (width, height) or radius if the shape is a circle.
     :param int rotation: The counter-clockwise rotation angle of the shape in degrees from the x-axis.
     :param str shape_type: The type of geometric shape to select within ('circle', 'oval', 'rectangle').
     :param bool plot: If True, plots the original points and the selected points. Defaults to False.
@@ -172,8 +172,8 @@ def select(data, coords, center, size, rotation, shape_type, plot, return_indice
         '''
     Rotates a point around a given center by a specified angle in the 2D plane.
 
-    :param Tuple[float, float] point: The (x, y) coordinates of the point to be rotated.
-    :param Tuple[float, float] center: The (x, y) coordinates of the rotation center.
+    :param (float, float) point: The (x, y) coordinates of the point to be rotated.
+    :param (float, float) center: The (x, y) coordinates of the rotation center.
     :param int angle: Rotation angle in degrees, positive values indicate counter-clockwise rotation.
     :return: The (x, y) coordinates of the rotated point.
     :rtype: tuple
