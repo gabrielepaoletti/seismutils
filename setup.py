@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
 
+# Read README content
+with open('README.md', 'r', encoding='utf-8') as fh:
+    long_description = fh.read()
+
 config = {
     'description': 'An open-source Python toolkit offering a collection of efficient, easy-to-use functions for seismic data analysis.',
     'author': 'Gabriele Paoletti',
