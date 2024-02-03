@@ -22,7 +22,7 @@ Here, detailed explanations of each function within the ``seismutils`` toolkit a
 
 .. toctree::
    :maxdepth: 2
-   :caption: seismutils.data
+   :caption: ``seismutils.data``
 
    su.data/coordinate_transformations
    su.data/data_querying_and_selection
