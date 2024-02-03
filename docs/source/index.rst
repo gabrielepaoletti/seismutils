@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: /_static/seismutils_logo_color.png
+.. image:: /_static/logos/seismutils_logo_color.png
    :height: 100px
    :align: center
    :target: index.html
