@@ -17,7 +17,7 @@ Each submodule is tailored to facilitate specific aspects of seismic data manipu
 Documentation
 ======================================
 
-Here, detailed explanations of each function within the ``seismutoòs`` toolkit are provided, showcasing their use through practical examples and mini-tutorials.
+Here, detailed explanations of each function within the ``seismutils`` toolkit are provided, showcasing their use through practical examples and mini-tutorials.
 
 
 .. toctree::
@@ -25,8 +25,8 @@ Here, detailed explanations of each function within the ``seismutoòs`` toolkit 
    :caption: seismutils.data
 
    su.data/coordinate_transformations
-   su.data/seismic_visualization
    su.data/data_querying_and_selection
+   su.data/seismic_visualization
 
    .. toctree::
    :maxdepth: 2

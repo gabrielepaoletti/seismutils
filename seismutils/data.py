@@ -20,7 +20,7 @@ def convert_to_geographical(utmx, utmy, zone, northern, units, ellps='WGS84', da
     :return: A tuple containing the latitude and longitude.
     :rtype: (float, float)
 
-    This function uses the `pyproj` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone,
+    This function uses the ``pyproj`` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone,
     hemisphere, units, and ellipsoid. This reverse conversion is useful for mapping applications that require global positioning data.
     '''
     # Define the geographic and UTM CRS based on the zone and hemisphere
@@ -47,7 +47,7 @@ def convert_to_utm(lon, lat, zone, units, ellps='WGS84', datum='WGS84'):
     :return: A tuple containing the UTM coordinates (utmx, utmy).
     :rtype: (float, float)
 
-    The function uses the `pyproj` library to convert lat/lon coordinates into UTM coordinates based on the specified UTM zone,
+    The function uses the ``pyproj`` library to convert lat/lon coordinates into UTM coordinates based on the specified UTM zone,
     units, ellipsoid, and datum. This is particularly useful for transforming geospatial data into a planar coordinate system
     suitable for linear distance measurements and mapping applications.
     '''

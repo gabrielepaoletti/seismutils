@@ -1,1 +1,0 @@
-.. autofunction:: seismutils.data.select
