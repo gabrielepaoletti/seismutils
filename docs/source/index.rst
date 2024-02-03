@@ -6,6 +6,7 @@
 .. image:: /_static/seismutils_logo.png
    :height: 100px
    :align: center
+   :target: index
 
 .. raw:: html
 
