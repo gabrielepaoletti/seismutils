@@ -91,7 +91,7 @@ def cross_sections(data, center, num_sections, event_distance_from_section, stri
         return center_x + section_centers * np.cos(angle_rad), center_y + section_centers * np.sin(angle_rad)
     
     # Convert earthquake data and center to UTM coordinates
-    utmx, utmy = convert_to_utm(data['lon'], data['lat'], )
+    utmx, utmy = convert_to_utm(data['lon'], data['lat'], zone=zone, units='km', ellps='WGS84', datum='WGS84' )
     center_utmx, center_utmy = convert_to_utm(center[0], center[1], zone=zone, units='km', ellps='WGS84', datum='WGS84')
     
     # Set normal vector for the section based on the provided orientation
