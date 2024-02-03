@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: /_static/logos/seismutils_logo_color.png
+.. image:: /_static/logos/seismutils_logo_color.svg
    :height: 100px
    :align: center
    :target: index.html
@@ -25,6 +25,17 @@ Designed with a focus on simplicity and efficiency, it offers an intuitive suite
    tutorial
    documentation
 
+.. raw:: html
+
+   <div class="card">
+       <div class="card-header">
+           <h2>Getting Started</h2>
+       </div>
+       <div class="card-body">
+           <p>New to seismutils? Check out the getting started guides.</p>
+           <a href="link-to-getting-started" class="btn">To the getting started guides</a>
+       </div>
+   </div>
 
 Indices and tables
 ==================
