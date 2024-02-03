@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1001 210" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-47,-29)">
+        <g transform="matrix(0.427944,0,0,0.185875,0,0)">
+            <g id="logo" transform="matrix(2.48695,0,0,5.72576,-1796.66,-3402.55)">
+                <g transform="matrix(1,0,0,1,128.458,-95.3773)">
+                    <g transform="matrix(194.939,0,0,194.939,1589.58,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Gotham-Book', 'Gotham';font-size:194.939px;fill:rgb(125,176,188);">se smut ls</text>
+                </g>
+                <g transform="matrix(1,0,0,1,128.458,-95.3773)">
+                    <g transform="matrix(194.939,0,0,194.939,1589.58,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Gotham-Book', 'Gotham';font-size:194.939px;fill:rgb(41,128,185);">se smut ls</text>
+                </g>
+                <g transform="matrix(2.05883,0,0,2.05883,-306.591,-959.602)">
+                    <g transform="matrix(18,0,0,18,974.931,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Arial-ItalicMT', 'Arial', sans-serif;font-style:italic;font-size:18px;fill:rgb(126,126,126);">A<tspan x="641.817px 646.818px " y="859.636px 859.636px "> P</tspan>ython toolkit to simplify seismic analysis</text>
+                </g>
+                <g transform="matrix(2.08557,0,0,2.08557,-549.485,-982.58)">
+                    <g transform="matrix(11.5077,0,0,11.5077,696.368,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Arial-ItalicMT', 'Arial', sans-serif;font-style:italic;font-size:11.508px;fill:rgb(126,126,126);">version 0.0.1</text>
+                </g>
+                <g transform="matrix(1.02157,0,-0.370485,0.703883,1165.82,159.175)">
+                    <g transform="matrix(194.939,0,0,194.939,681.748,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Gotham-Book', 'Gotham';font-size:194.939px;fill:rgb(77,171,207);">l</text>
+                </g>
+                <g transform="matrix(1.02157,0,-0.540581,1.02705,746.693,-72.641)">
+                    <g transform="matrix(194.939,0,0,194.939,681.748,859.636)">
+                    </g>
+                    <text x="630.479px" y="859.636px" style="font-family:'Gotham-Book', 'Gotham';font-size:194.939px;fill:rgb(77,171,207);">l</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
