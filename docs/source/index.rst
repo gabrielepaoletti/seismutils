@@ -24,6 +24,7 @@ Designed with a focus on simplicity and efficiency, it offers an intuitive suite
    installation
    tutorial
    api_overview
+   documentation
 
 
 Indices and tables
