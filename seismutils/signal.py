@@ -43,26 +43,35 @@ def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=No
        In seismology, the effectiveness of a tapering window depends on the nature of the seismic signals and the objectives of the analysis. Experimenting with different windows and parameters is advised to achieve optimal results in tasks such as noise reduction, signal enhancement, and spectral analysis.
     '''
     
-    # Define the filter design function
     def butter_filter(order, cutoff, fs, btype):
-        nyq = 0.5 * fs  # Nyquist frequency
-        if btype in ['lowpass', 'highpass']:
-            norm_cutoff = cutoff / nyq  # Normalize the frequency
-        else:  # For 'bandpass' and 'bandstop', normalize the frequency range
-            norm_cutoff = [c / nyq for c in cutoff]
-        sos = butter(order, norm_cutoff, btype=btype, analog=False, output='sos')  # Generate filter coefficients
-        return sos
+            nyq = 0.5 * fs
+            if btype in ['lowpass', 'highpass']:
+                norm_cutoff = cutoff / nyq
+            else:
+                norm_cutoff = [c / nyq for c in cutoff]
+            sos = butter(order, norm_cutoff, btype=btype, analog=False, output='sos')
+            return sos
     
     # Apply tapering if requested
-    if taper_window is not None:
-        if taper_params is not None:  # If taper parameters are provided, use them
-            window = get_window((taper_window, *taper_params.values()), len(signal))
-        else:  # Otherwise, generate the window without additional parameters
-            window = get_window(taper_window, len(signal))
-        signal *= window  # Apply the window to the signal
+    def apply_taper(signal, window, params):
+        if window is not None:
+            if params is not None:
+                window = get_window((window, *params.values()), len(signal))
+            else:
+                window = get_window(window, len(signal))
+            return signal * window
+        return signal
     
-    # Filter the signal
-    sos = butter_filter(order, cutoff, fs, type)  # Get the filter coefficients
-    filtered_signal = sosfilt(sos, signal)  # Apply the filter
+    sos = butter_filter(order, cutoff, fs, type)
     
-    return filtered_signal
+    # Check if signals is a 2D array (multiple signals)
+    if signals.ndim == 1:
+        signals = np.array([signals])  # Convert to 2D array for consistency
+    
+    filtered_signals = []
+    for signal in signals:
+        tapered_signal = apply_taper(signal, taper_window, taper_params)
+        filtered_signal = sosfilt(sos, tapered_signal)
+        filtered_signals.append(filtered_signal)
+    
+    return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
