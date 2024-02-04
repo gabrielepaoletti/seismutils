@@ -4,9 +4,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from typing import List, Tuple
 from matplotlib.ticker import MultipleLocator
 
-def convert_to_geographical(utmx, utmy, zone, northern, units, ellps='WGS84', datum='WGS84'):
+def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
     Converts UTM (Universal Transverse Mercator) coordinates to geographical coordinates (latitude and longitude).
 
@@ -34,7 +35,7 @@ def convert_to_geographical(utmx, utmy, zone, northern, units, ellps='WGS84', da
     lon, lat = transformer.transform(utmx, utmy)
     return lon, lat
 
-def convert_to_utm(lon, lat, zone, units, ellps='WGS84', datum='WGS84'):
+def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
     Converts geographical coordinates (latitude and longitude) to UTM (Universal Transverse Mercator) coordinates.
 
@@ -58,7 +59,7 @@ def convert_to_utm(lon, lat, zone, units, ellps='WGS84', datum='WGS84'):
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(data, center, num_sections, event_distance_from_section, strike, map_length, depth_range, section_distance, zone, plot=False, return_dataframes=True):
+def cross_sections(data: pd.DataFrame, center: Tuple(float, float), num_sections: Tuple(int, int), event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple(float, float), section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
     '''
     Analyzes and optionally plots earthquake data in cross sections around a specified central point, based on their orientation and position relative to a geological strike.
 
@@ -150,7 +151,7 @@ def cross_sections(data, center, num_sections, event_distance_from_section, stri
     
     return section_dataframes
 
-def select(data, coords, center, size, rotation, shape_type, plot, return_indices):
+def select(data: pd.DataFrame, coords: Tuple(pd.Series, pd.Series), center: Tuple(float, float), size: Tuple(int, int), rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
     '''
     Selects and optionally plots indices of points from a dataset that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point and rotated by a specified angle.
 
