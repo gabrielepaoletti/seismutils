@@ -89,7 +89,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     '''
     Computes the Fourier Transform of the given signal(s) and optionally plots the spectra using the Fast Fourier Transform (FFT) algorithm.
 
-    :param np.ndarray signal: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
+    :param np.ndarray signals: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
     :param int sampling_rate: The sampling rate of the signal(s) in Hz.
     :param bool plot: If True, plots the spectra of the waveform(s). Defaults to True.
     :param bool log_scale: If True and plot is True, plots the frequency axis on a logarithmic scale. Defaults to True.
