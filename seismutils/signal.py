@@ -96,7 +96,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     :return: The Fourier Transform of the signal(s) as a numpy array.
     :rtype: np.ndarray
 
-    It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array. The function returns the complex Fourier Transform results, which can be used to analyze the frequency components of the signal(s).
+    It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array.
     '''
     # Compute the Fourier Transform
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
