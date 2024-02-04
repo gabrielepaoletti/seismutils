@@ -8,7 +8,7 @@ Designed to cater to the nuanced needs of seismology professionals, ``seismutils
    :header-rows: 0
 
    * - ``seismutils.geo``
-     - Provides comprehensive functionalities for geospatial exploration and earthquake location mapping. 
+     - Provides functionalities for geospatial exploration and earthquake location mapping. 
    * - ``seismutils.signal``
      - Functions for processing and analyzing seismic waveform data.
 
