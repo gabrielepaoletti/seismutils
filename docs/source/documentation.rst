@@ -30,7 +30,7 @@ Here, detailed explanations of each function within the ``seismutils`` toolkit a
 
 .. toctree::
    :maxdepth: 2
-   :caption: seismutils.geo
+   :caption: seismutils.signal
 
    su.signal/signal_processing
    su.signal/spectral_analysis
