@@ -1,2 +1,2 @@
 sphinx_rtd_theme
-git+https://github.com/gabrielepaoletti/seismutils.git
+seismutils
