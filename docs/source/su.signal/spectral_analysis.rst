@@ -1,5 +1,5 @@
 Spectral analysis
 ======================================
 
-.. autofunction:: seismutils.signal.filter
+.. autofunction:: seismutils.signal.fourier_transform
    

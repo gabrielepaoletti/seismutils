@@ -1,12 +1,14 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
 from scipy.signal import butter, sosfilt, get_window
 
-def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=None):
+def filter(signals, sampling_rate, type, cutoff, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
     
     :param signal: The input signal as a 1D numpy array or list.
-    :param fs: The sampling frequency of the signal in Hz.
+    :param sampling_rate: The sampling frequency of the signal in Hz.
     :param type: The type of the filter ('lowpass', 'highpass', 'bandpass', 'bandstop'). Defaults to 'lowpass'.
     :param cutoff: The cutoff frequency or frequencies. For 'lowpass' and 'highpass', this is a single value. For 'bandpass' and 'bandstop', this is a tuple of two values (low cutoff, high cutoff).
     :param order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
@@ -43,8 +45,8 @@ def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=No
        In seismology, the effectiveness of a tapering window depends on the nature of the seismic signals and the objectives of the analysis. Experimenting with different windows and parameters is advised to achieve optimal results in tasks such as noise reduction, signal enhancement, and spectral analysis.
     '''
     
-    def butter_filter(order, cutoff, fs, btype):
-            nyq = 0.5 * fs
+    def butter_filter(order, cutoff, sampling_rate, btype):
+            nyq = 0.5 * sampling_rate
             if btype in ['lowpass', 'highpass']:
                 norm_cutoff = cutoff / nyq
             else:
@@ -62,7 +64,7 @@ def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=No
             return signal * window
         return signal
     
-    sos = butter_filter(order, cutoff, fs, type)
+    sos = butter_filter(order, cutoff, sampling_rate, type)
     
     # Check if signals is a 2D array (multiple signals)
     if signals.ndim == 1:
@@ -75,3 +77,44 @@ def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=No
         filtered_signals.append(filtered_signal)
     
     return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
+
+def fourier_transform(signals, sampling_rate, plot=True, log_scale=True):
+    '''
+    Computes the Fourier Transform of the given signal(s) and optionally plots the spectra.
+
+    :param signal: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
+    :param sampling_rate: The sampling rate of the signal(s) in Hz. Defaults to 1.0.
+    :param plot: If True, plots the spectra of the waveform(s). Defaults to False.
+    :param log_scale: If True and plot is True, plots the frequency axis on a logarithmic scale. Defaults to False.
+    :return: The Fourier Transform of the signal(s) as a numpy array.
+
+    This function computes the Fourier Transform using the Fast Fourier Transform (FFT) algorithm. It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array. The function returns the complex Fourier Transform results, which can be used to analyze the frequency components of the signal(s).
+    '''
+    # Compute the Fourier Transform
+    ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
+    freq = np.fft.fftfreq(signals.shape[-1], d=1/sampling_rate)
+
+    if plot:
+        # Plotting
+        plt.figure(figsize=(10, 5))
+        plt.title('Fourier Transform Spectrum', fontsize=14, fontweight='bold')
+
+        if signals.ndim == 1:
+            if log_scale:
+                plt.loglog(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
+            else:
+                plt.plot(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
+        else:
+            for i in range(signals.shape[0]):
+                if log_scale:
+                    plt.loglog(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], linewidth=0.75, label=f'Waveform {i+1}')
+                else:
+                    plt.plot(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], linewidth=0.75, label=f'Waveform {i+1}')
+            plt.legend(loc='best', frameon=False, fontsize=10)
+        
+        plt.xlabel('Frequency [Hz]', fontsize=12)
+        plt.ylabel('Amplitude', fontsize=12)
+        plt.grid(True, alpha=0.25, linestyle=':')
+        plt.show()
+    
+    return ft
