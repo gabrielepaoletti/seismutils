@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import butter, sosfilt, get_window
 
-def filter_signal(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=None):
+def filter(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
     
@@ -37,7 +37,7 @@ def filter_signal(signal, fs, type, cutoff, order=5, taper_window=None, taper_pa
         - For ``tukey``, `{'alpha': value}` controls the taper proportion, offering a way to adjust the balance between sidelobe attenuation and main lobe width, critical in spectral analysis of seismic events.
         - For ``kaiser``, `{'beta': value}` adjusts the shape of the window, allowing for precise control over spectral leakage and resolution, beneficial in seismological filter design.
 
-    Additional parameters for these and other windows can be found in the `scipy.signal.get_window` documentation. It's important to note that not all windows require additional parameters.
+    Additional parameters for these and other windows can be found in the ``scipy.signal.get_window`` documentation. It's important to note that not all windows require additional parameters.
 
     .. note::
        In seismology, the effectiveness of a tapering window depends on the nature of the seismic signals and the objectives of the analysis. Experimenting with different windows and parameters is advised to achieve optimal results in tasks such as noise reduction, signal enhancement, and spectral analysis.
