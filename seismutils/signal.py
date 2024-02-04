@@ -54,32 +54,6 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
     :rtype: np.ndarray
     
     The function applies a digital filter to the input signal. The filter type can be one of 'lowpass', 'highpass', 'bandpass', or 'bandstop'. Before filtering, an optional tapering window can be applied to the signal to reduce edge effects. The tapering window type and parameters can be customized.
-
-    **Parameter Details:**
-
-    - **type** (`str`): Specifies the type of filter to apply. Available options are:
-        - ``lowpass``: Allows frequencies below the cutoff to pass through and attenuates frequencies above the cutoff.
-        - ``highpass``: Allows frequencies above the cutoff to pass through and attenuates frequencies below the cutoff.
-        - ``bandpass``: Allows frequencies within a specified range (cutoff tuple) to pass through and attenuates frequencies outside this range.
-        - ``bandstop``: Attenuates frequencies within a specified range (cutoff tuple) while allowing frequencies outside this range to pass through.
-
-    - **taper_window** (`str` or `None`): Determines the type of window used to taper the signal before filtering to address edge effects and spectral leakage, common issues in seismological analysis. Available options include:
-        - ``hamming``: A symmetric window with a bell shape. Its smooth tapering minimizes spectral leakage, making it suitable for analyzing seismic waves where frequency content is important.
-        - ``hanning``: Offers a similar bell shape with slightly different tapering properties compared to Hamming. It's effective for general seismic data processing, providing a good balance between time and frequency resolution.
-        - ``blackman``: Features a wider main lobe than Hamming or Hanning, offering better sidelobe attenuation. This window is beneficial when the analysis requires minimizing spectral leakage, such as in high-resolution frequency analysis.
-        - ``tukey``: The proportion of the window that is tapered can be adjusted, allowing control over the trade-off between time and frequency resolution. This flexibility is useful in seismology for windowing seismic signals before applying Fourier transforms.
-        - ``bartlett``: A triangular window that linearly decreases to zero at both ends. It is suitable for smoothing seismic data, helping to reduce short-term spikes without significantly distorting the signal.
-        - ``kaiser``: Allows adjusting the beta parameter to fine-tune the window's properties. It's particularly useful in filter design and spectral analysis tasks in seismology, where control over the sidelobe levels and main lobe width is crucial.
-        - `None`: Applies no tapering to the signal. This option might be preferred in situations where the raw signal's characteristics need to be preserved for analysis.
-
-    - **taper_params** (`dict`): Parameters for the tapering window, if applicable. This enables customization of the window's properties for specific seismological applications. For example:
-        - For ``tukey``, `{'alpha': value}` controls the taper proportion, offering a way to adjust the balance between sidelobe attenuation and main lobe width, critical in spectral analysis of seismic events.
-        - For ``kaiser``, `{'beta': value}` adjusts the shape of the window, allowing for precise control over spectral leakage and resolution, beneficial in seismological filter design.
-
-    Additional parameters for these and other windows can be found in the ``scipy.signal.get_window`` documentation. It's important to note that not all windows require additional parameters.
-
-    .. note::
-       In seismology, the effectiveness of a tapering window depends on the nature of the seismic signals and the objectives of the analysis. Experimenting with different windows and parameters is advised to achieve optimal results in tasks such as noise reduction, signal enhancement, and spectral analysis.
     '''
     
     def butter_filter(order, cutoff, sampling_rate, btype):
