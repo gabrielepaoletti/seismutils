@@ -10,7 +10,7 @@ config = {
     'url': 'https://github.com/gabrielepaoletti/seismutils',
     'download_url': 'https://github.com/gabrielepaoletti/seismutils',
     'author_email': 'gabriele.paoletti@uniroma1.it',
-    'version': '0.2.2',
+    'version': '0.2.3',
     'python_requires': '>=3.11',
     'install_requires': ['matplotlib', 'numpy', 'pandas', 'pyproj', 'scipy'],
     'packages': find_packages(),
