@@ -1,4 +1,4 @@
 Data querying and selection
 ======================================
 
-.. autofunction:: seismutils.data.select
+.. autofunction:: seismutils.geo.select

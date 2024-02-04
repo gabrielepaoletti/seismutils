@@ -1,4 +1,4 @@
 Seismic visualization
 ======================================
 
-.. autofunction:: seismutils.data.cross_sections
+.. autofunction:: seismutils.geo.cross_sections
