@@ -118,3 +118,15 @@ def fourier_transform(signals, sampling_rate, plot=True, log_scale=True):
         plt.show()
     
     return ft
+
+def envelope(signals, plot=False):
+    '''
+    Calculates and optionally plots the envelope of a given signal or multiple signals.
+
+    :param signals: A single waveform (1D numpy array) or multiple waveforms (2D numpy array, each row represents a different waveform).
+    :param plot: If True, plots the signal(s) along with their envelopes. Defaults to False.
+    :return: The envelope of the signal(s) as a numpy array of the same shape as the input.
+
+    This function computes the envelope of the signal(s) using the Hilbert transform. If plot is True, it also plots the original signal(s) with their envelopes. For multiple signals, each is plotted in a separate subplot.
+    '''
+    pass
