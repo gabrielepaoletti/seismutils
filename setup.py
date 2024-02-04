@@ -11,7 +11,7 @@ config = {
     'download_url': 'https://github.com/gabrielepaoletti/seismutils',
     'author_email': 'gabriele.paoletti@uniroma1.it',
     'version': '0.1.0-alpha',
-    'python_requires': '>=3.6',
+    'python_requires': '>=3.11',
     'install_requires': ['matplotlib', 'numpy', 'pandas', 'pyproj', 'scipy'],
     'packages': find_packages(),
     'name': 'seismutils',
