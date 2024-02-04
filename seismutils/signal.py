@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import butter, sosfilt, get_window
 
-def filter_signal(signal, fs, type='lowpass', cutoff=0.3, order=5, taper_window=None, taper_params=None):
+def filter_signal(signal, fs, type, cutoff, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
     
