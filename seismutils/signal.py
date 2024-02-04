@@ -3,6 +3,42 @@ import matplotlib.pyplot as plt
 
 from scipy.signal import butter, sosfilt, get_window, hilbert
 
+def envelope(signals: np.ndarray, plot=False):
+    '''
+    Calculates and optionally plots the envelope of a given signal or multiple signals.
+
+    :param np.ndarray signals: A single waveform (1D numpy array) or multiple waveforms (2D numpy array, each row represents a different waveform).
+    :param bool plot: If True, plots the signal(s) along with their envelopes. Defaults to False.
+    :return: The envelope of the signal(s) as a numpy array of the same shape as the input.
+    :rtype: np.ndarray
+
+    This function computes the envelope of the signal(s) using the Hilbert transform. If plot is True, it also plots the original signal(s) with their envelopes. For multiple signals, each is plotted in a separate subplot.
+    '''
+    envelopes = np.abs(hilbert(signals, axis=-1))
+    
+    if plot:
+        plt.figure(figsize=(10, 4))
+        plt.title('Envelope', fontsize=14, fontweight='bold')
+
+        # Determine if signals is a single signal or multiple, and select appropriately
+        signal_to_plot = signals if signals.ndim == 1 else signals[0]
+        envelope_to_plot = envelopes if signals.ndim == 1 else envelopes[0]
+        
+        # Plotting signal with envelope
+        plt.plot(signal_to_plot, color='black', linewidth=0.75, label='Signal')
+        plt.plot(envelope_to_plot, color='red', linewidth=0.75, linestyle='--', label='Envelope')
+        
+        plt.xlabel('Sample', fontsize=12)
+        plt.ylabel('Amplitude', fontsize=12)
+        plt.xlim(0, len(signal_to_plot))
+
+        plt.grid(True, alpha=0.25, axis='x', linestyle=':')
+        plt.legend(loc='best', frameon=False, fontsize=12)
+        plt.tight_layout()
+        plt.show()
+    
+    return envelopes
+
 def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
@@ -120,39 +156,3 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
         plt.show()
     
     return ft
-
-def envelope(signals: np.ndarray, plot=False):
-    '''
-    Calculates and optionally plots the envelope of a given signal or multiple signals.
-
-    :param np.ndarray signals: A single waveform (1D numpy array) or multiple waveforms (2D numpy array, each row represents a different waveform).
-    :param bool plot: If True, plots the signal(s) along with their envelopes. Defaults to False.
-    :return: The envelope of the signal(s) as a numpy array of the same shape as the input.
-    :rtype: np.ndarray
-
-    This function computes the envelope of the signal(s) using the Hilbert transform. If plot is True, it also plots the original signal(s) with their envelopes. For multiple signals, each is plotted in a separate subplot.
-    '''
-    envelopes = np.abs(hilbert(signals, axis=-1))
-    
-    if plot:
-        plt.figure(figsize=(10, 4))
-        plt.title('Envelope', fontsize=14, fontweight='bold')
-
-        # Determine if signals is a single signal or multiple, and select appropriately
-        signal_to_plot = signals if signals.ndim == 1 else signals[0]
-        envelope_to_plot = envelopes if signals.ndim == 1 else envelopes[0]
-        
-        # Plotting signal with envelope
-        plt.plot(signal_to_plot, color='black', linewidth=0.75, label='Signal')
-        plt.plot(envelope_to_plot, color='red', linewidth=0.75, linestyle='--', label='Envelope')
-        
-        plt.xlabel('Sample', fontsize=12)
-        plt.ylabel('Amplitude', fontsize=12)
-        plt.xlim(0, len(signal_to_plot))
-
-        plt.grid(True, alpha=0.25, axis='x', linestyle=':')
-        plt.legend(loc='best', frameon=False, fontsize=12)
-        plt.tight_layout()
-        plt.show()
-    
-    return envelopes
