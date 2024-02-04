@@ -59,7 +59,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(data: pd.DataFrame, center: Tuple(float, float), num_sections: Tuple(int, int), event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple(float, float), section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
+def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
     '''
     Analyzes and optionally plots earthquake data in cross sections around a specified central point, based on their orientation and position relative to a geological strike.
 
@@ -154,7 +154,7 @@ def cross_sections(data: pd.DataFrame, center: Tuple(float, float), num_sections
     
     return section_dataframes
 
-def select(data: pd.DataFrame, coords: Tuple(pd.Series, pd.Series), center: Tuple(float, float), size: Tuple(int, int), rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
+def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
     '''
     Selects and optionally plots a subset of data from a dataset that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point and rotated by a specified angle.
 
