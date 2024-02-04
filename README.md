@@ -1,4 +1,4 @@
-![Logo](/docs/source/_static/logos/seismutils_logo_color.svg)
+![Logo](https://ibb.co/qygz5gx)
 
 ------------------------------------------
 
