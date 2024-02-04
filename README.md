@@ -1,4 +1,4 @@
-![Logo](https://ibb.co/qygz5gx)
+[Logo](https://i.imgur.com/KS0Zfou.png)
 
 ------------------------------------------
 
