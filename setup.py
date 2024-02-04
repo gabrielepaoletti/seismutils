@@ -16,7 +16,9 @@ config = {
     'packages': find_packages(),
     'name': 'seismutils',
     'license': 'MIT',
-    'keywords': 'seismology earthquake geophysics data-analysis'
+    'keywords': 'seismology earthquake geophysics data-analysis',
+    'long_description': long_description,
+    'long_description_content_type': 'text/markdown',
 }
 
 setup(**config)
