@@ -43,7 +43,7 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
     '''
     Filter a signal with optional tapering, using specified filter parameters.
     
-    :param np.ndarray signal: The input signal as a 1D numpy array or list.
+    :param np.ndarray signals: The input signal as a 1D numpy array or list.
     :param int sampling_rate: The sampling frequency of the signal in Hz.
     :param str type: The type of the filter ('lowpass', 'highpass', 'bandpass', 'bandstop'). Defaults to 'lowpass'.
     :param float cutoff: The cutoff frequency or frequencies. For 'lowpass' and 'highpass', this is a single value. For 'bandpass' and 'bandstop', this is a tuple of two values (low cutoff, high cutoff).

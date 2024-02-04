@@ -91,6 +91,9 @@ def cross_sections(data: pd.DataFrame, center: Tuple(float, float), num_sections
         angle_rad = np.pi / 2 - np.radians(strike)
         return center_x + section_centers * np.cos(angle_rad), center_y + section_centers * np.sin(angle_rad)
     
+    # Make sure all the depths are positive values
+    data['depth'] = np.abs(data['depth'])
+
     # Convert earthquake data and center to UTM coordinates
     utmx, utmy = convert_to_utm(data['lon'], data['lat'], zone=zone, units='km', ellps='WGS84', datum='WGS84' )
     center_utmx, center_utmy = convert_to_utm(center[0], center[1], zone=zone, units='km', ellps='WGS84', datum='WGS84')
