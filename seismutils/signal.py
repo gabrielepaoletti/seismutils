@@ -5,14 +5,12 @@ from scipy.signal import butter, sosfilt, get_window, hilbert
 
 def envelope(signals: np.ndarray, plot=False):
     '''
-    Calculates and optionally plots the envelope of a given signal or multiple signals.
+    Calculates and optionally plots the envelope of a given signal or multiple signals using the Hilbert transform.
 
     :param np.ndarray signals: A single waveform (1D numpy array) or multiple waveforms (2D numpy array, each row represents a different waveform).
     :param bool plot: If True, plots the signal(s) along with their envelopes. Defaults to False.
     :return: The envelope of the signal(s) as a numpy array of the same shape as the input.
     :rtype: np.ndarray
-
-    This function computes the envelope of the signal(s) using the Hilbert transform. If plot is True, it also plots the original signal(s) with their envelopes. For multiple signals, each is plotted in a separate subplot.
     '''
     envelopes = np.abs(hilbert(signals, axis=-1))
     
@@ -52,8 +50,6 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
     :param dict taper_params: A dictionary of parameters for the tapering window, such as {'alpha': 0.5} for the Tukey window. Ignored if `taper_window` is None. Defaults to None.
     :return: The filtered signal as a 1D numpy array.
     :rtype: np.ndarray
-    
-    The function applies a digital filter to the input signal. The filter type can be one of 'lowpass', 'highpass', 'bandpass', or 'bandstop'. Before filtering, an optional tapering window can be applied to the signal to reduce edge effects. The tapering window type and parameters can be customized.
     '''
     
     def butter_filter(order, cutoff, sampling_rate, btype):
@@ -91,7 +87,7 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
 
 def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True):
     '''
-    Computes the Fourier Transform of the given signal(s) and optionally plots the spectra.
+    Computes the Fourier Transform of the given signal(s) and optionally plots the spectra using the Fast Fourier Transform (FFT) algorithm.
 
     :param np.ndarray signal: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
     :param int sampling_rate: The sampling rate of the signal(s) in Hz. Defaults to 1.0.
@@ -100,7 +96,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     :return: The Fourier Transform of the signal(s) as a numpy array.
     :rtype: np.ndarray
 
-    This function computes the Fourier Transform using the Fast Fourier Transform (FFT) algorithm. It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array. The function returns the complex Fourier Transform results, which can be used to analyze the frequency components of the signal(s).
+    It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array. The function returns the complex Fourier Transform results, which can be used to analyze the frequency components of the signal(s).
     '''
     # Compute the Fourier Transform
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
