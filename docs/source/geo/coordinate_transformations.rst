@@ -34,12 +34,12 @@ Below is an example of converting UTM coordinates from zone 33N, with an easting
 
 .. autofunction:: seismutils.geo.convert_to_utm
 
-    Example usage
+Example usage
 ^^^^^^^^^^^^^
 
 To use the ``convert_to_utm`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
-Below is an example of converting geographical coordinates (latitude and longitude) from zone 33N, with a latitude of 38.83603 and a longitude of 13.27177, to UTM coordinates. These coordinates are assumed to be based on the WGS84 ellipsoid and datum, and the output UTM coordinates are expressed in kilometers (the ``units`` parameter).
+Below is an example of converting geographical coordinates (longitude and latitude) from zone 33N, with a longitude of 13.271772 and a latitude of 38.836032, to UTM coordinates. These coordinates are assumed to be based on the WGS84 ellipsoid and datum, and the output UTM coordinates are expressed in kilometers (the ``units`` parameter).
 
 .. code-block:: python
 
