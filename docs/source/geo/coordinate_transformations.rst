@@ -4,7 +4,7 @@ Coordinate transformations
 .. autofunction:: seismutils.geo.convert_to_geographical
 
 Example usage
--------------
+^^^^^^^^^^^^^
 
 To use the ``convert_to_geographical`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
