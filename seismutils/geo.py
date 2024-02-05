@@ -33,7 +33,7 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
     
     # Transform the coordinates
     lon, lat = transformer.transform(utmx, utmy)
-    return round(lon, 5), round(lat, 5)
+    return round(lon, 6), round(lat, 6)
 
 def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
@@ -57,7 +57,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
 
     # Transform the coordinates
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
-    return utmx, utmy
+    return round(utmx, 3), round(utmy, 3)
 
 def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
     '''
