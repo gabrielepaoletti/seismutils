@@ -14,6 +14,10 @@ The ``filter()`` function offers several parameters for fine-tuning signal proce
   - ``'bandpass'``: Allows frequencies within a specified range (between two cutoff frequencies) to pass, attenuating frequencies outside this range. Useful for isolating a band of interest.
   - ``'bandstop'``: Attenuates frequencies within a specified range, allowing frequencies outside this range to pass. Useful for removing a specific band of noise.
 
+.. raw:: html
+
+   <br>
+
 - ``taper_window``: Specifies the tapering window applied to the signal before filtering, which helps reduce edge effects and leakage in the frequency domain. Tapering involves gradually reducing the signal to zero at its beginning and end. Common taper windows used in seismology include:
 
   - ``'hann'``: Applies a Hann window, which has a sinusoidal shape and is known for its smooth tapering, reducing the amplitude of the signal to zero at both ends. This window is effective in minimizing the leakage effect in the frequency domain.
@@ -24,7 +28,7 @@ The ``filter()`` function offers several parameters for fine-tuning signal proce
   - ``None``: Applies no tapering, leaving the signal unmodified at the edges.
 
 .. note::
-    Additionally, if you wish to explore more tapering window options beyond those listed, consult the [``scipy.signal.get_window``](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html) documentation. 
+    Additionally, if you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
     
 Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
 
