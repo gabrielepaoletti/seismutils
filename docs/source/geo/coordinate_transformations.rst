@@ -5,7 +5,7 @@ Coordinate transformations
 
 **Parameter options**
 
-Some parameters of the ``convert_to_geographical`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
+Some parameters of the ``convert_to_geographical()`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
 
 - ``units``: Specifies the units for the output UTM coordinates. Can be:
 
@@ -36,7 +36,7 @@ Below is an example of converting UTM coordinates from zone 33N, with an easting
     # Output: Longitude: 13.271772, Latitude: 38.836032
 
 .. note:: 
-    The ``convert_to_geographical`` function is also designed to handle input data in the form of arrays or pandas Series. 
+    The ``convert_to_geographical()`` function is also designed to handle input data in the form of arrays or pandas Series. 
 
 When either of these data types is provided as input for the UTM coordinates, the function will return an array containing the converted geographical coordinates (latitude and longitude) for each set of UTM coordinates in the input array or Series.
 
@@ -53,7 +53,7 @@ Some parameters of the ``convert_to_utm`` function accept multiple options, allo
 
 **Example usage**
 
-To use the ``convert_to_utm`` function, you must import it from the ``seismutils.geo`` sub-module. 
+To use the ``convert_to_utm()`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
 Below is an example of converting geographical coordinates (longitude and latitude) from zone 33N, with a longitude of 13.271772 and a latitude of 38.836032, to UTM coordinates. These coordinates are assumed to be based on the WGS84 ellipsoid and datum, and the output UTM coordinates are expressed in kilometers (the ``units`` parameter).
 
@@ -74,6 +74,6 @@ Below is an example of converting geographical coordinates (longitude and latitu
     # Output: UTMX: 350, UTMY: 4300
 
 .. note:: 
-    The ``convert_to_utm`` function is also designed to handle input data in the form of arrays or pandas Series. 
+    The ``convert_to_utm()`` function is also designed to handle input data in the form of arrays or pandas Series. 
 
 When either of these data types is provided as input for the geographical coordinates, the function will return an array containing the converted UTM coordinates for each set of geographical coordinates in the input array or Series.

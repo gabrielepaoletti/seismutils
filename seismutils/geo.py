@@ -155,7 +155,7 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
 
 def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
     '''
-    Selects and optionally plots a subset of data from a dataset that fall within a specified geometric shape (circle, oval, rectangle) centered at a given point and rotated by a specified angle.
+    Selects and optionally plots a subset of data from a dataset that fall within a specified geometric shape, centered at a given point and rotated by a specified angle.
 
     :param pd.DataFrame data: DataFrame containing the dataset with points to select from.
     :param (pd.Series, pd.Series) coords: A pair of Series representing the x and y coordinates.
@@ -169,7 +169,6 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
     :rtype: List[int] or pd.DataFrame
 
     This function determines if points lie within a specified rotated geometric shape centered at the provided coordinates.
-    Supported shapes include circles, ovals, and rectangles. The function can also visualize the selection if plotting is enabled.
     '''
     def rotate_point(point, center, angle):
         '''
