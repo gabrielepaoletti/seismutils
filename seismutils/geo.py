@@ -33,7 +33,7 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
     
     # Transform the coordinates
     lon, lat = transformer.transform(utmx, utmy)
-    return lon, lat
+    return round(lon, 5), round(lat, 5)
 
 def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
