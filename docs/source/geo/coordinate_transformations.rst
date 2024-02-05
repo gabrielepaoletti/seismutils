@@ -3,8 +3,7 @@ Coordinate transformations
 
 .. autofunction:: seismutils.geo.convert_to_geographical
 
-Example usage
-^^^^^^^^^^^^^
+**Example usage**
 
 To use the ``convert_to_geographical`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
@@ -30,12 +29,11 @@ Below is an example of converting UTM coordinates from zone 33N, with an easting
 .. note:: 
     The ``convert_to_geographical`` function is also designed to handle input data in the form of arrays or pandas Series. 
 
-    When either of these data types is provided as input for the UTM coordinates, the function will return an array containing the converted geographical coordinates (latitude and longitude) for each set of UTM coordinates in the input array or Series.
+When either of these data types is provided as input for the UTM coordinates, the function will return an array containing the converted geographical coordinates (latitude and longitude) for each set of UTM coordinates in the input array or Series.
 
 .. autofunction:: seismutils.geo.convert_to_utm
 
-Example usage
-^^^^^^^^^^^^^
+**Example usage**
 
 To use the ``convert_to_utm`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
@@ -44,8 +42,6 @@ Below is an example of converting geographical coordinates (longitude and latitu
 .. code-block:: python
 
     import seismutils.geo as sug
-
-    import seismutils.seismutils.geo as sug
 
     lon, lat = 13.271772, 38.836032  # Geographical coordinates
 
@@ -62,4 +58,4 @@ Below is an example of converting geographical coordinates (longitude and latitu
 .. note:: 
     The ``convert_to_utm`` function is also designed to handle input data in the form of arrays or pandas Series. 
 
-    When either of these data types is provided as input for the geographical coordinates, the function will return an array containing the converted UTM coordinates for each set of geographical coordinates in the input array or Series.
+When either of these data types is provided as input for the geographical coordinates, the function will return an array containing the converted UTM coordinates for each set of geographical coordinates in the input array or Series.
