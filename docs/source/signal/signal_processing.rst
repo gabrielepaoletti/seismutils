@@ -56,7 +56,7 @@ This example demonstrates how to use the ``filter()`` function to apply a highpa
 
 .. image:: https://imgur.com/v9hvLoW.png
    :align: center
-   :target: signal_processing.html
+   :target: signal_processing.html#seismutils.signal.filter
 
 In this example, the ``filter()`` function is used to isolate the frequency components of the signal within above 1 Hz range by applying an highpass filter. 
 
@@ -100,7 +100,7 @@ This example demonstrates how to use the ``envelope()`` function to calculate bo
 
 .. image:: https://imgur.com/1gwgsPg.png
    :align: center
-   :target: signal_processing.html
+   :target: signal_processing.html#seismutils.signal.envelope
 
 In this example, the ``envelope()`` function is used to compute the envelopes of a seismic waveform. The plot flag is set to True, allowing the visualization of both the original signal and its envelopes.
 
