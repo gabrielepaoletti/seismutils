@@ -47,6 +47,7 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     
     else: # 'both'
         return positive_envelope, negative_envelope
+
 def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
