@@ -50,7 +50,7 @@ This example demonstrates how to use the ``filter()`` function to apply a highpa
       taper_window='hann'
   )
 
-.. image:: https://imgur.com/v9hvLoW
+.. image:: https://imgur.com/v9hvLoW.png
    :height: 100px
    :align: center
 
