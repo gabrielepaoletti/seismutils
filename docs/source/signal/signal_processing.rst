@@ -51,11 +51,12 @@ This example demonstrates how to use the ``filter()`` function to apply a highpa
   )
 
 .. image:: https://imgur.com/v9hvLoW.png
-   :width: 100
    :align: center
    :target: signal_processing.html
 
-In this example, the ``filter()`` function is used to isolate the frequency components of the signal within above 1Hz range by applying a, highpass filter. The Hann window tapering is applied to the signal before filtering to reduce spectral leakage. The result is a smoother signal with reduced noise outside the desired frequency band.
+In this example, the ``filter()`` function is used to isolate the frequency components of the signal within above 1Hz range by applying an highpass filter. 
+
+The Hann window tapering is applied to the signal before filtering to reduce spectral leakage. The result is a smoother signal with reduced noise outside the desired frequency band.
 
 .. note::
     If a multidimensional array is passed as the ``signals`` parameter, the filter is applied to each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent application of the filter across all waveforms.
