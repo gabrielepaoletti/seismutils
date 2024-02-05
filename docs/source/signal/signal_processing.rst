@@ -32,23 +32,23 @@ Additionally, if you wish to explore more tapering window options beyond those l
 .. note:: 
     Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
 
-** Example usage**
+**Example usage**
 
 This example demonstrates how to use the ``filter()`` function to apply a highpass filter to a seismic signal sampled at 100 Hz, using a Butterworth filter of order 5. The signal is then tapered using a Hann window before the filtering process.
 
 .. code-block:: python
     
-    import seismutils.gsignal as sus
+  import seismutils.gsignal as sus
 
-    # Assuming waveform is an np.adarray containing aplitude values
+  # Assuming waveform is an np.adarray containing aplitude values
 
-    filtered_waveform = sus.filter(
-        signals=waveform,
-        sampling_rate=100,
-        type='highpass',
-        cutoff=1,
-        taper_window='hann'
-    )
+  filtered_waveform = sus.filter(
+      signals=waveform,
+      sampling_rate=100,
+      type='highpass',
+      cutoff=1,
+      taper_window='hann'
+  )
 
 .. image:: https://imgur.com/v9hvLoW
    :height: 100px
