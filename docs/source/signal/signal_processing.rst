@@ -1,5 +1,9 @@
 Signal processing
 ======================================
+..
+  #--------------------------------------------------------------------------------------------
+  # seismutils.signal.filter
+  #--------------------------------------------------------------------------------------------
 
 .. autofunction:: seismutils.signal.filter
 
@@ -61,8 +65,16 @@ The Hann window tapering is applied to the signal before filtering to reduce spe
 .. note::
     If a multidimensional array is passed as the ``signals`` parameter, the filter is applied to each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent application of the filter across all waveforms.
 
+..
+  #--------------------------------------------------------------------------------------------
+  # seismutils.signal.envelope
+  #--------------------------------------------------------------------------------------------
 
 .. autofunction:: seismutils.signal.envelope
+
+**Parameter options**
+
+
 
 **Example usage**
 
@@ -77,7 +89,7 @@ This example demonstrates how to use the ``envelope()`` function to ...
   pos_envelove, neg_envelope = sus.envelope(
       signals=filtered_waveform,
       type='both'
-      plot=True,
+      plot=True
   )
 
 .. image:: https://imgur.com/1gwgsPg.png
@@ -87,4 +99,4 @@ This example demonstrates how to use the ``envelope()`` function to ...
 In this example, the ``envelope()`` function is used to ... 
 
 .. note::
-    If a multidimensional array is passed as the ``signals`` parameter, the filter is applied to each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent application of the filter across all waveforms.
+    If a multidimensional array is passed as the ``signals`` parameter, the envelope is calculated for each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent computation of the envelope across all waveforms.
