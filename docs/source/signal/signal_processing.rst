@@ -54,11 +54,37 @@ This example demonstrates how to use the ``filter()`` function to apply a highpa
    :align: center
    :target: signal_processing.html
 
-In this example, the ``filter()`` function is used to isolate the frequency components of the signal within above 1Hz range by applying an highpass filter. 
+In this example, the ``filter()`` function is used to isolate the frequency components of the signal within above 1 Hz range by applying an highpass filter. 
 
 The Hann window tapering is applied to the signal before filtering to reduce spectral leakage. The result is a smoother signal with reduced noise outside the desired frequency band.
 
 .. note::
     If a multidimensional array is passed as the ``signals`` parameter, the filter is applied to each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent application of the filter across all waveforms.
 
+
 .. autofunction:: seismutils.signal.envelope
+
+**Example usage**
+
+This example demonstrates how to use the ``envelope()`` function to ...
+
+.. code-block:: python
+    
+  import seismutils.gsignal as sus
+
+  # Assuming filtered_waveform is an np.adarray containing aplitude values
+
+  pos_envelove, neg_envelope = sus.envelope(
+      signals=filtered_waveform,
+      type='both'
+      plot=True,
+  )
+
+.. image:: https://imgur.com/1gwgsPg.png
+   :align: center
+   :target: signal_processing.html
+
+In this example, the ``envelope()`` function is used to ... 
+
+.. note::
+    If a multidimensional array is passed as the ``signals`` parameter, the filter is applied to each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent application of the filter across all waveforms.
