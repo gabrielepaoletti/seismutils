@@ -8,9 +8,9 @@ Example usage
 
 To use the ``convert_to_geographical`` function, you must import it from the ``seismutils.geo`` sub-module. 
 
-Below is an example of converting UTM coordinates from zone 33N, with an easting of 500000 and a northing of 4649776.52, to geographical coordinates. 
+Below is an example of converting UTM coordinates from zone 33N, with an easting of 350 and a northing of 4300, to geographical coordinates. 
 
-These coordinates are assumed to be in meters (the ``units`` parameter) and based on the WGS84 ellipsoid and datum.
+These coordinates are assumed to be in kilometers (the ``units`` parameter) and based on the WGS84 ellipsoid and datum.
 
 .. code-block:: python
 
