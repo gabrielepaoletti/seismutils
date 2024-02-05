@@ -74,11 +74,17 @@ The Hann window tapering is applied to the signal before filtering to reduce spe
 
 **Parameter options**
 
+The ``envelope`` function provides the ability to compute different types of envelopes for a given signal. The following parameter allows you to specify the type of envelope you wish to calculate:
 
+- ``envelope_type``: Determines which envelope is calculated. Can be:
+
+  - ``'positive'``: Computes the positive envelope.
+  - ``'negative'``: Computes the negative envelope.
+  - ``'both'``: Computes both the positive and negative envelopes, returning a tuple with two elements.
 
 **Example usage**
 
-This example demonstrates how to use the ``envelope()`` function to ...
+This example demonstrates how to use the ``envelope()`` function to calculate both the positive and negative envelopes of a seismic signal. The signal envelopes are also plotted for visualization.
 
 .. code-block:: python
     
@@ -96,7 +102,7 @@ This example demonstrates how to use the ``envelope()`` function to ...
    :align: center
    :target: signal_processing.html
 
-In this example, the ``envelope()`` function is used to ... 
+In this example, the ``envelope()`` function is used to compute the envelopes of a seismic waveform. The plot flag is set to True, allowing the visualization of both the original signal and its envelopes.
 
 .. note::
     If a multidimensional array is passed as the ``signals`` parameter, the envelope is calculated for each waveform independently. Ensure that the signals are organized such that each row represents a different signal for consistent computation of the envelope across all waveforms.
