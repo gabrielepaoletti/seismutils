@@ -3,40 +3,50 @@ import matplotlib.pyplot as plt
 
 from scipy.signal import butter, sosfilt, get_window, hilbert
 
-def envelope(signals: np.ndarray, plot=False):
+def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     '''
     Calculates and optionally plots the envelope of a given signal or multiple signals using the Hilbert transform.
+    Allows selection between calculating the positive envelope, negative envelope, or both.
 
     :param np.ndarray signals: A single waveform (1D numpy array) or multiple waveforms (2D numpy array, each row represents a different waveform).
     :param bool plot: If True, plots the signal(s) along with their envelopes. Defaults to False.
-    :return: The envelope of the signal(s) as a numpy array of the same shape as the input.
-    :rtype: np.ndarray
+    :param str envelope_type: Specifies the type of envelope to calculate: 'positive', 'negative', or 'both'. Defaults to 'positive'.
+    :return: The envelope(s) of the signal(s) as a numpy array of the same shape as the input. If 'both' is selected, returns a tuple of two numpy arrays.
+    :rtype: np.ndarray or tuple
     '''
-    envelopes = np.abs(hilbert(signals, axis=-1))
+    analytical_signal = hilbert(signals, axis=-1)
+    positive_envelope = np.abs(analytical_signal)
+    negative_envelope = -positive_envelope
     
-    if plot:
-        plt.figure(figsize=(10, 4))
-        plt.title('Envelope', fontsize=14, fontweight='bold')
-
-        # Determine if signals is a single signal or multiple, and select appropriately
-        signal_to_plot = signals if signals.ndim == 1 else signals[0]
-        envelope_to_plot = envelopes if signals.ndim == 1 else envelopes[0]
+    if plot:        
+        for i, signal_to_plot in enumerate([signals] if signals.ndim == 1 else signals):
+            plt.figure(figsize=(10, 4))
+            plt.title('Envelope', fontsize=14, fontweight='bold')
+            
+            plt.plot(signal_to_plot, color='black', linewidth=0.75, label='Signal')
+            
+            if envelope_type in ['positive', 'both']:
+                plt.plot(positive_envelope[i] if signals.ndim > 1 else positive_envelope, color='red', linewidth=0.75, label='Pos.envelope')
+            
+            if envelope_type in ['negative', 'both']:
+                plt.plot(negative_envelope[i] if signals.ndim > 1 else negative_envelope, color='blue', linewidth=0.75, label='Neg. envelope')
         
-        # Plotting signal with envelope
-        plt.plot(signal_to_plot, color='black', linewidth=0.75, label='Signal')
-        plt.plot(envelope_to_plot, color='red', linewidth=0.75, linestyle='--', label='Envelope')
-        
-        plt.xlabel('Sample', fontsize=12)
-        plt.ylabel('Amplitude', fontsize=12)
-        plt.xlim(0, len(signal_to_plot))
-
-        plt.grid(True, alpha=0.25, axis='x', linestyle=':')
-        plt.legend(loc='best', frameon=False, fontsize=12)
-        plt.tight_layout()
-        plt.show()
+            plt.xlabel('Sample', fontsize=12)
+            plt.ylabel('Amplitude', fontsize=12)
+            plt.xlim(0, len(signal_to_plot))
+            plt.grid(True, alpha=0.25, axis='x', linestyle=':')
+            plt.legend(loc='best', frameon=False, fontsize=12)
+            plt.tight_layout()
+            plt.show()
     
-    return envelopes
-
+    if envelope_type == 'positive':
+        return positive_envelope
+    
+    elif envelope_type == 'negative':
+        return negative_envelope
+    
+    else: # 'both'
+        return positive_envelope, negative_envelope
 def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, order=5, taper_window=None, taper_params=None):
     '''
     Filter a signal with optional tapering, using specified filter parameters.
