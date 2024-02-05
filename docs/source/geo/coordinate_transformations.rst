@@ -8,6 +8,7 @@ Coordinate transformations
 Some parameters of the ``convert_to_geographical`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
 
 - ``units``: Specifies the units for the output UTM coordinates. Can be:
+
   - ``'m'`` for meters. This is the standard unit for UTM coordinates.
   - ``'km'`` for kilometers. Useful for applications requiring larger scale representations.
 
@@ -46,6 +47,7 @@ When either of these data types is provided as input for the UTM coordinates, th
 Some parameters of the ``convert_to_utm`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
 
 - ``units``: Specifies the units of the UTM coordinates passed as input. Can be:
+  
   - ``'m'`` for meters.
   - ``'km'`` for kilometers.
 
