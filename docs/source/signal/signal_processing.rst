@@ -89,7 +89,7 @@ This example demonstrates how to use the ``envelope()`` function to ...
   pos_envelove, neg_envelope = sus.envelope(
       signals=filtered_waveform,
       type='both'
-      plot=True
+      plot=True,
   )
 
 .. image:: https://imgur.com/1gwgsPg.png
