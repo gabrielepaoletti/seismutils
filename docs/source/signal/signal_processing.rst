@@ -74,7 +74,7 @@ The Hann window tapering is applied to the signal before filtering to reduce spe
 
 **Parameter options**
 
-The ``envelope`` function provides the ability to compute different types of envelopes for a given signal. The following parameter allows you to specify the type of envelope you wish to calculate:
+The ``envelope()`` function provides the ability to compute different types of envelopes for a given signal. The following parameter allows you to specify the type of envelope you wish to calculate:
 
 - ``envelope_type``: Determines which envelope is calculated. Can be:
 
