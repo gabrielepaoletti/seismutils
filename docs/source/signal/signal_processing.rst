@@ -27,9 +27,9 @@ The ``filter()`` function offers several parameters for fine-tuning signal proce
   - ``'tukey'``: Combines a cosine taper and a constant section in the middle. The proportion of the cosine taper is adjustable, offering a compromise between time and frequency resolution.
   - ``None``: Applies no tapering, leaving the signal unmodified at the edges.
 
-.. note::
-    Additionally, if you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
-    
-Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
+Additionally, if you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
+
+.. note:: 
+    Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
 
 .. autofunction:: seismutils.signal.envelope
