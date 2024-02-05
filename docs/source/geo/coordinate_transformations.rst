@@ -3,6 +3,14 @@ Coordinate transformations
 
 .. autofunction:: seismutils.geo.convert_to_geographical
 
+**Parameter options**
+
+Some parameters of the ``convert_to_geographical`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
+
+- ``units``: Specifies the units for the output UTM coordinates. Can be:
+  - ``'m'`` for meters. This is the standard unit for UTM coordinates.
+  - ``'km'`` for kilometers. Useful for applications requiring larger scale representations.
+
 **Example usage**
 
 To use the ``convert_to_geographical`` function, you must import it from the ``seismutils.geo`` sub-module. 
@@ -32,6 +40,14 @@ Below is an example of converting UTM coordinates from zone 33N, with an easting
 When either of these data types is provided as input for the UTM coordinates, the function will return an array containing the converted geographical coordinates (latitude and longitude) for each set of UTM coordinates in the input array or Series.
 
 .. autofunction:: seismutils.geo.convert_to_utm
+
+**Parameter options**
+
+Some parameters of the ``convert_to_utm`` function accept multiple options, allowing you to customize the conversion process according to your needs. Below is a brief overview of these parameters and their possible values:
+
+- ``units``: Specifies the units of the UTM coordinates passed as input. Can be:
+  - ``'m'`` for meters.
+  - ``'km'`` for kilometers.
 
 **Example usage**
 

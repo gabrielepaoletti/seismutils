@@ -18,11 +18,10 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
     :param str units: The units of the UTM coordinates.
     :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
     :param str datum: The datum used in the conversion (default is 'WGS84').
-    :return: A tuple containing the latitude and longitude.
+    :return: A tuple containing the geographical coordinates (longitude, latitude).
     :rtype: (float, float)
 
-    This function uses the ``pyproj`` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone,
-    hemisphere, units, and ellipsoid. This reverse conversion is useful for mapping applications that require global positioning data.
+    This function uses the ``pyproj`` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone, hemisphere, units, and ellipsoid. This reverse conversion is useful for mapping applications that require global positioning data.
     '''
     # Define the geographic and UTM CRS based on the zone and hemisphere
     utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
@@ -42,7 +41,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     :param float lon: Longitude of the point(s) to convert.
     :param float lat: Latitude of the point(s) to convert.
     :param int zone: UTM zone number that the coordinates should be mapped into.
-    :param str units: The units of the UTM coordinates (e.g., 'm' for meters).
+    :param str units: The units of the UTM coordinates.
     :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
     :param str datum: The datum used in the conversion (default is 'WGS84').
     :return: A tuple containing the UTM coordinates (utmx, utmy).
