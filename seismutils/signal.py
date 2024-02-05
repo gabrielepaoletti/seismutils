@@ -43,11 +43,11 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
     
     :param np.ndarray signals: The input signal as a 1D numpy array or list.
     :param int sampling_rate: The sampling frequency of the signal in Hz.
-    :param str type: The type of the filter ('lowpass', 'highpass', 'bandpass', 'bandstop'). Defaults to 'lowpass'.
+    :param str type: The type of the filter.
     :param float cutoff: The cutoff frequency or frequencies. For 'lowpass' and 'highpass', this is a single value. For 'bandpass' and 'bandstop', this is a tuple of two values (low cutoff, high cutoff).
     :param int order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
-    :param str taper_window: The type of the tapering window ('hamming', 'hanning', 'blackman', 'tukey', etc.) to apply before filtering. If None, no tapering is applied. Defaults to None.
-    :param dict taper_params: A dictionary of parameters for the tapering window, such as {'alpha': 0.5} for the Tukey window. Ignored if `taper_window` is None. Defaults to None.
+    :param str taper_window: The type of the tapering window to apply before filtering. If None, no tapering is applied. Defaults to None.
+    :param dict taper_params: A dictionary of parameters for the tapering window. Ignored if `taper_window` is None. Defaults to None.
     :return: The filtered signal as a 1D numpy array.
     :rtype: np.ndarray
     '''
