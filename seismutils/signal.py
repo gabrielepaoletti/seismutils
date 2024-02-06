@@ -75,7 +75,7 @@ def envelope(signals: np.ndarray, envelope_type='positive', plot=False, save_fig
             if save_figure:
                 os.makedirs('./seismutils_figures', exist_ok=True)
                 fig_name = os.path.join('./seismutils_figures', f'{save_name}_{i+1}.{save_extension}')
-                plt.savefig(fig_name, dpi=300)
+                plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
             
             plt.show()
     
@@ -285,7 +285,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
             if save_figure:
                 os.makedirs('./seismutils_figures', exist_ok=True)
                 fig_name = os.path.join('./seismutils_figures', f'{save_name}.{save_extension}')
-                plt.savefig(fig_name, dpi=300)
+                plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
                 
             plt.show()
             
@@ -320,8 +320,8 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
                 if save_figure:
                     os.makedirs('./seismutils_figures', exist_ok=True)
                     fig_name = os.path.join('./seismutils_figures', f'{save_name}_{i+1}.{save_extension}')
-                    plt.savefig(fig_name, dpi=300)
+                    plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
                     
                 plt.show()
-
+   
     return ft
