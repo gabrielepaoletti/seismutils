@@ -5,7 +5,7 @@ This document provides detailed instructions for installing the ``seismutils`` p
 
 Prerequisites
 -------------
-Before proceeding with the installation, ensure that you have a compatible Python environment. ``seismutils`` requires Python >= 3.6. 
+Before proceeding with the installation, ensure that you have a compatible Python environment. ``seismutils`` requires Python >= 3.11. 
 
 It's strongly recommended creating a virtual environment to maintain a clean workspace and avoid dependency conflicts. Tools such as ``conda`` or ``venv`` are suitable for creating isolated Python environments.
 
