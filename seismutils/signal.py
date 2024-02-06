@@ -19,9 +19,9 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     :type signals: np.ndarray
     :param plot: If True, plots the input signal(s) along with their computed envelope(s).
     :type plot: bool, optional
-    :param envelope_type: Specifies the type of envelope to compute and return ('positive', 'negative', or 'both').
+    :param envelope_type: Specifies the type of envelope to compute and return (``positive``, ``negative``, or ``both``).
     :type envelope_type: str, optional
-    :return: The computed envelope(s) of the input signal(s). Returns a single array if 'positive' or 'negative' is chosen, or two arrays if 'both' is selected.
+    :return: The computed envelope(s) of the input signal(s). Returns a single array if ``positive`` or ``negative`` is chosen, or two arrays if ``both`` is selected.
     :rtype: np.ndarray or tuple(np.ndarray, np.ndarray)
 
     **Usage example**
