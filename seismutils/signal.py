@@ -1,5 +1,8 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
+
+import matplotlib.gridspec as gridspec
 
 from scipy.signal import butter, sosfilt, get_window, hilbert
 
@@ -103,44 +106,89 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
     
     return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
 
-def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True):
+def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True, max_plots=10, save_figures=False):
     '''
-    Computes the Fourier Transform of the given signal(s) and optionally plots the spectra using the Fast Fourier Transform (FFT) algorithm.
+    Computes the Fourier Transform of the given signal(s) and optionally plots and saves the spectra using the Fast Fourier Transform (FFT) algorithm.
 
     :param np.ndarray signals: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
     :param int sampling_rate: The sampling rate of the signal(s) in Hz.
     :param bool plot: If True, plots the spectra of the waveform(s). Defaults to True.
     :param bool log_scale: If True and plot is True, plots the frequency axis on a logarithmic scale. Defaults to True.
+    :param int max_plots: The maximum number of plots to generate for multiple waveforms. Defaults to 10.
+    :param bool save_figures: If True, saves the generated figures to the specified directory. Defaults to False.
+    :param str save_dir: The directory where the figures should be saved. Defaults to '/seismutils_filter_figures'.
     :return: The Fourier Transform of the signal(s) as a numpy array.
     :rtype: np.ndarray
-
-    It can process a single waveform or multiple waveforms simultaneously. When processing multiple waveforms, each waveform should be represented as a row in a 2D numpy array.
     '''
     # Compute the Fourier Transform
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
     freq = np.fft.fftfreq(signals.shape[-1], d=1/sampling_rate)
 
-    if plot:
-        # Plotting
-        plt.figure(figsize=(10, 5))
-        plt.title('Fourier Transform Spectrum', fontsize=14, fontweight='bold')
+    # Ensure the save directory exists
+    if save_figures:
+        os.makedirs('./seismutils_figures', exist_ok=True)
 
+    if plot:
+        # Handle single waveform case
         if signals.ndim == 1:
+            fig = plt.figure(figsize=(10, 8))
+            gs = gridspec.GridSpec(2, 1, height_ratios=[1, 2])
+            
+            ax1 = plt.subplot(gs[0])
+            ax1.plot(signals, linewidth=0.75, color='k')
+            ax1.set_title('Waveform', fontsize=14, fontweight='bold')
+            ax1.set_xlabel('Samples', fontsize=12)
+            ax1.set_ylabel('Amplitude', fontsize=12)
+            ax1.set_xlim(0, len(signals))
+            ax1.grid(True, alpha=0.25, axis='x', linestyle=':')
+            
+            ax2 = plt.subplot(gs[1])
             if log_scale:
-                plt.loglog(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
+                ax2.loglog(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
             else:
-                plt.plot(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
+                ax2.plot(freq[:len(freq)//2], np.abs(ft)[:len(freq)//2], color='black', linewidth=0.75)
+            ax2.set_title('Fourier Transform', fontsize=14, fontweight='bold')
+            ax2.set_xlabel('Frequency [Hz]', fontsize=12)
+            ax2.set_ylabel('Amplitude', fontsize=12)
+            ax2.grid(True, alpha=0.25, which='both', linestyle=':')
+            
+            plt.tight_layout()
+            if save_figures:
+                fig_name = os.path.join('./seismutils_figures', 'fourier_transform.png')
+                plt.savefig(fig_name, dpi=300)
+            plt.show()
+            
+        # Handle multiple waveforms case
         else:
-            for i in range(signals.shape[0]):
+            num_plots = min(signals.shape[0], max_plots)
+            for i in range(num_plots):
+                fig = plt.figure(figsize=(10, 8))
+                gs = gridspec.GridSpec(2, 1, height_ratios=[1, 2])
+
+                ax1 = plt.subplot(gs[0])
+                ax1.plot(signals[i, :], linewidth=0.75, color='k', label=f'Waveform {i+1}')
+                ax1.set_title(f'Waveform {i+1}', fontsize=14, fontweight='bold')
+                ax1.set_xlabel('Samples', fontsize=12)
+                ax1.set_ylabel('Amplitude', fontsize=12)
+                ax1.set_xlim(0, len(signals[i, :]))
+                ax1.grid(True, alpha=0.25, axis='x', linestyle=':')
+                ax1.legend(loc='upper right', frameon=False, fontsize=10)
+                
+                ax2 = plt.subplot(gs[1])
                 if log_scale:
-                    plt.loglog(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], linewidth=0.75, label=f'Waveform {i+1}')
+                    ax2.loglog(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], color='black', linewidth=0.75, label='Spectrum')
                 else:
-                    plt.plot(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], linewidth=0.75, label=f'Waveform {i+1}')
-            plt.legend(loc='best', frameon=False, fontsize=10)
-        
-        plt.xlabel('Frequency [Hz]', fontsize=12)
-        plt.ylabel('Amplitude', fontsize=12)
-        plt.grid(True, alpha=0.25, linestyle=':')
-        plt.show()
-    
+                    ax2.plot(freq[:len(freq)//2], np.abs(ft[i, :])[:len(freq)//2], color='black', linewidth=0.75, label='Spectrum')
+                ax2.set_title(f'Fourier Transform {i+1}', fontsize=14, fontweight='bold')
+                ax2.set_xlabel('Frequency [Hz]', fontsize=12)
+                ax2.set_ylabel('Amplitude', fontsize=12)
+                ax2.grid(True, alpha=0.25, which='both', linestyle=':')
+                ax2.legend(loc='upper right', frameon=False, fontsize=10)
+                
+                plt.tight_layout()
+                if save_figures:
+                    fig_name = os.path.join('./seismutils_figures', f'fourier_transform{i+1}.png')
+                    plt.savefig(fig_name, dpi=300)
+                plt.show()
+
     return ft
