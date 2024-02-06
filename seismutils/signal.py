@@ -243,7 +243,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
               signals=waveform,
               sampling_rate=100,
               log_scale=True,
-              plot=True,
+              plot=True
         )
 
     .. image:: https://imgur.com/njtQn5s.png
