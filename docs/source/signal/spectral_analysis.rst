@@ -26,7 +26,7 @@ This example demonstrates how to use the ``fourier_transform()`` function to com
 
 .. image:: https://imgur.com/njtQn5s.png
    :align: center
-   :target: frequency_analysis.html#seismutils.signal.fourier_transform
+   :target: spectral_analysis.html#seismutils.signal.fourier_transform
 
 In this example, the ``fourier_transform()`` function is used to analyze a seismic waveform. By setting ``plot=True``, the function not only computes the Fourier Transform but also visualizes both the original waveform and its spectrum on a logarithmic scale, if ``log_scale=True``. This dual-visualization aids in understanding the frequency content and characteristics of the seismic signal.
 
