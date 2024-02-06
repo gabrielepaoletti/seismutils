@@ -48,29 +48,36 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     else: # 'both'
         return positive_envelope, negative_envelope
 
-def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, order=5, taper_window=None, taper_params=None):
+import numpy as np
+from scipy.signal import butter, sosfilt, sosfiltfilt, get_window
+
+def filter_signal(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='butterworth'):
     '''
-    Filter a signal with optional tapering, using specified filter parameters.
+    Filter a signal with optional tapering and zero-phase shift filtering, using specified filter parameters.
     
-    :param np.ndarray signals: The input signal as a 1D numpy array or list.
+    :param np.ndarray signals: The input signal as a 1D numpy array or list, or a 2D array for multiple signals.
     :param int sampling_rate: The sampling frequency of the signal in Hz.
-    :param str type: The type of the filter.
+    :param str filter_type: The type of the filter ('lowpass', 'highpass', 'bandpass', 'bandstop').
     :param float cutoff: The cutoff frequency or frequencies. For 'lowpass' and 'highpass', this is a single value. For 'bandpass' and 'bandstop', this is a tuple of two values (low cutoff, high cutoff).
     :param int order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
     :param str taper_window: The type of the tapering window to apply before filtering. If None, no tapering is applied. Defaults to None.
     :param dict taper_params: A dictionary of parameters for the tapering window. Ignored if `taper_window` is None. Defaults to None.
-    :return: The filtered signal as a 1D numpy array.
+    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero_phase' for zero-phase filtering). Defaults to 'butterworth'.
+    :return: The filtered signal as a 1D numpy array or a 2D array for multiple signals.
     :rtype: np.ndarray
     '''
     
-    def butter_filter(order, cutoff, sampling_rate, btype):
+    def butter_filter(order, cutoff, sampling_rate, filter_type, mode):
             nyq = 0.5 * sampling_rate
-            if btype in ['lowpass', 'highpass']:
+            if filter_type in ['lowpass', 'highpass']:
                 norm_cutoff = cutoff / nyq
             else:
                 norm_cutoff = [c / nyq for c in cutoff]
-            sos = butter(order, norm_cutoff, btype=btype, analog=False, output='sos')
-            return sos
+            sos = butter(order, norm_cutoff, btype=filter_type, analog=False, output='sos')
+            if mode == 'zero_phase':
+                return lambda x: sosfiltfilt(sos, x)
+            else:
+                return lambda x: sosfilt(sos, x)
     
     # Apply tapering if requested
     def apply_taper(signal, window, params):
@@ -82,7 +89,7 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
             return signal * window
         return signal
     
-    sos = butter_filter(order, cutoff, sampling_rate, type)
+    filter_func = butter_filter(order, cutoff, sampling_rate, filter_type, filter_mode)
     
     # Check if signals is a 2D array (multiple signals)
     if signals.ndim == 1:
@@ -91,7 +98,7 @@ def filter(signals: np.ndarray, sampling_rate: int, type: str, cutoff: float, or
     filtered_signals = []
     for signal in signals:
         tapered_signal = apply_taper(signal, taper_window, taper_params)
-        filtered_signal = sosfilt(sos, tapered_signal)
+        filtered_signal = filter_func(tapered_signal)
         filtered_signals.append(filtered_signal)
     
     return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
