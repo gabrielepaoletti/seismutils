@@ -259,33 +259,67 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
 
 def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
     '''
-    Selects and optionally plots a subset of data from a dataset that fall within a specified geometric shape, centered at a given point and rotated by a specified angle.
+    Selects a subset of data points that fall within a specified geometric shape, which is defined by its center, size, and rotation. This function can handle shapes like circles, ovals, and rectangles. It offers options to plot the selected points and return the subset as either indices or a DataFrame.
 
-    :param pd.DataFrame data: DataFrame containing the dataset with points to select from.
-    :param (pd.Series, pd.Series) coords: A pair of Series representing the x and y coordinates.
-    :param (float, float) center: The (x, y) coordinates of the shape's center.
-    :param (int, int) size: The dimensions of the shape (width, height) or radius if the shape is a circle.
-    :param int rotation: The counter-clockwise rotation angle of the shape in degrees from the x-axis.
-    :param str shape_type: The type of geometric shape to select within ('circle', 'oval', 'rectangle').
-    :param bool plot: If True, plots the original points and the selected points. Defaults to False.
-    :param bool return_indices: If True, returns a list of indices, otherwise returns a subset DataFrame. Defaults to False.
-    :return: A list of selected indices or a subset DataFrame, depending on the return_indices parameter.
+    This utility is particularly useful in spatial data analysis, where isolating data points within specific geometric boundaries can provide insights into patterns or distributions relative to a defined area of interest.
+
+    :param data: DataFrame containing the dataset from which to select points.
+    :type data: pd.DataFrame
+    :param coords: A pair of Series representing the x (longitude) and y (latitude) coordinates of the data points.
+    :type coords: Tuple[pd.Series, pd.Series]
+    :param center: The (x, y) coordinates representing the center of the geometric shape.
+    :type center: Tuple[float, float]
+    :param size: Dimensions of the geometric shape (width, height) for rectangles and ovals, or radius for circles.
+    :type size: Tuple[int, int]
+    :param rotation: The rotation angle of the shape in degrees, counter-clockwise from the x-axis.
+    :type rotation: int
+    :param shape_type: The type of geometric shape ('circle', 'oval', 'rectangle').
+    :type shape_type: str
+    :param plot: If True, plots the original dataset points and the selected subset.
+    :type plot: bool, optional
+    :param return_indices: If True, returns the indices of the selected points; otherwise, returns a subset DataFrame.
+    :type return_indices: bool, optional
+    :return: Indices of selected points or a DataFrame containing the selected subset, based on the return_indices parameter.
     :rtype: List[int] or pd.DataFrame
 
-    This function determines if points lie within a specified rotated geometric shape centered at the provided coordinates.
+    **Usage Example**
+
+    In the following example, we first use the :func:`cross_sections` function to isolate a subset of earthquake events based on their spatial relationship to a defined geological structure. This prepares a targeted subset from which we then select a specific cluster of events visible on a section. The selection is based on geometric criteria using the :func:`select` function, demonstrating how both functions can be combined to refine data analysis.
+    
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        # Assume that data is a pd.DataFrame formatted in the following way:
+        # index | lat | lon | depth | local_magnitude | momentum_magnitude | ID | time
+
+        subset = sug.cross_sections(
+            data=data,
+            center=(13.12131, 42.83603),
+            num_sections=(0,0),
+            section_distance=1,
+            event_distance_from_section=3,
+            strike=155,
+            map_length=15,
+            depth_range=(-10, 0),
+            zone=33,
+            plot=False
+        )
+        
+        selection = sug.select(
+            data=subset,
+            coords=(data['lon'], data['depth']),
+            center=(10.2, 7.2),
+            size=(0.6, 1.1),
+            rotation=160,
+            shape_type='oval',
+            plot=True
+        )
+
+    .. note::
+        Due to the complexity of using this function, especially in the context of spatial data analysis and geometric selection, it is highly recommended for users to consult a full tutorial. This guide would cover the specifics of data preparation, parameter tuning, and result interpretation, ensuring users can effectively apply this function to their datasets.
     '''
     def rotate_point(point, center, angle):
-        '''
-    Rotates a point around a given center by a specified angle in the 2D plane.
-
-    :param (float, float) point: The (x, y) coordinates of the point to be rotated.
-    :param (float, float) center: The (x, y) coordinates of the rotation center.
-    :param int angle: Rotation angle in degrees, positive values indicate counter-clockwise rotation.
-    :return: The (x, y) coordinates of the rotated point.
-    :rtype: tuple
-
-    This helper function calculates the new position of a point after being rotated about a specified center point by a given angle in degrees.
-        '''
         angle_rad = np.deg2rad(angle)
         ox, oy = center
         px, py = point
