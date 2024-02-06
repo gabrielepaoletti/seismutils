@@ -55,7 +55,7 @@ This example demonstrates how to use the ``filter()`` function to apply a zero-p
     
   import seismutils.signal as sus
 
-  # Assuming waveform is an np.adarray containing aplitude values
+  # Assuming waveform is an np.adarray containing amplitude values
 
   filtered_waveform = sus.filter(
       signals=waveform,
@@ -102,7 +102,7 @@ This example demonstrates how to use the ``envelope()`` function to calculate bo
     
   import seismutils.signal as sus
 
-  # Assuming filtered_waveform is an np.adarray containing aplitude values
+  # Assuming filtered_waveform is an np.adarray containing amplitude values
 
   pos_envelove, neg_envelope = sus.envelope(
       signals=filtered_waveform,
