@@ -108,17 +108,57 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
 
 def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True, max_plots=10, save_figures=False):
     '''
-    Computes the Fourier Transform of the given signal(s) and optionally plots and saves the spectra using the Fast Fourier Transform (FFT) algorithm.
+    Performs a Fourier Transform on a set of signals and optionally plots the results.
 
-    :param np.ndarray signals: The input signal as a single waveform (1D numpy array) or multiple waveforms (2D numpy array where each row represents a different waveform).
-    :param int sampling_rate: The sampling rate of the signal(s) in Hz.
-    :param bool plot: If True, plots the spectra of the waveform(s). Defaults to True.
-    :param bool log_scale: If True and plot is True, plots the frequency axis on a logarithmic scale. Defaults to True.
-    :param int max_plots: The maximum number of plots to generate for multiple waveforms. Defaults to 10.
-    :param bool save_figures: If True, saves the generated figures to the specified directory. Defaults to False.
-    :param str save_dir: The directory where the figures should be saved. Defaults to '/seismutils_filter_figures'.
-    :return: The Fourier Transform of the signal(s) as a numpy array.
+    This function computes the Fourier Transform using numpy's FFT implementation and can generate plots for both individual and multiple signals. It supports plotting in logarithmic scale for better visualization of the frequency components.
+
+    .. note::
+        If `plot` is set to True, the function can handle plotting single or multiple waveforms depending on the input signal's dimensionality. Plots can be saved to a specified directory.
+
+    :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array where each row represents a signal).
+    :type signals: np.ndarray
+    :param sampling_rate: The sampling rate of the signal(s) in Hz.
+    :type sampling_rate: int
+    :param plot: Whether to plot the Fourier Transform and the original signal(s).
+    :type plot: bool, optional
+    :param log_scale: If True, plots the Fourier Transform in logarithmic scale.
+    :type log_scale: bool, optional
+    :param max_plots: The maximum number of plots to generate when handling multiple signals. Default is 10.
+    :type max_plots: int, optional
+    :param save_figures: If True, saves the generated plots in a directory.
+    :type save_figures: bool, optional
+    :return: The Fourier Transform of the input signal(s).
     :rtype: np.ndarray
+
+    **Parameter details**
+
+    - ``plot``: Enable or disable the visualization of the signal(s) and their Fourier Transform. Useful for analysis and verification of signal properties.
+    
+    - ``log_scale``: Enhances the visibility of the spectrum's details, especially useful for signals with a wide range of frequency components.
+    
+    - ``save_figures``: Enables saving the generated figures for documentation or further analysis. Figures are saved in the ``'./seismutils_figures'`` directory.
+
+    **Usage example**
+
+    .. code-block:: python
+
+        import seismutils.signal as sus
+        import numpy as np
+
+        # Assuming waveform is an np.ndarray containing amplitude values
+        waveform = np.random.randn(1024)  # Example waveform
+        fft = sus.fourier_transform(
+              signals=waveform,
+              sampling_rate=100,
+              log_scale=True,
+              plot=True,
+        )
+
+    .. image:: https://imgur.com/njtQn5s.png
+       :align: center
+       :target: spectral_analysis.html#seismutils.signal.fourier_transform
+
+    The output is a numpy array containing the Fourier Transform of the input signal(s). If ``plot`` is ``True``, the function also generates a plot (or plots) illustrating the signal(s) and their frequency spectrum.
     '''
     # Compute the Fourier Transform
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
