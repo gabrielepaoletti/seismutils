@@ -1,3 +1,4 @@
+import os
 import pyproj
 
 import numpy as np
@@ -126,7 +127,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
+def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, save_figure: bool=False, save_name: str='section', save_extension: str='jpg', return_dataframes: bool=True):
     '''
     Analyzes earthquake data relative to a geological structure's orientation, creating cross sections perpendicular to strike that showcase the spatial distribution of seismic events. Optionally plots these sections for visual inspection.
 
@@ -152,6 +153,12 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     :type zone: int
     :param plot: If True, generates plots for each cross section with earthquake events.
     :type plot: bool, optional
+    :param save_figure: If True, saves the generated plots in a directory.
+    :type save_figure: bool, optional
+    :param save_name: Name under which the figure will be saved. Default ``'section'``
+    :type save_name: str, optional
+    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
+    :type save_extension: str, optional
     :param return_dataframes: If True, returns a list of DataFrames for each section. Each DataFrame contains earthquake events that fall within the section.
     :type return_dataframes: bool, optional
     :return: List of DataFrames corresponding to each cross section, containing relevant earthquake event data if 'return_dataframes' is True. Otherwise, returns None.
@@ -244,6 +251,12 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
             plt.ylabel('Depth [km]', fontsize=12)
             plt.xlim(-map_length, map_length)
             plt.ylim(*depth_range)
+            
+            if save_figure:
+                os.makedirs('./seismutils_figures', exist_ok=True)
+                fig_name = os.path.join('./seismutils_figures', f'{save_name}_{section+1}.{save_extension}')
+                plt.savefig(fig_name, dpi=300)
+            
             plt.show()
         
         # Add the events of this section to the list if return_dataframes is True
@@ -257,7 +270,7 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     
     return section_dataframes
 
-def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, return_indices: bool=False):
+def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, save_figure: bool=False, save_name: str='selection', save_extension: str='jpg', return_indices: bool=False):
     '''
     Selects a subset of data points that fall within a specified geometric shape, which is defined by its center, size, and rotation. This function can handle shapes like circles, ovals, and rectangles. It offers options to plot the selected points and return the subset as either indices or a DataFrame.
 
@@ -279,6 +292,12 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
     :type plot: bool, optional
     :param return_indices: If True, returns the indices of the selected points; otherwise, returns a subset DataFrame.
     :type return_indices: bool, optional
+    :param save_figure: If True, saves the generated plots in a directory.
+    :type save_figure: bool, optional
+    :param save_name: Name under which the figure will be saved. Default ``'selection'``
+    :type save_name: str, optional
+    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
+    :type save_extension: str, optional
     :return: Indices of selected points or a DataFrame containing the selected subset, based on the return_indices parameter.
     :rtype: List[int] or pd.DataFrame
 
@@ -380,6 +399,12 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
         plt.ylabel(f'{coords[1].name}', fontsize=12)
         plt.xlim(round(coords[0].min()), round(coords[0].max()))
         plt.ylim(round(coords[1].max()) if coords[1].name != 'depth' else -round(coords[1].max()), round(coords[1].min()) if coords[1].name != 'depth' else -round(coords[1].min()))
+        
+        if save_figure:
+            os.makedirs('./seismutils_figures', exist_ok=True)
+            fig_name = os.path.join('./seismutils_figures', f'{save_name}.{save_extension}')
+            plt.savefig(fig_name, dpi=300)
+        
         plt.show()
     
     if return_indices:  

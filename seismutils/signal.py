@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 
 from scipy.signal import butter, sosfilt, get_window, hilbert
 
-def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
+def envelope(signals: np.ndarray, envelope_type='positive', plot=False, save_figure: bool=False, save_name: str='envelope', save_extension: str='jpg'):
     '''
     Computes the envelope of a signal using the Hilbert transform. This function can generate the positive, negative, or both envelopes of the input signal(s) and optionally plot the results.
 
@@ -17,10 +17,16 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
 
     :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array).
     :type signals: np.ndarray
-    :param plot: If True, plots the input signal(s) along with their computed envelope(s).
-    :type plot: bool, optional
     :param envelope_type: Specifies the type of envelope to compute and return (``positive``, ``negative``, or ``both``).
     :type envelope_type: str, optional
+    :param plot: If True, plots the input signal(s) along with their computed envelope(s).
+    :type plot: bool, optional
+    :param save_figure: If True, saves the generated plots in a directory.
+    :type save_figure: bool, optional
+    :param save_name: Name under which the figure will be saved. Default ``'fourier_transform'``
+    :type save_name: str, optional
+    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
+    :type save_extension: str, optional
     :return: The computed envelope(s) of the input signal(s). Returns a single array if ``positive`` or ``negative`` is chosen, or two arrays if ``both`` is selected.
     :rtype: np.ndarray or tuple(np.ndarray, np.ndarray)
 
@@ -65,6 +71,12 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
             plt.grid(True, alpha=0.25, axis='x', linestyle=':')
             plt.legend(loc='best', frameon=False, fontsize=12)
             plt.tight_layout()
+            
+            if save_figure:
+                os.makedirs('./seismutils_figures', exist_ok=True)
+                fig_name = os.path.join('./seismutils_figures', f'{save_name}_{i+1}.{save_extension}')
+                plt.savefig(fig_name, dpi=300)
+            
             plt.show()
     
     if envelope_type == 'positive':
@@ -184,7 +196,7 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
     
     return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
 
-def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True, max_plots=10, save_figures=False):
+def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_scale=True, max_plots=10, save_figure=False, save_name: str='fourier_transform', save_extension: str='jpg'):
     '''
     Performs a Fourier Transform on a set of signals and optionally plots the results.
 
@@ -203,8 +215,12 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     :type log_scale: bool, optional
     :param max_plots: The maximum number of plots to generate when handling multiple signals. Default is 10.
     :type max_plots: int, optional
-    :param save_figures: If True, saves the generated plots in a directory.
-    :type save_figures: bool, optional
+    :param save_figure: If True, saves the generated plots in a directory.
+    :type save_figure: bool, optional
+    :param save_name: Name under which the figure will be saved. Default ``'fourier_transform'``
+    :type save_name: str, optional
+    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
+    :type save_extension: str, optional
     :return: The Fourier Transform of the input signal(s).
     :rtype: np.ndarray
 
@@ -241,10 +257,6 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
     freq = np.fft.fftfreq(signals.shape[-1], d=1/sampling_rate)
 
-    # Ensure the save directory exists
-    if save_figures:
-        os.makedirs('./seismutils_figures', exist_ok=True)
-
     if plot:
         # Handle single waveform case
         if signals.ndim == 1:
@@ -270,9 +282,11 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
             ax2.grid(True, alpha=0.25, which='both', linestyle=':')
             
             plt.tight_layout()
-            if save_figures:
-                fig_name = os.path.join('./seismutils_figures', 'fourier_transform.png')
+            if save_figure:
+                os.makedirs('./seismutils_figures', exist_ok=True)
+                fig_name = os.path.join('./seismutils_figures', f'{save_name}.{save_extension}')
                 plt.savefig(fig_name, dpi=300)
+                
             plt.show()
             
         # Handle multiple waveforms case
@@ -303,9 +317,11 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
                 ax2.legend(loc='upper right', frameon=False, fontsize=10)
                 
                 plt.tight_layout()
-                if save_figures:
-                    fig_name = os.path.join('./seismutils_figures', f'fourier_transform{i+1}.png')
+                if save_figure:
+                    os.makedirs('./seismutils_figures', exist_ok=True)
+                    fig_name = os.path.join('./seismutils_figures', f'{save_name}_{i+1}.{save_extension}')
                     plt.savefig(fig_name, dpi=300)
+                    
                 plt.show()
 
     return ft
