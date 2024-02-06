@@ -88,13 +88,13 @@ This example demonstrates how to use the ``envelope()`` function to calculate bo
 
 .. code-block:: python
     
-  import seismutils.gsignal as sus
+  import seismutils.signal as sus
 
   # Assuming filtered_waveform is an np.adarray containing aplitude values
 
   pos_envelove, neg_envelope = sus.envelope(
       signals=filtered_waveform,
-      type='both'
+      type='both',
       plot=True,
   )
 
