@@ -341,7 +341,7 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
         
         # Select the the cluster we are interested in
         selection = sug.select(
-            data=subset,
+            data=subset[0], # Using [0] because sug.cross_sections() returns List[pd.DataFrame]
             coords=(data['lon'], data['depth']),
             center=(10.2, 7.2),
             size=(0.6, 1.1),
