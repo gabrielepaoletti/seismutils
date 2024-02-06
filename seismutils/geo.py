@@ -100,7 +100,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     - ``ellps`` and ``datum``: Define the Earth's shape (ellipsoid) and the reference datum for the conversion. The default ``'WGS84'`` is commonly used, but alternative specifications can be used for different GIS needs.
 
     .. note::
-        Conversion accuracy is influenced by the accuracy of the input longitude and latitude, as well as the chosen UTM zone and hemisphere.
+        Conversion accuracy is influenced by the accuracy of the input longitude and latitude, as well as the chosen UTM zone,.
 
     **Usage example**
 
