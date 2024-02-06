@@ -189,7 +189,7 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
        :align: center
        :target: seismic_visualization.html#seismutils.geo.cross_section
     
-    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. 2021 earthquake catalog <https://zenodo.org/records/4736089>`_.
+    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
 
     .. note::
         Due to the complexity of using this function, it is recommended for users to consult a full tutorial on how to effectively plot cross sections. This tutorial will guide through the specifics of data preparation, parameter tuning, and interpretation of the results.
@@ -354,7 +354,7 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
        :align: center
        :target: seismic_visualization.html#seismutils.geo.select
     
-    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. 2021 earthquake catalog <https://zenodo.org/records/4736089>`_.
+    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
     
     .. note::
         Due to the complexity of using this function, especially in the context of spatial data analysis and geometric selection, it is highly recommended for users to consult a full tutorial. This guide would cover the specifics of data preparation, parameter tuning, and result interpretation, ensuring users can effectively apply this function to their datasets.
