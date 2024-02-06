@@ -352,7 +352,7 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
 
     .. image:: https://imgur.com/GmxrUlA.png
        :align: center
-       :target: seismic_visualization.html#seismutils.geo.select
+       :target: data_querying_and_selection.html#seismutils.geo.select
     
     The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
     
