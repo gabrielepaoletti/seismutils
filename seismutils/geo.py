@@ -127,7 +127,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, save_figure: bool=False, save_name: str='section', save_extension: str='jpg', return_dataframes: bool=True):
+def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], zone: int,section_distance: int=1, plot: bool=False, save_figure: bool=False, save_name: str='section', save_extension: str='jpg', return_dataframes: bool=True):
     '''
     Analyzes earthquake data relative to a geological structure's orientation, creating cross sections perpendicular to strike that showcase the spatial distribution of seismic events. Optionally plots these sections for visual inspection.
 
@@ -147,10 +147,10 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     :type map_length: int
     :param depth_range: Tuple specifying the minimum and maximum depths of earthquake events to include.
     :type depth_range: Tuple[float, float]
-    :param section_distance: Distance between adjacent cross sections, in kilometers.
-    :type section_distance: int
     :param zone: UTM zone for mapping coordinates.
     :type zone: int
+    :param section_distance: Distance between adjacent cross sections, in kilometers. Default is 1 km.
+    :type section_distance: int
     :param plot: If True, generates plots for each cross section with earthquake events.
     :type plot: bool, optional
     :param save_figure: If True, saves the generated plots in a directory.
@@ -177,7 +177,6 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
             data=data,
             center=(13.12131, 42.83603),
             num_sections=(0,0),
-            section_distance=1,
             event_distance_from_section=3,
             strike=155,
             map_length=15,
@@ -189,6 +188,8 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     .. image:: https://imgur.com/0cufUSo.png
        :align: center
        :target: seismic_visualization.html#seismutils.geo.cross_section
+    
+    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. 2021 earthquake catalog <https://zenodo.org/records/4736089>_`.
 
     .. note::
         Due to the complexity of using this function, it is recommended for users to consult a full tutorial on how to effectively plot cross sections. This tutorial will guide through the specifics of data preparation, parameter tuning, and interpretation of the results.
@@ -325,11 +326,11 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
         # Assume that data is a pd.DataFrame formatted in the following way:
         # index | lat | lon | depth | local_magnitude | momentum_magnitude | ID | time
 
+        # Creating a subset from a cross-section
         subset = sug.cross_sections(
             data=data,
             center=(13.12131, 42.83603),
             num_sections=(0,0),
-            section_distance=1,
             event_distance_from_section=3,
             strike=155,
             map_length=15,
@@ -338,6 +339,7 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
             plot=False
         )
         
+        # Select the the cluster we are interested in
         selection = sug.select(
             data=subset,
             coords=(data['lon'], data['depth']),
@@ -351,6 +353,8 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
     .. image:: https://imgur.com/GmxrUlA.png
        :align: center
        :target: seismic_visualization.html#seismutils.geo.select
+    
+    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. 2021 earthquake catalog <https://zenodo.org/records/4736089>_`.
     
     .. note::
         Due to the complexity of using this function, especially in the context of spatial data analysis and geometric selection, it is highly recommended for users to consult a full tutorial. This guide would cover the specifics of data preparation, parameter tuning, and result interpretation, ensuring users can effectively apply this function to their datasets.
