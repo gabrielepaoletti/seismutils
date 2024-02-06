@@ -156,8 +156,8 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     :type return_dataframes: bool, optional
     :return: List of DataFrames corresponding to each cross section, containing relevant earthquake event data if 'return_dataframes' is True. Otherwise, returns None.
     :rtype: List[pd.DataFrame] or None
-
-    **Usage Example**
+    
+    **Usage example**
 
     .. code-block:: python
 
@@ -282,9 +282,18 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
     :return: Indices of selected points or a DataFrame containing the selected subset, based on the return_indices parameter.
     :rtype: List[int] or pd.DataFrame
 
-    **Usage Example**
+    **Parameter details**
 
-    In the following example, we first use the :func:`cross_sections` function to isolate a subset of earthquake events based on their spatial relationship to a defined geological structure. This prepares a targeted subset from which we then select a specific cluster of events visible on a section. The selection is based on geometric criteria using the :func:`select` function, demonstrating how both functions can be combined to refine data analysis.
+    - ``shape_type``: This parameter defines the geometric shape for data selection, with the following options:
+        - ``'circle'``: Selects data within a circular area centered at the specified coordinates. The ``size`` parameter represents the radius of the circle.
+        - ``'oval'``: Selects data within an elliptical (oval) area. Requires the ``size`` parameter to specify both the major (width) and minor (height) axes of the ellipse.
+        - ``'rectangle'``: Selects data within a rectangular area. The ``size`` parameter should define the rectangle's width and height.
+
+    The choice of shape affects how the ``size`` and ``rotation`` parameters are interpreted, allowing for flexible data selection strategies based on geometric considerations.
+    
+    **Usage example**
+
+    In the following example, we first use the :func:`cross_sections` function to isolate a subset of earthquake events based on their spatial relationship to a defined geological structure, preparing a targeted subset from which we then select a specific cluster of events visible on a section.
     
     .. code-block:: python
 

@@ -24,7 +24,7 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     :return: The computed envelope(s) of the input signal(s). Returns a single array if 'positive' or 'negative' is chosen, or two arrays if 'both' is selected.
     :rtype: np.ndarray or tuple(np.ndarray, np.ndarray)
 
-    **Usage Example**
+    **Usage example**
 
     .. code-block:: python
 
@@ -107,7 +107,7 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
     :return: Filtered signal(s) as a numpy array.
     :rtype: np.ndarray
 
-    **Parameter Details**
+    **Parameter details**
 
     - ``filter_type``: Dictates the filter's operational frequency range, affecting which frequencies are attenuated or preserved. Choices include:
         - ``'lowpass'``: Suppresses frequencies above the cutoff, allowing lower frequencies to pass through.
@@ -128,7 +128,7 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
     .. note:: 
         Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
 
-    **Usage Example**
+    **Usage example**
 
     .. code-block:: python
 
