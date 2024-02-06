@@ -9,19 +9,52 @@ from matplotlib.ticker import MultipleLocator
 
 def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
-    Converts UTM (Universal Transverse Mercator) coordinates to geographical coordinates (latitude and longitude).
+    """
+    Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
-    :param float utmx: UTM x coordinate (Easting).
-    :param float utmy: UTM y coordinate (Northing).
-    :param int zone: UTM zone number from which the coordinates are mapped.
-    :param bool northern: Boolean indicating whether the UTM coordinates are in the northern hemisphere (True) or southern (False).
-    :param str units: The units of the UTM coordinates.
-    :param str ellps: The ellipsoid used in the conversion (default is 'WGS84').
-    :param str datum: The datum used in the conversion (default is 'WGS84').
-    :return: A tuple containing the geographical coordinates (longitude, latitude).
-    :rtype: (float, float)
+    :param utmx: The UTM x coordinate (easting).
+    :type utmx: float
+    :param utmy: The UTM y coordinate (northing).
+    :type utmy: float
+    :param zone: UTM zone number.
+    :type zone: int
+    :param northern: True if the location is in the northern hemisphere; otherwise, False.
+    :type northern: bool
+    :param units: The unit of the UTM coordinates ("m" for meters, "km" for kilometers).
+    :type units: str
+    :param ellps: The ellipsoid to use. Defaults to 'WGS84'.
+    :type ellps: str, optional
+    :param datum: The geodetic datum to use. Defaults to 'WGS84'.
+    :type datum: str, optional
+    :return: A tuple containing the longitude and latitude.
+    :rtype: tuple(float, float)
 
-    This function uses the ``pyproj`` library to convert UTM coordinates into latitude and longitude based on the specified UTM zone, hemisphere, units, and ellipsoid. This reverse conversion is useful for mapping applications that require global positioning data.
+    **Usage Example**
+
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        # Convert geographical to UTM coordinates
+        lon, lat = 13.271772, 38.836032  # Geographical coordinates
+        utmx, utmy = sug.convert_to_utm(
+            lon=lon,
+            lat=lat,
+            zone=33,
+            units='km',
+        )
+
+        print(f'UTMX: {utmx}, UTMY: {utmy}')
+        # Expected Output: UTMX: 350, UTMY: 4300
+
+    **Parameter Details**
+
+    - ``units``: This parameter allows the user to specify the units of the input UTM coordinates. Acceptable values are ``'m'`` for meters and ``'km'`` for kilometers. This flexibility lets the user work with the scale most relevant to their application or dataset.
+
+    - ``ellps and datum:`` These parameters define the shape of the Earth (ellipsoid) and the datum for the conversion process. While the default is 'WGS84', which is widely used for global mapping and satellite data, users can specify other ellipsoids or datums as needed for their specific geographic information system (GIS) applications.
+
+    .. note::
+        The conversion accuracy depends on the correctness of the input parameters, including the UTM zone and the hemisphere.
     '''
     # Define the geographic and UTM CRS based on the zone and hemisphere
     utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
