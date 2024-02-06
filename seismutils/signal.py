@@ -62,7 +62,7 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
     :param int order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
     :param str taper_window: The type of the tapering window to apply before filtering. If None, no tapering is applied. Defaults to None.
     :param dict taper_params: A dictionary of parameters for the tapering window. Ignored if `taper_window` is None. Defaults to None.
-    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero_phase' for zero-phase filtering). Defaults to 'zero-phase'.
+    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero-phase' for zero-phase filtering). Defaults to 'zero-phase'.
     :return: The filtered signal as a 1D numpy array or a 2D array for multiple signals.
     :rtype: np.ndarray
     '''
