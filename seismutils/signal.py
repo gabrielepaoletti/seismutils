@@ -113,7 +113,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     This function computes the Fourier Transform using numpy's FFT implementation and can generate plots for both individual and multiple signals. It supports plotting in logarithmic scale for better visualization of the frequency components.
 
     .. note::
-        If `plot` is set to True, the function can handle plotting single or multiple waveforms depending on the input signal's dimensionality. Plots can be saved to a specified directory.
+        If ``plot`` is set to ``True``, the function can handle plotting single or multiple waveforms depending on the input signal's dimensionality. Plots can be saved to a specified directory.
 
     :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array where each row represents a signal).
     :type signals: np.ndarray
