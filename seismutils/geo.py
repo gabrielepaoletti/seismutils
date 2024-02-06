@@ -128,23 +128,59 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
 
 def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], section_distance: int, zone: int, plot: bool=False, return_dataframes: bool=True):
     '''
-    Analyzes and optionally plots earthquake data in cross sections around a specified central point, based on their orientation and position relative to a geological strike.
+    Analyzes earthquake data relative to a geological structure's orientation, creating cross sections perpendicular to strike that showcase the spatial distribution of seismic events. Optionally plots these sections for visual inspection.
 
-   :param pd.DataFrame data: DataFrame containing earthquake event data, with columns 'lon', 'lat', 'depth', etc.
-   :param (float, float) center: Coordinates (longitude, latitude) of the central point for the primary cross section.
-   :param (int, int) num_sections: Number of additional sections to be analyzed and plotted around the primary section, specified as (num_left, num_right).
-   :param int event_distance_from_section: Maximum distance (in kilometers) from a section within which an earthquake event is considered for inclusion.
-   :param int strike: Strike angle in degrees from North, indicating the geological structure's orientation. Sections are plotted perpendicular to this strike direction.
-   :param int map_length: Length of the section's trace in kilometers, extending equally in both directions from the center point.
-   :param (int, int) depth_range: Depth range (min_depth, max_depth) for considering earthquake events.
-   :param int section_distance: Distance between adjacent sections, in kilometers. Defaults to 1 kilometer.
-   :param int zone: UTM zone number that the coordinates should be mapped into.
-   :param bool plot: If True, plots the cross sections with the included earthquake events. Defaults to False.
-   :param bool return_dataframes: If True, returns a list of DataFrames, each representing a section with included earthquake events. Defaults to True.
-   :return: A list of DataFrames, each corresponding to a section with relevant earthquake data, if 'return_dataframes' is True. Returns None otherwise.
-   :rtype: List[pd.DataFrame]
+    This function segments the input earthquake data into cross sections based on their proximity and alignment with a specified geological strike. It can generate a series of parallel cross sections, allowing for a comprehensive analysis of seismic activity around a central point of interest.
 
-   This function facilitates the analysis of earthquake events in relation to a specified geological strike. It computes cross sections perpendicular to the strike, centered around a given point, and analyzes earthquake events within these sections based on their proximity to the section plane and depth. The function optionally plots these sections, showing the spatial distribution of events, and can return the data in a structured format for further analysis.
+    :param data: DataFrame containing earthquake event data, with essential columns like 'lon', 'lat' and 'depth'
+    :type data: pd.DataFrame
+    :param center: Coordinates (longitude, latitude) of the central point for the primary cross section.
+    :type center: Tuple[float, float]
+    :param num_sections: Tuple specifying the number of sections to the left and right of the primary section to analyze and plot.
+    :type num_sections: Tuple[int, int]
+    :param event_distance_from_section: Maximum distance from a section within which an earthquake event is considered for inclusion, in kilometers.
+    :type event_distance_from_section: int
+    :param strike: Geological strike direction in degrees from North, determining the orientation of cross sections.
+    :type strike: int
+    :param map_length: Length of the cross section lines in kilometers.
+    :type map_length: int
+    :param depth_range: Tuple specifying the minimum and maximum depths of earthquake events to include.
+    :type depth_range: Tuple[float, float]
+    :param section_distance: Distance between adjacent cross sections, in kilometers.
+    :type section_distance: int
+    :param zone: UTM zone for mapping coordinates.
+    :type zone: int
+    :param plot: If True, generates plots for each cross section with earthquake events.
+    :type plot: bool, optional
+    :param return_dataframes: If True, returns a list of DataFrames for each section. Each DataFrame contains earthquake events that fall within the section.
+    :type return_dataframes: bool, optional
+    :return: List of DataFrames corresponding to each cross section, containing relevant earthquake event data if 'return_dataframes' is True. Otherwise, returns None.
+    :rtype: List[pd.DataFrame] or None
+
+    **Usage Example**
+
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        # Assume that data is a pd.DataFrame formatted in the following way:
+        # index | lat | lon | depth | local_magnitude | momentum_magnitude | ID | time
+        
+        subset = sug.cross_sections(
+            data=data,
+            center=(13.12131, 42.83603),
+            num_sections=(0,0),
+            section_distance=1,
+            event_distance_from_section=3,
+            strike=155,
+            map_length=15,
+            depth_range=(-10, 0),
+            zone=33,
+            plot=True
+        )
+
+    .. note::
+        Due to the complexity of using this function, it is recommended for users to consult a full tutorial on how to effectively plot cross sections. This tutorial will guide through the specifics of data preparation, parameter tuning, and interpretation of the results.
     '''
 
     # Function to calculate the distance of a point from a plane
