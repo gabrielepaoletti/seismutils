@@ -56,18 +56,66 @@ from scipy.signal import butter, sosfilt, sosfiltfilt, get_window
 
 def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='zero-phase'):
     '''
-    Filter a signal with optional tapering and filtering modes, using specified filter parameters.
+    Applies a digital filter to the input signal(s) with optional tapering. The function supports various filter types, cutoff frequencies, and filtering modes for flexible signal processing.
+
+    This function allows for precise manipulation of signal frequencies through filtering, with the capability to apply a tapering window beforehand to minimize edge effects. It supports multiple filtering modes, including a zero-phase filtering option to preserve the phase characteristics of the signal.
     
-    :param np.ndarray signals: The input signal as a 1D numpy array or list, or a 2D array for multiple signals.
-    :param int sampling_rate: The sampling frequency of the signal in Hz.
-    :param str filter_type: The type of the filter ('lowpass', 'highpass', 'bandpass', 'bandstop').
-    :param float cutoff: The cutoff frequency or frequencies. For 'lowpass' and 'highpass', this is a single value. For 'bandpass' and 'bandstop', this is a tuple of two values (low cutoff, high cutoff).
-    :param int order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
-    :param str taper_window: The type of the tapering window to apply before filtering. If None, no tapering is applied. Defaults to None.
-    :param dict taper_params: A dictionary of parameters for the tapering window. Ignored if `taper_window` is None. Defaults to None.
-    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero-phase' for zero-phase filtering). Defaults to 'zero-phase'.
-    :return: The filtered signal as a 1D numpy array or a 2D array for multiple signals.
+    .. note::
+        When provided with a multidimensional array containing multiple waveforms (one per row), the function processes each waveform independently, applying the specified filtering and tapering operations. The returned array will contain all the filtered waveforms, preserving the input structure.
+
+    :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array).
+    :type signals: np.ndarray
+    :param sampling_rate: Sampling frequency of the signal(s) in Hz.
+    :type sampling_rate: int
+    :param filter_type: Type of filter ('lowpass', 'highpass', 'bandpass', 'bandstop').
+    :type filter_type: str
+    :param cutoff: Cutoff frequency(ies). Single value for 'lowpass'/'highpass'; tuple for 'bandpass'/'bandstop'.
+    :type cutoff: float or tuple(float, float)
+    :param order: Order of the filter. A higher order results in a sharper frequency cutoff but may introduce artifacts.
+    :type order: int, optional
+    :param taper_window: Type of tapering window to apply ('hann', 'hamming', 'blackman', 'bartlett', 'tukey', or None).
+    :type taper_window: str, optional
+    :param taper_params: Parameters for the tapering window. Ignored if `taper_window` is None.
+    :type taper_params: dict, optional
+    :param filter_mode: Filtering mode ('butterworth' or 'zero-phase').
+    :type filter_mode: str, optional
+    :return: Filtered signal(s) as a numpy array.
     :rtype: np.ndarray
+
+    **Parameter Details**
+
+    - ``filter_type``: Dictates the filter's operational frequency range, affecting which frequencies are attenuated or preserved. Choices include:
+        - ``'lowpass'``: Suppresses frequencies above the cutoff, allowing lower frequencies to pass through.
+        - ``'highpass'``: Suppresses frequencies below the cutoff, allowing higher frequencies to pass through.
+        - ``'bandpass'``: Only allows frequencies within a specific range to pass, attenuating those outside.
+        - ``'bandstop'``: Attenuates frequencies within a specific range, allowing those outside to pass.
+
+    - ``filter_mode``: Determines the filter's impact on the signal's phase characteristics:
+        - ``'butterworth'``: Offers a smooth, flat frequency response in the passband and is designed to maintain a uniform amplitude.
+        - ``'zero-phase'``: Utilizes forward and reverse filtering to eliminate phase shifts, preserving the original phase structure of the signal.
+
+    - ``taper_window``: Applies a windowing function to the signal before filtering, reducing potential edge effects:
+        - Options include classic window functions like ``'hann'``, ``'hamming'``, ``'blackman'``, ``'bartlett'``, and ``'tukey'``, each with unique characteristics affecting the signal's frequency leakage and resolution.
+        - Setting to ``None`` bypasses tapering, leaving the signal edges unaltered.
+
+    **Usage Example**
+
+    .. code-block:: python
+
+        import seismutils.signal as sus
+
+        # Assuming waveform is an np.adarray containing amplitude values
+
+        fft = sus.fourier_transform(
+            signals=waveform,
+            sampling_rate=100,
+            log_scale=True,
+            plot=True,
+        )
+
+    .. image:: https://imgur.com/bLdbHjF.png
+       :align: center
+       :target: signal_processing.html#seismutils.signal.filter
     '''
     
     def butter_filter(order, cutoff, sampling_rate, filter_type, mode):
