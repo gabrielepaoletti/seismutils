@@ -53,7 +53,7 @@ from scipy.signal import butter, sosfilt, sosfiltfilt, get_window
 
 def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='zero-phase'):
     '''
-    Filter a signal with optional tapering and zero-phase shift filtering, using specified filter parameters.
+    Filter a signal with optional tapering and filtering modes, using specified filter parameters.
     
     :param np.ndarray signals: The input signal as a 1D numpy array or list, or a 2D array for multiple signals.
     :param int sampling_rate: The sampling frequency of the signal in Hz.
