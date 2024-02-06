@@ -363,7 +363,7 @@ def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, nover
     :type max_plots: int, optional
     :param colorbar: If True, adds a colorbar indicating amplitude or power scale next to the spectrogram.
     :type colorbar: bool, optional
-    :param cmap: Color map for plotting the spectrogram. Defaults to 'jet'.
+    :param cmap: Color map for plotting the spectrogram. Defaults to ``'jet'``.
     :type cmap: str, optional
     :param save_figure: If True, saves the generated plots in a directory.
     :type save_figure: bool, optional
