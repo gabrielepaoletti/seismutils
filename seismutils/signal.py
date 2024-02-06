@@ -51,7 +51,7 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
 import numpy as np
 from scipy.signal import butter, sosfilt, sosfiltfilt, get_window
 
-def filter_signal(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='butterworth'):
+def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='zero-phase'):
     '''
     Filter a signal with optional tapering and zero-phase shift filtering, using specified filter parameters.
     
@@ -62,7 +62,7 @@ def filter_signal(signals: np.ndarray, sampling_rate: int, filter_type: str, cut
     :param int order: The order of the filter. Higher order means a steeper filter slope but can lead to instability or ringing. Defaults to 5.
     :param str taper_window: The type of the tapering window to apply before filtering. If None, no tapering is applied. Defaults to None.
     :param dict taper_params: A dictionary of parameters for the tapering window. Ignored if `taper_window` is None. Defaults to None.
-    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero_phase' for zero-phase filtering). Defaults to 'butterworth'.
+    :param str filter_mode: The mode of filtering ('butterworth' for standard filtering or 'zero_phase' for zero-phase filtering). Defaults to 'zero-phase'.
     :return: The filtered signal as a 1D numpy array or a 2D array for multiple signals.
     :rtype: np.ndarray
     '''

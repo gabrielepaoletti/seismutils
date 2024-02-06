@@ -25,7 +25,7 @@ The ``filter()`` function offers several parameters for fine-tuning signal proce
 
   - ``'butterworth'``: This mode employs the Butterworth filter, known for its smooth frequency response. The design prioritizes a flat passband to eliminate ripples, ensuring consistent amplitude within this range. Its gradual transition to the stopband makes it ideal for scenarios where a uniform amplitude response is crucial.
 
-  - ``'zero_phase'``: Implements a bidirectional filtering technique to achieve a zero-phase effect, counteracting any phase shifts introduced during filtering. By processing the signal forwards and then backwards, it retains the signal's original phase structure, making it indispensable for analyses where phase accuracy is paramount, such as seismic data interpretation or feature extraction from phase-sensitive signals.
+  - ``'zero-phase'``: Implements a bidirectional filtering technique to achieve a zero-phase effect, counteracting any phase shifts introduced during filtering. By processing the signal forwards and then backwards, it retains the signal's original phase structure, making it indispensable for analyses where phase accuracy is paramount, such as seismic data interpretation or feature extraction from phase-sensitive signals.
 
   .. note::
     The choice of filter mode can significantly impact the analysis, especially in applications sensitive to phase shifts or where preserving the original phase information is crucial. 
@@ -70,7 +70,7 @@ This example demonstrates how to use the ``filter()`` function to apply a zero-p
    :align: center
    :target: signal_processing.html#seismutils.signal.filter
 
-In this example, the ``filter()`` function is used to isolate the frequency components of the signal between 1 Hz and 20 Hz range by applying an band-pass filter. 
+In this example, the ``filter()`` function is used to isolate the frequency components of the signal between 1-20 Hz range by applying an band-pass filter. 
 
 The Hann window tapering is applied to the signal before filtering to reduce spectral leakage. The result is a smoother signal with reduced noise outside the desired frequency band.
 
