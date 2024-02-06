@@ -53,7 +53,7 @@ This example demonstrates how to use the ``filter()`` function to apply a zero-p
 
 .. code-block:: python
     
-  import seismutils.gsignal as sus
+  import seismutils.signal as sus
 
   # Assuming waveform is an np.adarray containing aplitude values
 
