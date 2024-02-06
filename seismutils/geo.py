@@ -35,7 +35,7 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
 
     - ``units``: This parameter allows the user to specify the units of the input UTM coordinates. Acceptable values are ``'m'`` for meters and ``'km'`` for kilometers. This flexibility lets the user work with the scale most relevant to their application or dataset.
 
-    - ``ellps and datum:`` These parameters define the shape of the Earth (ellipsoid) and the datum for the conversion process. While the default is ``'WGS84'``, which is widely used for global mapping and satellite data, users can specify other ellipsoids or datums as needed for their specific geographic information system (GIS) applications.
+    - ``ellps`` and ``datum:`` These parameters define the shape of the Earth (ellipsoid) and the datum for the conversion process. While the default is ``'WGS84'``, which is widely used for global mapping and satellite data, users can specify other ellipsoids or datums as needed for their specific geographic information system (GIS) applications.
 
     .. note::
         The conversion accuracy depends on the correctness of the input parameters, including the UTM zone and the hemisphere.
@@ -46,7 +46,7 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
 
         import seismutils.geo as sug
 
-        utmx, utmy = 350, 430  # UTM coordinates
+        utmx, utmy = 350, 4300  # UTM coordinates
         
         lon, lat = sug.convert_to_geographical(
             lon=lon,
@@ -94,7 +94,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
 
     **Parameter details**
 
-    - ``units``: Allows specifying the units for the output UTM coordinates. Supporting both meters (``'m'``) and kilometers (``'km'``), this parameter provides flexibility for various application scales.
+    - ``units``: Allows specifying the units for the output UTM coordinates. Supporting both meters ``'m'`` and kilometers ``'km'``, this parameter provides flexibility for various application scales.
 
     - ``ellps`` and ``datum``: Define the Earth's shape (ellipsoid) and the reference datum for the conversion. The default ``'WGS84'`` is commonly used, but alternative specifications can be used for different GIS needs.
 
