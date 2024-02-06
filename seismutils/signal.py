@@ -143,10 +143,9 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
     .. code-block:: python
 
         import seismutils.signal as sus
-        import numpy as np
 
         # Assuming waveform is an np.ndarray containing amplitude values
-        waveform = np.random.randn(1024)  # Example waveform
+        
         fft = sus.fourier_transform(
               signals=waveform,
               sampling_rate=100,
@@ -158,7 +157,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, plot=True, log_sc
        :align: center
        :target: spectral_analysis.html#seismutils.signal.fourier_transform
 
-    The output is a numpy array containing the Fourier Transform of the input signal(s). If ``plot`` is ``True``, the function also generates a plot (or plots) illustrating the signal(s) and their frequency spectrum.
+    The output is a numpy array containing the Fourier Transform of the input signal(s). If ``plot=True``, the function also generates a plot (or plots) illustrating the signal(s) and their frequency spectrum.
     '''
     # Compute the Fourier Transform
     ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
