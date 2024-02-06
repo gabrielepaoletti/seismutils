@@ -15,7 +15,7 @@ This example demonstrates how to use the ``fourier_transform()`` function to com
     
   import seismutils.signal as sus
 
-  # Assuming filtered_waveform is an np.adarray containing aplitude values
+  # Assuming waveform is an np.adarray containing aplitude values
 
   fft = sus.fourier_transform(
         signals=waveform,
