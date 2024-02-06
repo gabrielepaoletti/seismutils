@@ -13,7 +13,7 @@ def envelope(signals: np.ndarray, plot=False, envelope_type='positive'):
     The Hilbert transform is used to compute the analytical signal, from which the envelope is derived. The envelope can be useful for amplitude modulation analysis, feature extraction, and signal analysis tasks.
 
     .. note::
-        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It computes and returns the envelope(s) for each waveform, maintaining the input structure. This feature is beneficial for batch processing of signals in applications such as signal monitoring, analysis, and feature extraction.
+        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It computes and returns the envelope(s) for each waveform, maintaining the input structure.
 
     :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array).
     :type signals: np.ndarray
@@ -123,10 +123,10 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
         - Options include classic window functions like ``'hann'``, ``'hamming'``, ``'blackman'``, ``'bartlett'``, and ``'tukey'``, each with unique characteristics affecting the signal's frequency leakage and resolution.
         - Setting to ``None`` bypasses tapering, leaving the signal edges unaltered.
         
-        Additionally, if you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
+    Additionally, if you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
         
-        .. note:: 
-            Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
+    .. note:: 
+        Many of the window types supported by ``scipy.signal`` can be directly applied within the ``filter()`` function, offering extensive flexibility for signal processing tasks.
 
     **Usage Example**
 
