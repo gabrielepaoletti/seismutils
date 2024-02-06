@@ -381,11 +381,11 @@ def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, nover
 
         # Assume waveform is an np.ndarray containing amplitude values
 
-        sp.spectrogram(
+        spectrogram_data = sus.spectrogram(
             signals=waveform,
             sampling_rate=100,
             plot_waveform=True,
-            return_data=True,
+            return_data=True
         )
 
     .. image:: https://imgur.com/0J4VGQC.png
