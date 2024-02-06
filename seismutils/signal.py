@@ -341,7 +341,7 @@ def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, nover
     This function computes the Short-Time Fourier Transform (STFT) to generate spectrograms for a set of signals. It supports various configurations, including log-scale amplitude, zero padding for higher frequency resolution, and customizable plotting options.
 
     .. note::
-        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It generates and plots a spectrogram for each waveform, adhering to the specified parameters. This functionality enables batch analysis of multiple signals, ideal for comparing spectral content across a dataset.
+        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It generates and plots a spectrogram for each waveform, adhering to the specified parameters.
 
     :param signals: Input signals, a 2D numpy array where each row represents a signal.
     :type signals: np.ndarray
