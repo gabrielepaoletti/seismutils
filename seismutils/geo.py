@@ -5,8 +5,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from typing import List, Tuple
+from tqdm import tqdm
 from matplotlib.ticker import MultipleLocator
+from typing import List, Tuple
 
 def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
