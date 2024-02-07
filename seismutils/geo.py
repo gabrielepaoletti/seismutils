@@ -280,7 +280,9 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
     '''
     Filters out events in a DataFrame that occur too closely in time based on specified criteria.
 
-    This function iterates through a sorted DataFrame of events, identifying and removing events that occur within a specified time window (``window_length``). Additionally, if two consecutive events are separated by a time less than ``min_interval``, both events are excluded from the resulting DataFrame.
+    This function iterates through a sorted DataFrame of events, identifying and removing events that occur within a specified time window (``window_length``). 
+    
+    Additionally, if two consecutive events are separated by a time less than ``min_interval``, both events are excluded from the resulting DataFrame.
 
     .. note::
         The ``min_interval`` parameter must be less than ``window_length`` to avoid a ValueError. The function assumes the DataFrame contains a 'time' column with datetime or string representations of dates/times, which are converted to datetime objects for comparison.
@@ -309,7 +311,9 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
             min_interval=5
         )
     
-    This function serves an essential role in preparing datasets for waveform download, particularly when acquiring fixed-length windows around seismic events, such as those surrounding P-Wave arrivals. By specifying a window length and a minimum interval, it ensures that each downloaded trace contains data from a single event, thereby preventing the inclusion of multiple events within the same waveform trace. 
+    This function serves an essential role in preparing datasets for waveform download, particularly when acquiring fixed-length windows around seismic events, such as those surrounding P-Wave arrivals.
+    
+    By specifying a window length and a minimum interval, it ensures that each downloaded trace contains data from a single event, thereby preventing the inclusion of multiple events within the same waveform trace. 
     
     This is crucial for analyses that require clear isolation of seismic signals associated with individual earthquake events, facilitating accurate study and interpretation of seismic wave characteristics and behavior.
     '''
