@@ -275,6 +275,73 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
     
     return section_dataframes
 
+def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_interval: float):
+    '''
+    Filters out events in a DataFrame that occur too closely in time based on specified criteria.
+
+    This function iterates through a sorted DataFrame of events, identifying and removing events that occur within a specified time window (``window_length``). Additionally, if two consecutive events are separated by a time less than ``min_interval``, both events are excluded from the resulting DataFrame.
+
+    .. note::
+        The function assumes the DataFrame contains a 'time' column with datetime or string representations of dates/times, which are converted to datetime objects for comparison.
+    
+    .. note::
+        The ``min_interval`` parameter must be less than ``window_length`` to avoid a ValueError. 
+
+    :param data: DataFrame containing the dataset with event timing information.
+    :type data: pd.DataFrame
+    :param window_length: The length of the time window in seconds within which consecutive events are considered too close and subject to exclusion.
+    :type window_length: float
+    :param min_interval: The minimum allowed interval in seconds between two events. If the interval between events is less than this, both events are removed.
+    :type min_interval: float
+    :return: A filtered DataFrame with closely timed events excluded.
+    :rtype: pd.DataFrame
+
+    **Usage Example**
+
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        # Assume that data is a pd.DataFrame formatted in the following way:
+        # index | lat | lon | depth | local_magnitude | momentum_magnitude | ID | time
+
+        data_filtered = sug.exclude_close_timed_events(
+            data=data,
+            window_length=25,
+            min_interval=5
+        )
+    '''
+    if min_interval >= window_length:
+        raise ValueError("min_interval must be less than window_length")
+    
+    # Convert 'time' column to datetime
+    data.time = pd.to_datetime(data.time)
+    
+    # Sort the DataFrame by the 'time' column
+    data = data.sort_values(by='time').reset_index(drop=True)
+    
+    # Initialize a set to keep track of the indices of events to be removed
+    indices_to_remove = set()
+    
+    for i in tqdm(range(len(data) - 1), desc="Analyzing events"):
+        # Calculate the time difference in seconds between consecutive events
+        time_diff = (data.at[i+1, 'time'] - data.at[i, 'time']).total_seconds()
+        
+        # If the time difference is less than the specified window, mark the event for removal
+        if time_diff < window_length:
+            if time_diff < min_interval:
+                # If the time difference is also less than min_interval, remove both events
+                indices_to_remove.add(i)
+                indices_to_remove.add(i+1)
+            else:
+                # Otherwise, remove only the previous event
+                indices_to_remove.add(i)
+    
+    # Remove close timed events
+    data_filtered = data.drop(list(indices_to_remove)).reset_index(drop=True)
+    
+    return data_filtered
+
 def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, save_figure: bool=False, save_name: str='selection', save_extension: str='jpg', return_indices: bool=False):
     '''
     Selects a subset of data points that fall within a specified geometric shape, which is defined by its center, size, and rotation. This function can handle shapes like circles, ovals, and rectangles. It offers options to plot the selected points and return the subset as either indices or a DataFrame.
