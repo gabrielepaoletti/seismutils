@@ -12,7 +12,7 @@ config = {
     'author_email': 'gabriele.paoletti@uniroma1.it',
     'version': '0.3.0',
     'python_requires': '>=3.11',
-    'install_requires': ['matplotlib', 'numpy', 'pandas', 'pyproj', 'scipy'],
+    'install_requires': ['matplotlib', 'numpy', 'pandas', 'pyproj', 'scipy', 'tqdm'],
     'packages': find_packages(),
     'name': 'seismutils',
     'license': 'MIT',
