@@ -23,9 +23,9 @@ Here, detailed explanations of each function within the ``seismutils`` toolkit a
    :maxdepth: 2
    :caption: seismutils.geo
 
-   geo/coordinate_transformations
-   geo/data_querying_and_selection
-   geo/seismic_visualization
+   geos/coordinate_transformations
+   geos/data_querying_and_selection
+   geos/seismic_visualization
 
 .. toctree::
    :maxdepth: 2
