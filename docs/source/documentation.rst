@@ -20,7 +20,7 @@ Documentation
 Here, detailed explanations of each function within the ``seismutils`` toolkit are provided, showcasing their use through practical examples and mini-tutorials.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: seismutils.geo
 
    geo/coordinate_transformations
