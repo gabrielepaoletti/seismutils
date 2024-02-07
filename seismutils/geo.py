@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 
 from tqdm import tqdm
 from matplotlib.ticker import MultipleLocator
-from typing import List, Tuple
+from typing import Tuple
 
 def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool, units: str, ellps: str='WGS84', datum: str='WGS84'):
     '''
     Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
     .. note::
-            This function is capable of handling both individual floating-point numbers and bulk data in the form of arrays or pandas Series for the UTM coordinates. When provided with array or Series inputs, it returns an array containing the converted geographical coordinates (longitude and latitude) for each set of UTM coordinates.
+        This function is capable of handling both individual floating-point numbers and bulk data in the form of arrays or pandas Series for the UTM coordinates. When provided with array or Series inputs, it returns an array containing the converted geographical coordinates (longitude and latitude) for each set of UTM coordinates.
     
     :param utmx: The UTM x coordinate (easting).
     :type utmx: float
