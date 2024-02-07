@@ -311,6 +311,7 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
             window_length=25,
             min_interval=5
         )
+    
     This function serves an essential role in preparing datasets for waveform download, particularly when acquiring fixed-length windows around seismic events, such as those surrounding P-Wave arrivals. By specifying a window length and a minimum interval, it ensures that each downloaded trace contains data from a single event, thereby preventing the inclusion of multiple events within the same waveform trace. 
     
     This is crucial for analyses that require clear isolation of seismic signals associated with individual earthquake events, facilitating accurate study and interpretation of seismic wave characteristics and behavior.
