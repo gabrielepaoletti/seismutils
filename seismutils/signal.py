@@ -202,32 +202,29 @@ def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: fl
 
 def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, plot=True, plot_waveform=True, max_plots=10, save_figure=False, save_name: str='fourier_transform', save_extension: str='jpg'):
     '''
-    Performs a Fourier Transform on a set of signals and optionally plots the results.
+    Performs a Fourier Transform on a set of signals and optionally plots the amplitude spectrum.
 
-    This function applies a manual implementation of the Discrete Fourier Transform (DFT) to analyze the frequency content of input signals. It supports both single and multiple signals, plotting the original waveform and its Fourier Transform spectrum with options for logarithmic scaling, waveform plotting, and saving the figures.
+    This function utilizes NumPy's efficient Fast Fourier Transform (FFT) to analyze the frequency content of signals. It supports visualization of both the original waveform and its corresponding amplitude spectrum, with options for logarithmic amplitude scaling, selective plotting, and figure saving.
 
-    .. note::
-        If ``plot`` is set to ``True``, the function can handle plotting single or multiple waveforms depending on the input signal's dimensionality. Plots can be saved to a specified directory.
-    
-    :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array where each row represents a signal).
+    :param signals: Input signal(s), either a single signal as a 1D array or multiple signals as a 2D array where each row represents a signal.
     :type signals: np.ndarray
-    :param sampling_rate: The sampling rate of the signal(s) in Hz.
+    :param sampling_rate: Sampling frequency of the signal(s) in Hz, used to calculate the frequency axis for the spectrum.
     :type sampling_rate: int
-    :param log_scale: If True, plots the Fourier Transform amplitude in logarithmic scale. Defaults to True.
+    :param log_scale: If True, the amplitude spectrum is plotted on a logarithmic scale for better visibility of wide amplitude ranges. Defaults to True.
     :type log_scale: bool
-    :param plot: If True, the function will plot the Fourier Transform and optionally the original waveform. Defaults to True.
+    :param plot: If True, generates plots for the Fourier Transform results and, optionally, the waveform. Defaults to True.
     :type plot: bool
-    :param plot_waveform: If True and `plot` is True, the original waveform will be plotted above the spectrum plot. Defaults to True.
+    :param plot_waveform: If True, plots the original waveform(s) above their corresponding amplitude spectrum. Defaults to True.
     :type plot_waveform: bool
-    :param max_plots: The maximum number of plots to generate when handling multiple signals. Defaults to 10.
+    :param max_plots: Limits the number of signal plots to this number, useful for datasets with many signals. Defaults to 10.
     :type max_plots: int
-    :param save_figure: If True, saves the generated plots as image files. Defaults to False.
+    :param save_figure: If True, saves the generated plot(s) as image files in a specified directory. Defaults to False.
     :type save_figure: bool
-    :param save_name: The base name for saved figures, to which a numeric suffix will be added for multiple signals. Defaults to 'fourier_transform'.
+    :param save_name: The base filename for saved plots, to which a numeric suffix will be appended for each signal when multiple signals are plotted. Defaults to 'fourier_transform'.
     :type save_name: str
-    :param save_extension: The file extension for saved figures, such as 'jpg' or 'png'. Defaults to 'jpg'.
+    :param save_extension: File extension for the saved plot images (e.g., 'jpg', 'png'). Defaults to 'jpg'.
     :type save_extension: str
-    :return: The Fourier Transform of the input signal(s).
+    :return: The Fourier Transform result up to the Nyquist frequency, providing the positive frequency components of the signal(s).
     :rtype: np.ndarray
 
     **Usage example**
@@ -251,74 +248,60 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
 
     The output is a numpy array containing the Fourier Transform of the input signal(s). If ``plot=True``, the function also generates a plot (or plots) illustrating the signal(s) and their frequency spectrum.
     '''
-    
-    def dft(x):
-        N = len(x)
-        X = np.zeros(N, dtype=complex)
-        for k in range(N):  # For each frequency component
-            for n in range(N):  # For each point in time
-                X[k] += x[n] * np.exp(-1j * 2 * np.pi * k * n / N)
-        return X
-    
-    # Check if signals is a single signal or multiple signals
-    is_single_signal = signals.ndim == 1
-    if is_single_signal:
-        signals = signals.reshape(1, -1)
-    
-    # Initialize the Fourier Transform result array
-    ft_result = np.zeros_like(signals, dtype=complex)
-    
-    # Perform the DFT for each signal
-    for i, signal in enumerate(signals):
-        ft_result[i] = dft(signal)
-    
-    # Calculate frequency bins
-    N = signals.shape[1]
-    freq = np.fft.fftfreq(N, d=1/sampling_rate)
-    
+
+    # Compute the Fourier Transform using NumPy's FFT
+    ft = np.fft.fft(signals, axis=0 if signals.ndim == 1 else 1)
+    freq = np.fft.fftfreq(signals.shape[-1], d=1/sampling_rate)
+
+    # Normalize the amplitudes
+    N = signals.shape[-1]
+    ft = ft / N
+
     if plot:
-        for i, ft in enumerate(ft_result):
-            if i >= max_plots:
-                break
-            
-            if plot_waveform:
-                fig = plt.figure(figsize=(10, 8))
-                gs = gridspec.GridSpec(2, 1, height_ratios=[1, 2])
-            else:
-                fig = plt.figure(figsize=(10, 6))
-                gs = gridspec.GridSpec(1, 1)
-                
-            if plot_waveform:
-                ax1 = plt.subplot(gs[0])
-                ax1.plot(signals[i], linewidth=0.75, color='k')
-                ax1.set_title('Waveform', fontsize=14, fontweight='bold')
-                ax1.set_xlabel('Samples', fontsize=12)
-                ax1.set_ylabel('Amplitude', fontsize=12)
-                ax1.set_xlim(0, len(signals[i]))
-                ax1.grid(True, alpha=0.25, axis='x', linestyle=':')
-                
-            ax2 = plt.subplot(gs[-1])
-            amplitudes = 2 / N * np.abs(ft)[:N // 2]
-            if log_scale:
-                ax2.loglog(freq[:N//2], amplitudes[:N//2], color='black', linewidth=0.75)
-            else:
-                ax2.plot(freq[:N//2], amplitudes[:N//2], color='black', linewidth=0.75)
-            ax2.set_title('Fourier Transform', fontsize=14, fontweight='bold')
-            ax2.set_xlabel('Frequency [Hz]', fontsize=12)
-            ax2.set_ylabel('Amplitude', fontsize=12)
-            ax2.grid(True, alpha=0.25, which='both', linestyle=':')
-            
-            plt.tight_layout()
-            if save_figure:
-                os.makedirs('./seismutils_figures', exist_ok=True)
-                fig_name = os.path.join('./seismutils_figures', f'{save_name}_{i+1}.{save_extension}')
-                plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
-            plt.show()
+        # Plot setup
+        if plot_waveform:
+            fig, axs = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [1, 2]})
+        else:
+            fig, axs = plt.subplots(1, 1, figsize=(10, 6))
+            axs = [axs]  # Make it iterable for the upcoming loop
 
-    return ft
+        # Plot the waveform
+        if plot_waveform:
+            axs[0].plot(signals[0] if signals.ndim > 1 else signals, linewidth=0.75, color='k')
+            axs[0].set_title('Waveform', fontsize=14, fontweight='bold')
+            axs[0].set_xlabel('Samples', fontsize=12)
+            axs[0].set_ylabel('Amplitude', fontsize=12)
+            axs[0].set_xlim(0, len(signals))
+            axs[0].grid(True, alpha=0.25, linestyle=':')
 
-def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, noverlap: float=None, log_scale: bool=False, zero_padding_factor: int=8, return_data: bool=False,
-                plot_waveform: bool=True, max_plots: int=10, colorbar: bool=False, cmap: str='jet', save_figure: bool=False, save_name: str='spectrogram', save_extension: str='jpg'):
+        # Plot the Fourier Transform
+        ax = axs[-1]
+        half_point = N // 2
+        freq = freq[:half_point]
+        amplitude_spectrum = np.abs(ft)[:half_point] * 2  # Multiply by 2 to account for symmetrical nature of FFT output
+
+        if log_scale:
+            ax.semilogy(freq, amplitude_spectrum, color='black', linewidth=0.75)
+        else:
+            ax.plot(freq, amplitude_spectrum, color='black', linewidth=0.75)
+
+        ax.set_title('Fourier Transform', fontsize=14, fontweight='bold')
+        ax.set_xlabel('Frequency [Hz]', fontsize=12)
+        ax.set_ylabel('Amplitude', fontsize=12)
+        ax.grid(True, alpha=0.25, which='both', linestyle=':')
+
+        plt.tight_layout()
+        if save_figure:
+            os.makedirs('./seismutils_figures', exist_ok=True)
+            fig_name = f'./seismutils_figures/{save_name}.{save_extension}'
+            plt.savefig(fig_name, dpi=300, bbox_inches='tight')
+
+        plt.show()
+    
+    # Return only the first half of the FFT result, which is the positive frequency components
+    return ft[:half_point]
+
+def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, noverlap: float=None, log_scale: bool=False, zero_padding_factor: int=8, return_data: bool=False, plot_waveform: bool=True, max_plots: int=10, colorbar: bool=False, cmap: str='jet', save_figure: bool=False, save_name: str='spectrogram', save_extension: str='jpg'):
     '''
     Generates and optionally plots spectrograms for provided signals, with an option to display the waveform.
 
@@ -407,39 +390,38 @@ def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, nover
             spectrogram = 10 * np.log10(spectrogram)
             vmin, vmax = np.percentile(spectrogram, [5, 95])
         else:
-            spectrogram = np.sqrt(spectrogram)
+            spectrogram = np.sqrt(spectrogram)*2
             vmin, vmax = np.min(spectrogram), np.max(spectrogram)
 
         spectrogram_data.append((spectrogram, frequencies, times))
 
         # Plot configuration
-        if plot_waveform:
-            fig = plt.figure(figsize=(10, 8))
-            gs = gridspec.GridSpec(2, 1, height_ratios=[1, 3], hspace=0.2)
+        fig = plt.figure(figsize=(10, 7))  # Adjust the figure size as needed
+        gs = gridspec.GridSpec(2, 2, width_ratios=[25, 1], height_ratios=[1, 3], wspace=0.05, hspace=0.2)
 
-            # Plot the waveform
-            ax1 = fig.add_subplot(gs[0])
-            ax1.plot(time, signal, color='k', linewidth=0.75)
-            ax1.set_title('Waveform' if len(signals) == 1 else f'Waveform {i+1}', fontsize=14, fontweight='bold')
-            ax1.set_ylabel('Amplitude', fontsize=12)
-            ax1.set_xlim(0, round(time[-1]))
-            ax1.grid(True, alpha=0.25, axis='x', linestyle=':')
-            ax1.set_xticklabels([])
+        # Plot the waveform
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax1.plot(time, signal, color='k', linewidth=0.75)
+        ax1.set_title('Waveform' if len(signals) == 1 else f'Waveform {i+1}', fontsize=14, fontweight='bold')
+        ax1.set_ylabel('Amplitude', fontsize=12)
+        ax1.set_xlim(0, round(time[-1]))
+        ax1.grid(True, alpha=0.25, axis='x', linestyle=':')
+        ax1.set_xticklabels([])
 
-            # Plot the spectrogram
-            ax2 = fig.add_subplot(gs[1])
-        else:
-            fig, ax2 = plt.subplots(figsize=(10, 5))
-
+        # Plot the spectrogram
+        ax2 = fig.add_subplot(gs[1, 0])
         pcm = ax2.pcolormesh(times, frequencies, spectrogram, shading='gouraud', norm=Normalize(vmin, vmax), cmap=cmap)
         ax2.set_title('Spectrogram' if len(signals) == 1 else f'Spectrogram {i+1}', fontsize=14, fontweight='bold')
         ax2.set_ylabel('Frequency [Hz]', fontsize=12)
         ax2.set_xlabel('Time [s]', fontsize=12)
         ax2.set_xlim(0, round(time[-1]))
 
+        # Colorbar setup
         if colorbar:
-            cbar = plt.colorbar(pcm, ax=ax2, pad=0.01)
-            cbar.set_label('Log Amplitude [dB]' if log_scale else 'Amplitude', fontsize=12)
+            # Create an axis for colorbar. It spans all rows but is in the second column.
+            cax = fig.add_subplot(gs[1, -1])
+            cbar = plt.colorbar(pcm, cax=cax)
+            cbar.set_label('Power spectral density [dB]' if log_scale else 'Amplitude', fontsize=12)
             cbar.ax.tick_params(labelsize=12)
 
         if save_figure:
