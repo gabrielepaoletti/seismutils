@@ -386,6 +386,13 @@ def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[i
     :return: Depending on `return_indices`, either the indices of selected points or a DataFrame containing the selected subset.
     :rtype: List[int] or pd.DataFrame
 
+    **Parameter details**
+    
+    - ``shape_type``: This parameter, combined with the ``size`` tuple, defines the selection shape. 
+        - ``'circle'``: Use a tuple with equal values (e.g., ``(radius, radius)``) for a circular selection.
+        - ``'square'``: A tuple with equal values specifies a square (functionally identical to a circle in terms of selection criteria due to equal dimensions).
+        - For an oval or rectangle, provide a tuple with two different values (e.g., ``(width, height)``), which creates an elliptical or rectangular selection area when ``shape_type``, respectively.
+
     **Usage example**
 
     .. code-block:: python
@@ -524,6 +531,13 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
     :return: Depending on `return_indices`, either the indices of selected points or a DataFrame containing the selected subset.
     :rtype: List[int] or pd.DataFrame
 
+    **Parameter details**
+    
+    - ``shape_type``: This parameter, combined with the ``size`` tuple, defines the selection shape. 
+        - ``'circle'``: Use a tuple with equal values (e.g., ``(radius, radius)``) for a circular selection.
+        - ``'square'``: A tuple with equal values specifies a square (functionally identical to a circle in terms of selection criteria due to equal dimensions).
+        - For an oval or rectangle, provide a tuple with two different values (e.g., ``(width, height)``), which creates an elliptical or rectangular selection area when ``shape_type``, respectively.
+    
     **Usage example**
 
     .. code-block:: python
