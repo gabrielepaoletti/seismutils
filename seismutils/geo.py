@@ -208,10 +208,10 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
         return center_x + section_centers * np.cos(angle_rad), center_y + section_centers * np.sin(angle_rad)
     
     # Make sure all the depths are positive values
-    data['depth'] = np.abs(data['depth'])
+    data.depth = np.abs(data.depth)
 
     # Convert earthquake data and center to UTM coordinates
-    utmx, utmy = convert_to_utm(data['lon'], data['lat'], zone=zone, units='km', ellps='WGS84', datum='WGS84' )
+    utmx, utmy = convert_to_utm(data.lon, data.lat, zone=zone, units='km', ellps='WGS84', datum='WGS84' )
     center_utmx, center_utmy = convert_to_utm(center[0], center[1], zone=zone, units='km', ellps='WGS84', datum='WGS84')
     
     # Set normal vector for the section based on the provided orientation
@@ -252,7 +252,6 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
             plt.gca().yaxis.set_major_formatter('{x:.0f}')
             plt.gca().yaxis.set_minor_locator(MultipleLocator(np.abs(depth_range).max()/10))
             
-            plt.gca().set_aspect('equal')
             plt.xlabel('Distance along strike [km]', fontsize=12)
             plt.ylabel('Depth [km]', fontsize=12)
             plt.xlim(-map_length, map_length)
@@ -262,6 +261,10 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
                 os.makedirs('./seismutils_figures', exist_ok=True)
                 fig_name = os.path.join('./seismutils_figures', f'{save_name}_{section+1}.{save_extension}')
                 plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
+            
+            plt.gca().set_facecolor('#F0F0F0')
+            plt.gca().set_aspect('equal')
+            plt.grid(True, alpha=0.25, linestyle=':')
             
             plt.show()
         
@@ -348,91 +351,69 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
     
     return data_filtered
 
-def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=False, save_figure: bool=False, save_name: str='selection', save_extension: str='jpg', return_indices: bool=False):
+def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, zone: int, units: str, plot: bool=True, buffer_multiplier: int=10, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_map', save_extension: str='jpg', return_indices: bool=False):
     '''
-    Selects a subset of data points that fall within a specified geometric shape, which is defined by its center, size, and rotation. This function can handle shapes like circles, ovals, and rectangles. It offers options to plot the selected points and return the subset as either indices or a DataFrame.
+    Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
 
-    This utility is particularly useful in spatial data analysis, where isolating data points within specific geometric boundaries can provide insights into patterns or distributions relative to a defined area of interest.
-
-    :param data: DataFrame containing the dataset from which to select points.
+    :param data: DataFrame containing seismic event data, expected to include 'lon' and 'lat' columns among others.
     :type data: pd.DataFrame
-    :param coords: A pair of Series representing the x (longitude) and y (latitude) coordinates of the data points.
-    :type coords: Tuple[pd.Series, pd.Series]
-    :param center: The (x, y) coordinates representing the center of the geometric shape.
+    :param center: Geographic coordinates (longitude, latitude) of the geometric shape's center.
     :type center: Tuple[float, float]
-    :param size: Dimensions of the geometric shape (width, height) for rectangles and ovals, or radius for circles.
+    :param size: Dimensions of the geometric shape (radius for circles, width and height for squares).
     :type size: Tuple[int, int]
-    :param rotation: The rotation angle of the shape in degrees, counter-clockwise from the x-axis.
+    :param rotation: The rotation angle of the shape in degrees, counter-clockwise from North.
     :type rotation: int
-    :param shape_type: The type of geometric shape ('circle', 'oval', 'rectangle').
+    :param shape_type: Specifies the geometric shape used for selection ('circle', 'square').
     :type shape_type: str
-    :param plot: If True, plots the original dataset points and the selected subset.
+    :param zone: UTM zone for converting geographic coordinates to UTM coordinates.
+    :type zone: int
+    :param units: Measurement units for the UTM coordinates ('m' for meters, 'km' for kilometers).
+    :type units: str
+    :param plot: If True, plots the original dataset points and the selected subset on the map.
     :type plot: bool, optional
+    :param buffer_multiplier: Factor to determine the plot's buffer area around the selected points.
+    :type buffer_multiplier: int, optional
+    :param plot_center: If True and `plot` is also True, marks the center of the selection shape on the plot.
+    :type plot_center: bool, optional
+    :param save_figure: If True, saves the generated plot to a file.
+    :type save_figure: bool, optional
+    :param save_name: Filename for the saved figure, without the extension.
+    :type save_name: str, optional
+    :param save_extension: File extension for the saved figure (e.g., 'jpg', 'png').
+    :type save_extension: str, optional
     :param return_indices: If True, returns the indices of the selected points; otherwise, returns a subset DataFrame.
     :type return_indices: bool, optional
-    :param save_figure: If True, saves the generated plots in a directory.
-    :type save_figure: bool, optional
-    :param save_name: Name under which the figure will be saved. Default ``'selection'``
-    :type save_name: str, optional
-    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
-    :type save_extension: str, optional
-    :return: Indices of selected points or a DataFrame containing the selected subset, based on the return_indices parameter.
+    :return: Depending on `return_indices`, either the indices of selected points or a DataFrame containing the selected subset.
     :rtype: List[int] or pd.DataFrame
 
-    **Parameter details**
-
-    - ``shape_type``: This parameter defines the geometric shape for data selection, with the following options:
-        - ``'circle'``: Selects data within a circular area centered at the specified coordinates. The ``size`` parameter represents the radius of the circle.
-        - ``'oval'``: Selects data within an elliptical (oval) area. Requires the ``size`` parameter to specify both the major (width) and minor (height) axes of the ellipse.
-        - ``'rectangle'``: Selects data within a rectangular area. The ``size`` parameter should define the rectangle's width and height.
-
-    The choice of shape affects how the ``size`` and ``rotation`` parameters are interpreted, allowing for flexible data selection strategies based on geometric considerations.
-    
     **Usage example**
 
-    In the following example, we first use the :func:`cross_sections` function to isolate a subset of earthquake events based on their spatial relationship to a defined geological structure, preparing a targeted subset from which we then select a specific cluster of events visible on a section.
-    
     .. code-block:: python
 
         import seismutils.geo as sug
 
-        # Assume that data is a pd.DataFrame formatted in the following way:
-        # index | lat | lon | depth | local_magnitude | momentum_magnitude | ID | time
-
-        # Creating a subset from a cross-section
-        subset = sug.cross_sections(
-            data=data,
-            center=(13.12131, 42.83603),
-            num_sections=(0,0),
-            event_distance_from_section=3,
-            strike=155,
-            map_length=15,
-            depth_range=(-10, 0),
-            zone=33,
-            plot=False
-        )
+        # Assuming data is a pd.DataFrame containing 'lon' and 'lat' columns
         
-        # Select the the cluster we are interested in
-        selection = sug.select(
-            data=subset[0], # Using [0] because sug.cross_sections() returns List[pd.DataFrame]
-            coords=(data['lon'], data['depth']),
-            center=(10.2, 7.2),
-            size=(0.6, 1.1),
-            rotation=160,
-            shape_type='oval',
-            plot=True
+        selection = select_on_map(
+            data=data,
+            center=(42.833550, 13.114270),
+            shape_type='circle',
+            size=(3, 3),
+            rotation=0,
+            zone=33,
+            units='km',
+            plot=True,
+            buffer_multiplier=15
         )
-
-    .. image:: https://imgur.com/GmxrUlA.png
+    
+    .. image:: https://imgur.com/xScpkfu.png
        :align: center
        :target: data_querying_and_selection.html#seismutils.geo.select
     
     The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
-    
-    .. note::
-        Due to the complexity of using this function, especially in the context of spatial data analysis and geometric selection, it is highly recommended for users to consult a full tutorial. This guide would cover the specifics of data preparation, parameter tuning, and result interpretation, ensuring users can effectively apply this function to their datasets.
     '''
     def rotate_point(point, center, angle):
+        # Rotate a point around a given center by an angle
         angle_rad = np.deg2rad(angle)
         ox, oy = center
         px, py = point
@@ -440,59 +421,200 @@ def select(data: pd.DataFrame, coords: Tuple[pd.Series, pd.Series], center: Tupl
         qx = ox + np.cos(angle_rad) * (px - ox) - np.sin(angle_rad) * (py - oy)
         qy = oy + np.sin(angle_rad) * (px - ox) + np.cos(angle_rad) * (py - oy)
         return qx, qy
-
+    
+    # Convert geographic coordinates to UTM (Placeholder logic)
+    utm_x_coords, utm_y_coords = convert_to_utm(data.lon, data.lat, zone, units=units)
+    utm_x_center, utm_y_center = convert_to_utm([center[0]], [center[1]], zone, units=units)
+    center = (utm_x_center[0], utm_y_center[0])
+    coords = (pd.Series(utm_x_coords, name='utm_x'), pd.Series(utm_y_coords, name='utm_y'))
+    
     selected_indices = []
     x_coords, y_coords = coords
     for index in range(len(x_coords)):
-        point = (x_coords[index], y_coords[index])
+        point = (x_coords.iloc[index], y_coords.iloc[index])
         rotated_point = rotate_point(point, center, -rotation)
 
         if shape_type == 'circle':
-            radius = size
-            if np.hypot(rotated_point[0] - center[0], rotated_point[1] - center[1]) <= radius:
-                selected_indices.append(index)
-        
-        elif shape_type == 'oval':
             rx, ry = size
             if ((rotated_point[0] - center[0])/rx)**2 + ((rotated_point[1] - center[1])/ry)**2 <= 1:
                 selected_indices.append(index)
         
-        elif shape_type == 'rectangle':
+        elif shape_type == 'square':
             width, height = size
             if (center[0] - width/2 <= rotated_point[0] <= center[0] + width/2 and
                     center[1] - height/2 <= rotated_point[1] <= center[1] + height/2):
                 selected_indices.append(index)
 
+    # Plotting logic
     if plot:
-        fig = plt.figure(figsize=(15, 7))
+        # Determina il valore maggiore tra larghezza e altezza della selezione
+        max_dimension = max(size) * buffer_multiplier
+
+        # Calcola i limiti intorno al centro utilizzando il valore maggiore
+        xlim = (center[0] - max_dimension / 2, center[0] + max_dimension / 2)
+        ylim = (center[1] - max_dimension / 2, center[1] + max_dimension / 2)
+
+        fig, ax = plt.subplots(figsize=(10, 10))
+        scatter_plot = ax.scatter(x_coords, y_coords, marker='.', c='grey', s=0.2, alpha=0.75)
+        ax.scatter(x_coords.iloc[selected_indices], y_coords.iloc[selected_indices], marker='.', color='red', s=0.25, alpha=0.75)
+        
+        if plot_center:
+            ax.scatter(center[0], center[1], marker='o', color='red', edgecolor='black', linewidth=0.5,  s=buffer_multiplier*10)
+
+        # Applica i limiti calcolati
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+
+        ax.set_aspect('equal', adjustable='box')
         plt.title(f'Selection', fontsize=14, fontweight='bold')
-        
-        plt.scatter(coords[0], coords[1] if coords[1].name != 'depth' else -coords[1], marker='.', color='grey', s=0.25, alpha=0.75)
-        plt.scatter(coords[0].iloc[selected_indices], coords[1].iloc[selected_indices] if coords[1].name != 'depth' else -coords[1].iloc[selected_indices], marker='.', color='blue', s=0.25, alpha=0.75)
-      
+        plt.xlabel('UTM X [km]', fontsize=12)
+        plt.ylabel('UTM Y [km]', fontsize=12)
+
         # Format plot axis
-        plt.gca().xaxis.set_major_locator(MultipleLocator(round(np.abs(coords[0]).max())/5))
-        plt.gca().xaxis.set_major_formatter('{x:.0f}')
-        plt.gca().xaxis.set_minor_locator(MultipleLocator(round(np.abs(coords[0]).max())/10))
+        ax.xaxis.set_major_locator(MultipleLocator((max(xlim)-min(xlim))/5))
+        ax.xaxis.set_major_formatter('{x:.0f}')
+        ax.xaxis.set_minor_locator(MultipleLocator(((max(xlim)-min(xlim))/10)))
         
-        plt.gca().yaxis.set_major_locator(MultipleLocator(round(np.abs(coords[1]).max())/5))
-        plt.gca().yaxis.set_major_formatter('{x:.0f}')
-        plt.gca().yaxis.set_minor_locator(MultipleLocator(round(np.abs(coords[1]).max())/10))
-      
-        plt.gca().set_aspect('equal')
-        plt.xlabel(f'{coords[0].name}', fontsize=12)
-        plt.ylabel(f'{coords[1].name}', fontsize=12)
-        plt.xlim(round(coords[0].min()), round(coords[0].max()))
-        plt.ylim(round(coords[1].max()) if coords[1].name != 'depth' else -round(coords[1].max()), round(coords[1].min()) if coords[1].name != 'depth' else -round(coords[1].min()))
+        ax.yaxis.set_major_locator(MultipleLocator(((max(ylim)-min(ylim))/5)))
+        ax.yaxis.set_major_formatter('{x:.0f}')
+        ax.yaxis.set_minor_locator(MultipleLocator(((max(ylim)-min(ylim))/10)))
         
+        ax.set_facecolor('#F0F0F0')
+        plt.grid(True, alpha=0.25, linestyle=':')
+
         if save_figure:
             os.makedirs('./seismutils_figures', exist_ok=True)
             fig_name = os.path.join('./seismutils_figures', f'{save_name}.{save_extension}')
-            plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
+            plt.savefig(fig_name, dpi=300, bbox_inches='tight')
+        
+        plt.tight_layout()
+        plt.show()
+
+    if return_indices:
+        return selected_indices
+    else:
+        return data.iloc[selected_indices].reset_index(drop=True)
+
+def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=True, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_section', save_extension: str='jpg', return_indices: bool=False):
+    '''
+    Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a cross-section. The selection is based on the shape's center, size, and orientation, providing a focused analysis on specific areas of interest within the seismic data.
+
+    :param data: DataFrame containing seismic event data, expected to include 'on_section_coords' and 'depth' columns among others.
+    :type data: pd.DataFrame
+    :param center: The (x, y) coordinates representing the center of the geometric shape on the section.
+    :type center: Tuple[float, float]
+    :param size: Dimensions of the geometric shape (radius for circles, width and height for squares).
+    :type size: Tuple[int, int]
+    :param rotation: The rotation angle of the shape in degrees, counter-clockwise from the horizontal axis of the section.
+    :type rotation: int
+    :param shape_type: Specifies the geometric shape used for selection ('circle', 'square').
+    :type shape_type: str
+    :param plot: If True, plots the original dataset points and the selected subset on the cross-section.
+    :type plot: bool, optional
+    :param plot_center: If True and `plot` is also True, marks the center of the selection shape on the plot.
+    :type plot_center: bool, optional
+    :param save_figure: If True, saves the generated plot to a file.
+    :type save_figure: bool, optional
+    :param save_name: Filename for the saved figure, without the extension.
+    :type save_name: str, optional
+    :param save_extension: File extension for the saved figure (e.g., 'jpg', 'png').
+    :type save_extension: str, optional
+    :param return_indices: If True, returns the indices of the selected points; otherwise, returns a subset DataFrame.
+    :type return_indices: bool, optional
+    :return: Depending on `return_indices`, either the indices of selected points or a DataFrame containing the selected subset.
+    :rtype: List[int] or pd.DataFrame
+
+    **Usage example**
+
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        # Assuming data is a pd.DataFrame containing 'on_section_coords' and 'depth' columns
+        # This dataframes can be obtained in output from the cross_sections() function
+        
+        selection = sug.select_on_section(
+            data=subset,
+            center=(10.2, 7.2),
+            size=(0.6, 1.1),
+            rotation=160,
+            shape_type='circle',
+            plot=True,
+            plot_center=True
+        )
+        
+    .. image:: https://imgur.com/Q1OL1o0.png
+       :align: center
+       :target: data_querying_and_selection.html#seismutils.geo.select
+    
+    The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
+    '''
+    def rotate_point(point, center, angle):
+        # Rotate a point around a given center by an angle
+        angle_rad = np.deg2rad(angle)
+        ox, oy = center
+        px, py = point
+
+        qx = ox + np.cos(angle_rad) * (px - ox) - np.sin(angle_rad) * (py - oy)
+        qy = oy + np.sin(angle_rad) * (px - ox) + np.cos(angle_rad) * (py - oy)
+        return qx, qy
+    
+    coords = (data.on_section_coords, np.abs(data.depth))
+    
+    selected_indices = []
+    x_coords, y_coords = coords
+    for index in range(len(x_coords)):
+        point = (x_coords.iloc[index], y_coords.iloc[index])
+        rotated_point = rotate_point(point, center, -rotation)
+        
+        if shape_type == 'circle':
+            rx, ry = size
+            if ((rotated_point[0] - center[0])/rx)**2 + ((rotated_point[1] - center[1])/ry)**2 <= 1:
+                selected_indices.append(index)
+        
+        elif shape_type == 'square':
+            width, height = size
+            if (center[0] - width/2 <= rotated_point[0] <= center[0] + width/2 and
+                    center[1] - height/2 <= rotated_point[1] <= center[1] + height/2):
+                selected_indices.append(index)
+
+    # Plotting logic
+    if plot:
+        fig, ax = plt.subplots(figsize=(15, 7))
+        ax.scatter(x_coords, y_coords, marker='.', color='grey', s=0.25, alpha=0.75)
+        ax.scatter(x_coords.iloc[selected_indices], y_coords.iloc[selected_indices], marker='.', color='red', s=0.25, alpha=0.75)
+        
+        if plot_center:
+            ax.scatter(center[0], center[1], marker='o', color='red', edgecolor='black', linewidth=0.5,  s=150)
+        
+        plt.title(f'Selection', fontsize=14, fontweight='bold')
+        plt.xlabel('Distance from center [km]', fontsize=12)
+        plt.ylabel('Depth [km]', fontsize=12)
+        plt.xlim(round(data['on_section_coords'].min()), round(data['on_section_coords'].max()))
+        plt.ylim(round(data['depth'].min()), round(data['depth'].max()))
+
+        # Format plot axis
+        ax.xaxis.set_major_locator(MultipleLocator(round(x_coords.max())/5))
+        ax.xaxis.set_major_formatter('{x:.0f}')
+        ax.xaxis.set_minor_locator(MultipleLocator(round(x_coords.max())/10))
+        
+        ax.yaxis.set_major_locator(MultipleLocator(round(y_coords.max())/5))
+        ax.yaxis.set_major_formatter('{x:.0f}')
+        ax.yaxis.set_minor_locator(MultipleLocator(round(y_coords.max())/10))
+        
+        ax.invert_yaxis()
+        ax.set_facecolor('#F0F0F0')
+        ax.set_aspect('equal', adjustable='box')
+        plt.grid(True, alpha=0.25, linestyle=':')
+
+        if save_figure:
+            os.makedirs('./seismutils_figures', exist_ok=True)
+            fig_name = os.path.join('./seismutils_figures', f'{save_name}.{save_extension}')
+            plt.savefig(fig_name, dpi=300, bbox_inches='tight')
         
         plt.show()
-    
-    if return_indices:  
+
+    if return_indices:
         return selected_indices
     else:
         return data.iloc[selected_indices].reset_index(drop=True)
