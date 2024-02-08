@@ -224,7 +224,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
     :type save_name: str
     :param save_extension: File extension for the saved plot images (e.g., 'jpg', 'png'). Defaults to 'jpg'.
     :type save_extension: str
-    :return: The Fourier Transform result up to the Nyquist frequency, providing the positive frequency components of the signal(s).
+    :return: The Fourier Transform result up to the Nyquist frequency, providing the positive frequency components of the signal(s) and frequency bins.
     :rtype: np.ndarray
 
     **Usage example**
@@ -255,7 +255,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
     multiple_waveforms = signals.shape[0] > 1
 
     # Initialize a list to hold Fourier Transform results
-    ft_results = []
+    ft_results, freqs = [], []
 
     for index, signal in enumerate(signals):
         # Limit plotting to max_plots
@@ -268,6 +268,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
         N = signal.size
         ft = ft / N  # Normalize the amplitudes
         ft_results.append(ft[:N // 2])  # Store positive frequency components
+        freqs.append(freq)
 
         if plot:
             # Plot setup
@@ -314,7 +315,7 @@ def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, p
 
             plt.show()
 
-    return np.array(ft_results) if multiple_waveforms else ft_results[0]
+    return np.array(ft_results), np.array(freqs) if multiple_waveforms else ft_results[0], freqs[0]
 
 def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, noverlap: float=None, log_scale: bool=False, zero_padding_factor: int=8, return_data: bool=False, plot_waveform: bool=True, max_plots: int=10, colorbar: bool=False, cmap: str='jet', save_figure: bool=False, save_name: str='spectrogram', save_extension: str='jpg'):
     '''
