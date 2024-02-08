@@ -231,47 +231,48 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
         
         # Calculate distance of events from each section plane and filter by depth
         dist = distance_point_from_plane(utmx, utmy, -data['depth'], normal_ref, center_coords[section])
-        in_depth_range = (data['depth'] >= -depth_range[1]) & (data['depth'] <= -depth_range[0])
+        in_depth_range = (data['depth'] >= depth_range[0]) & (data['depth'] <= depth_range[1])
         on_section_coords =+ (utmy - center_coords[section][1]) * normal_ref[0] - (utmx - center_coords[section][0]) * normal_ref[1]
         
         close_and_in_depth = np.where((dist < event_distance_from_section) & in_depth_range & (np.abs(on_section_coords) < map_length))
         
         if plot:
             # Plot sections
-            fig = plt.figure(figsize=(15, 7))
+            fig, ax = plt.subplots(figsize=(15, 7))
             
-            plt.scatter(on_section_coords[close_and_in_depth], -data.depth.iloc[close_and_in_depth], marker='.', color='black', s=0.25, alpha=0.75)
-            plt.title(f'Section {section+1}', fontsize=14, fontweight='bold')
+            ax.scatter(on_section_coords[close_and_in_depth], data.depth.iloc[close_and_in_depth], marker='.', color='black', s=0.25, alpha=0.75)
+            ax.set_title(f'Section {section+1}', fontsize=14, fontweight='bold')
             
             # Format plot axis
-            plt.gca().xaxis.set_major_locator(MultipleLocator(map_length/5))
-            plt.gca().xaxis.set_major_formatter('{x:.0f}')
-            plt.gca().xaxis.set_minor_locator(MultipleLocator(map_length/10))
+            ax.xaxis.set_major_locator(MultipleLocator(map_length/5))
+            ax.xaxis.set_major_formatter('{x:.0f}')
+            ax.xaxis.set_minor_locator(MultipleLocator(map_length/10))
             
-            plt.gca().yaxis.set_major_locator(MultipleLocator(np.abs(depth_range).max()/5))
-            plt.gca().yaxis.set_major_formatter('{x:.0f}')
-            plt.gca().yaxis.set_minor_locator(MultipleLocator(np.abs(depth_range).max()/10))
+            ax.yaxis.set_major_locator(MultipleLocator(np.abs(depth_range).max()/5))
+            ax.yaxis.set_major_formatter('{x:.0f}')
+            ax.yaxis.set_minor_locator(MultipleLocator(np.abs(depth_range).max()/10))
             
-            plt.xlabel('Distance along strike [km]', fontsize=12)
-            plt.ylabel('Depth [km]', fontsize=12)
-            plt.xlim(-map_length, map_length)
-            plt.ylim(*depth_range)
+            ax.set_xlabel('Distance along strike [km]', fontsize=12)
+            ax.set_ylabel('Depth [km]', fontsize=12)
+            ax.set_xlim(-map_length, map_length)
+            ax.set_ylim(*depth_range)
             
             if save_figure:
                 os.makedirs('./seismutils_figures', exist_ok=True)
                 fig_name = os.path.join('./seismutils_figures', f'{save_name}_{section+1}.{save_extension}')
                 plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
             
-            plt.gca().set_facecolor('#F0F0F0')
-            plt.gca().set_aspect('equal')
-            plt.grid(True, alpha=0.25, linestyle=':')
+            ax.invert_yaxis()
+            ax.set_aspect('equal')
+            ax.set_facecolor('#F0F0F0')
+            ax.grid(True, alpha=0.25, linestyle=':')
             
             plt.show()
         
         # Add the events of this section to the list if return_dataframes is True
         if return_dataframes:
             # Add on section coordinates to the dataframe
-            section_df = data.iloc[close_and_in_depth].copy().reset_index(drop=True)
+            section_df = data.iloc[close_and_in_depth].copy()
             section_df['on_section_coords'] = on_section_coords[close_and_in_depth]
             
             # Append section dataframes to a list
@@ -500,8 +501,8 @@ def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[i
     if return_indices:
         return selected_indices
     else:
-        return data.iloc[selected_indices].reset_index(drop=True)
-
+        return data.iloc[selected_indices]
+    
 def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=True, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_section', save_extension: str='jpg', return_indices: bool=False):
     '''
     Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a cross-section. The selection is based on the shape's center, size, and orientation, providing a focused analysis on specific areas of interest within the seismic data.
@@ -631,4 +632,4 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
     if return_indices:
         return selected_indices
     else:
-        return data.iloc[selected_indices].reset_index(drop=True)
+        return data.iloc[selected_indices]
