@@ -7,42 +7,47 @@ import matplotlib.pyplot as plt
 
 from tqdm import tqdm
 from matplotlib.ticker import MultipleLocator
-from typing import Tuple
+from typing import List, Tuple
 
-def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool, units: str, ellps: str='WGS84', datum: str='WGS84'):
+def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series, 
+                            utmy: float | List[float] | np.ndarray | pd.Series, 
+                            zone: int, 
+                            northern: bool,
+                            units: str,
+                            ellps: str='WGS84',
+                            datum: str='WGS84'):
     '''
     Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
-    Notes
-    -----
-    This function is capable of handling both individual floating-point numbers and bulk data in the form of arrays or pandas Series for the UTM coordinates. When provided with array or Series inputs, it returns an array containing the converted geographical coordinates (longitude and latitude) for each set of UTM coordinates. The conversion accuracy depends on the correctness of the input parameters, including the UTM zone and the hemisphere.
+    .. note::
+	This function is capable of handling both individual floating-point numbers and bulk data in the form of lists, arrays or pandas Series for the UTM coordinates.
 
     Parameters
     ----------
-    utmx : float
+    utmx : float, list, np.ndarray, pd.Series
         The UTM x coordinate (easting).
-    utmy : float
+    utmy : float, list, np.ndarray, pd.Series
         The UTM y coordinate (northing).
     zone : int
         UTM zone number.
     northern : bool
         True if the location is in the northern hemisphere; otherwise, False.
     units : str
-        The unit of the UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers. This parameter allows the user to specify the units of the input UTM coordinates.
+        The unit of the input UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers.
     ellps : str, optional
-        The ellipsoid to use. Defaults to 'WGS84'. These parameters define the shape of the Earth (ellipsoid) for the conversion process.
+        The ellipsoid to use. Defaults to 'WGS84'. This parameter defines the shape of the Earth (ellipsoid) for the conversion process.
     datum : str, optional
         The geodetic datum to use. Defaults to 'WGS84'. This parameter defines the datum for the conversion process.
 
     Returns
     -------
     tuple(float, float)
-        A tuple containing the longitude and latitude.
+        A tuple containing longitude and latitude values.
 
     See Also
     --------
-    - ``units`` : This parameter allows the user to work with the scale most relevant to their application or dataset.
-    - ``ellps`` and ``datum`` : Specify other ellipsoids or datums as needed for specific geographic information system (GIS) applications.
+    :func:`~convert_to_utm`
+        Converts geographical (longitude and latitude) coordinates to UTM coordinates.
 
     Examples
     --------
@@ -61,9 +66,8 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
         )
 
         print(f'UTMX: {utmx}, UTMY: {utmy}')
-        >>> Latitude: 13.271772, Longitude: 38.836032
+        # Output: Latitude: 13.271772, Longitude: 38.836032
     '''
-    
     # Define the geographic and UTM CRS based on the zone and hemisphere
     utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
     geodetic_crs = pyproj.CRS('epsg:4326')
