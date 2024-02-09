@@ -8,21 +8,26 @@ Module Structure
 
 SeismUtils is structured to meet the diverse demands of seismology experts, featuring two primary submodules for enhanced functionality:
 
+.. list-table:: 
+   :widths: 25 75
+   :header-rows: 0
+
+   * - ``seismutils.geo``
+     - Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
+   * - ``seismutils.signal``
+     - Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
+
 .. toctree::
    :maxdepth: 1
-   :caption: ``seismutils.geo``
+   :caption: Geospatial Data
 
    documentation/geo/coordinate_transformations
    documentation/geo/data_querying_and_selection
    documentation/geo/seismic_visualization
 
-This sub-module is tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
-
 .. toctree::
    :maxdepth: 1
-   :caption: ``seismutils.signal``
+   :caption: Waveform Analysis
 
    documentation/signal/signal_processing
    documentation/signal/spectral_analysis
-
-This sub-module focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
