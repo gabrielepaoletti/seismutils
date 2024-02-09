@@ -1,4 +1,4 @@
-SeismUtils user guide
+User guide
 =====================
 
 This guide is an overview and explains the important features.
@@ -7,6 +7,6 @@ This guide is an overview and explains the important features.
    :maxdepth: 1
    :caption: Getting started
 
-    user_guide/introduction
-    user_guide/installation
-    user_guide/tutorials
+   user_guide/introduction
+   user_guide/installation
+   user_guide/tutorials
