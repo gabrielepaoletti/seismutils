@@ -251,7 +251,7 @@ def cross_sections(
             plot=True
         )
 
-    .. image:: https://imgur.com/a/Whd4bis.png
+    .. image:: https://i.imgur.com/wzffhZj.png
        :align: center
        :target: seismic_visualization.html#seismutils.geo.cross_section
 
