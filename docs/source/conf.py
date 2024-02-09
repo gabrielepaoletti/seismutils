@@ -71,3 +71,4 @@ html_css_files = [
 
 # Napoleon settings
 napoleon_google_docstring = False
+napoleon_numpy_docstring = True

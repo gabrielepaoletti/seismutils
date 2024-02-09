@@ -66,7 +66,7 @@ def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series,
         )
 
         print(f'UTMX: {utmx}, UTMY: {utmy}')
-        # Output: Latitude: 13.271772, Longitude: 38.836032
+        >>> Latitude: 13.271772, Longitude: 38.836032
     '''
     # Define the geographic and UTM CRS based on the zone and hemisphere
     utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
@@ -127,7 +127,7 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
         )
 
         print(f'UTM X: {utmx}, UTM Y: {utmy}')
-        # Expected output: UTM X: 350, UTM Y: 4300
+        >>> UTM X: 350, UTM Y: 4300
     '''
     # Create a pyproj Proj object for UTM conversion using the given zone and ellipsoid.
     utm_converter = pyproj.Proj(proj='utm', zone=zone, units=units, ellps=ellps, datum=datum)
