@@ -223,7 +223,7 @@ def cross_sections(
 
     Returns
     -------
-    list[pd.DataFrame] or None
+    List[pd.DataFrame] or None
         If ``return_dataframes`` is True, returns a list of DataFrames, with each DataFrame corresponding to a specific cross section containing the included earthquake events. Otherwise, returns None.
         
     See Also
@@ -419,48 +419,65 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
 
 def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, zone: int, units: str, plot: bool=True, buffer_multiplier: int=10, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_map', save_extension: str='jpg', return_indices: bool=False):
     '''
-    Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
+    Given an earthquake catalog containing latitude and longitude data, this function facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
 
-    :param data: DataFrame containing seismic event data, expected to include 'lon' and 'lat' columns among others.
-    :type data: pd.DataFrame
-    :param center: Geographic coordinates (longitude, latitude) of the geometric shape's center.
-    :type center: Tuple[float, float]
-    :param size: Dimensions of the geometric shape (radius for circles, width and height for squares).
-    :type size: Tuple[int, int]
-    :param rotation: The rotation angle of the shape in degrees, counter-clockwise from North.
-    :type rotation: int
-    :param shape_type: Specifies the geometric shape used for selection ('circle', 'square').
-    :type shape_type: str
-    :param zone: UTM zone for converting geographic coordinates to UTM coordinates.
-    :type zone: int
-    :param units: Measurement units for the UTM coordinates ('m' for meters, 'km' for kilometers).
-    :type units: str
-    :param plot: If True, plots the original dataset points and the selected subset on the map.
-    :type plot: bool, optional
-    :param buffer_multiplier: Factor to determine the plot's buffer area around the selected points.
-    :type buffer_multiplier: int, optional
-    :param plot_center: If True and `plot` is also True, marks the center of the selection shape on the plot.
-    :type plot_center: bool, optional
-    :param save_figure: If True, saves the generated plot to a file.
-    :type save_figure: bool, optional
-    :param save_name: Filename for the saved figure, without the extension.
-    :type save_name: str, optional
-    :param save_extension: File extension for the saved figure (e.g., 'jpg', 'png').
-    :type save_extension: str, optional
-    :param return_indices: If True, returns the indices of the selected points; otherwise, returns a subset DataFrame.
-    :type return_indices: bool, optional
-    :return: Depending on `return_indices`, either the indices of selected points or a DataFrame containing the selected subset.
-    :rtype: List[int] or pd.DataFrame
+    Parameters
+    ----------
+    data : pd.DataFrame
+        A DataFrame containing seismic event data, with mandatory 'lon' (longitude) and 'lat' (latitude) columns.
 
-    **Parameter details**
-    
-    - ``shape_type``: This parameter, combined with the ``size`` tuple, defines the selection shape. 
-        - ``'circle'``: Use a tuple with equal values (e.g., ``(radius, radius)``) for a circular selection.
-        - ``'square'``: A tuple with equal values specifies a square (functionally identical to a circle in terms of selection criteria due to equal dimensions).
-        - For an oval or rectangle, provide a tuple with two different values (e.g., ``(width, height)``), which creates an elliptical or rectangular selection area when ``shape_type``, respectively.
+    center : tuple(float, float)
+        The geographic coordinates (longitude, latitude) defining the center of the selection shape.
 
-    **Usage example**
+    size : tuple(int, int)
+        The dimensions of the selection shape, specified as a tuple. For a circle, both elements of the tuple should be equal, representing the radius (otherwise oval). For a square, the elements define the length of the sides (if different, rectangle). The units are determined by the ``units`` parameter.
 
+    rotation : int
+        The rotation angle of the selection shape, in degrees, measured counter-clockwise from North.
+
+    shape_type : str
+        The type of geometric shape used for the selection. Valid options are 'circle' or 'square', which define the form of the area within which seismic events will be selected.
+
+    zone : int
+        The UTM zone number that the coordinates fall into, which ranges from 1 to 60. This number helps identify the specific longitudinal band used for the UTM projection.
+
+    units : str
+        Specifies the units of the input UTM coordinates. Accepted values are 'm' for meters and 'km' for kilometers.
+
+    plot : bool, optional
+        If True, generates a plot illustrating the original dataset points alongside the subset of points that fall within the selected shape. Defaults to True, enabling visual verification of the selection.
+
+    buffer_multiplier : int, optional
+        A factor that enlarges the buffer area around the selection shape in the plot, enhancing visibility and context. The default value is 10.
+
+    plot_center : bool, optional
+        When True (and ``plot`` is also True), marks the geometric center of the selection shape on the plot, aiding in the visualization of the selection's focal point. Defaults to True.
+
+    save_figure : bool, optional
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+
+    save_name : str, optional
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'section'.
+
+    save_extension : str, optional
+        The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
+
+    return_indices : bool, optional
+        If True, the function returns the indices of the points selected within the specified shape. If False, it returns a DataFrame containing the subset of selected data points. Defaults to False.
+
+    Returns
+    -------
+    List[int] or pd.DataFrame
+        Depending on the ``return_indices`` parameter, this function returns either a list of indices corresponding to the selected points or a DataFrame containing the subset of selected data points.
+
+    This function streamlines the process of isolating specific seismic events within a predefined area on a map, supporting both analytical and visual explorations of earthquake data.
+
+    See Also
+    --------
+    select_on_section : Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
+
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.geo as sug
@@ -478,12 +495,15 @@ def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[i
             plot=True,
             buffer_multiplier=15
         )
-    
+
     .. image:: https://imgur.com/xScpkfu.png
-       :align: center
-       :target: data_querying_and_selection.html#seismutils.geo.select
-    
+        :align: center
+        :target: seismic_visualization.html#seismutils.geo.cross_section
+
     The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
+
+    .. warning::
+        The use of this function could be very complex since there are many parameters to manage at the same time. Make sure you read the full tutorial before using it.
     '''
     def rotate_point(point, center, angle):
         # Rotate a point around a given center by an angle
