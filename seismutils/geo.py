@@ -439,7 +439,7 @@ def select_on_map(
     Parameters
     ----------
     data : pd.DataFrame
-        A DataFrame containing seismic event data, with mandatory 'lon' (longitude) and 'lat' (latitude) columns.
+        A DataFrame containing seismic event data, with mandatory ``'lon'`` (longitude) and ``'lat'`` (latitude) columns.
 
     center : tuple(float, float)
         The geographic coordinates (longitude, latitude) defining the center of the selection shape.
@@ -603,12 +603,12 @@ def select_on_map(
     
 def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=True, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_section', save_extension: str='jpg', return_indices: bool=False):
     '''
-    Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data. The function supports selections within circular or square shapes, allowing for targeted analysis of events in specific areas, considering both horizontal distance and depth.
+    Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data. It supports selections within circular or square shapes, allowing for targeted analysis of events in specific areas, considering both horizontal distance and depth.
 
     Parameters
     ----------
     data : pd.DataFrame
-        A DataFrame containing seismic event data, specifically including 'on_section_coords' (horizontal distance along the section) and 'depth' (vertical distance, typically below the surface). This dataset is obtained from :func: cross_sections function.
+        A DataFrame containing seismic event data, specifically including ``'on_section_coords'`` (horizontal distance along the section) and ``'depth'`` (vertical distance, typically below the surface). This dataset is obtained from :func: `cross_sections` function.
 
     center : tuple(float, float)
         The coordinates (x, y) representing the center of the geometric shape on the section, where 'x' is the horizontal distance from the starting point of the section and 'y' is the depth.
