@@ -32,7 +32,7 @@ release = '0.3.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'numpydoc'
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -69,7 +69,5 @@ html_css_files = [
     'edit_logo_theme.js',
 ]
 
-# NumPy doc settings
-numpydoc_show_class_members = False
-numpydoc_show_inherited_class_members = True
-numpydoc_class_members_toctree = False
+# Napoleon settings
+napoleon_google_docstring = False
