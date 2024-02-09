@@ -32,7 +32,7 @@ release = '0.3.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon'
+    'numpydoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -66,9 +66,5 @@ html_logo = '_static/logos/seismutils_logo_color.png'
 
 # Ass custom CSS files
 html_css_files = [
-    'edit_logo_theme.js',
+    
 ]
-
-# Napoleon settings
-napoleon_google_docstring = False
-napoleon_numpy_docstring = True
