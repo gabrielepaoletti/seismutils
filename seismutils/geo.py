@@ -417,7 +417,22 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
     
     return data_filtered
 
-def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, zone: int, units: str, plot: bool=True, buffer_multiplier: int=10, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_map', save_extension: str='jpg', return_indices: bool=False):
+def select_on_map(
+    data: pd.DataFrame,
+    center: Tuple[float, float],
+    size: Tuple[int, int],
+    rotation: int,
+    shape_type: str,
+    zone: int,
+    units: str,
+    plot: bool=True,
+    buffer_multiplier: int=10,
+    plot_center: bool=True,
+    save_figure: bool=False,
+    save_name: str='selection_map',
+    save_extension: str='jpg',
+    return_indices: bool=False
+):
     '''
     Given an earthquake catalog containing latitude and longitude data, this function facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
 
@@ -469,8 +484,6 @@ def select_on_map(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[i
     -------
     List[int] or pd.DataFrame
         Depending on the ``return_indices`` parameter, this function returns either a list of indices corresponding to the selected points or a DataFrame containing the subset of selected data points.
-
-    This function streamlines the process of isolating specific seismic events within a predefined area on a map, supporting both analytical and visual explorations of earthquake data.
 
     See Also
     --------
