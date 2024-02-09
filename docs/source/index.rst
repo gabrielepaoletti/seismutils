@@ -3,12 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-seismutils documentation
+SeismUtils documentation
 ========================
 
-An open-source Python toolkit tailored for seismology professionals seeking to enhance their productivity and streamline their workflows.
+**Version:** v0.3.0
 
-Designed with a focus on simplicity and efficiency, it offers an intuitive suite of tools for seamless manipulation, visualization, and analysis of seismic data minimizing the complexity often associated with data processing.
+SeismUtils is an open-source Python toolkit developed specifically for the seismology research community. It aims to facilitate an efficient and streamlined approach to seismic data manipulation, visualization, and analysis. By prioritizing simplicity and effectiveness, it reduces the complexity typically associated with seismic data processing tasks.
 
 .. toctree::
    :maxdepth: 1
@@ -17,10 +17,3 @@ Designed with a focus on simplicity and efficiency, it offers an intuitive suite
    installation
    tutorial
    documentation
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
