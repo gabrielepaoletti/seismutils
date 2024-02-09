@@ -68,3 +68,8 @@ html_logo = '_static/logos/seismutils_logo_color.png'
 html_css_files = [
     'edit_logo_theme.js',
 ]
+
+# NumPy doc settings
+numpydoc_show_class_members = False
+numpydoc_show_inherited_class_members = True
+numpydoc_class_members_toctree = False
