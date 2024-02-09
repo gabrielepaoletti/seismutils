@@ -17,20 +17,17 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
    * - ``seismutils.signal``
      - Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
 
-Functions
----------
-
 .. toctree::
    :maxdepth: 1
    :caption: Geospatial Data
 
-   geo/coordinate_transformations
-   geo/data_querying_and_selection
-   geo/seismic_visualization
+   documentation/geo/coordinate_transformations
+   documentation/geo/data_querying_and_selection
+   documentation/geo/seismic_visualization
 
 .. toctree::
    :maxdepth: 1
    :caption: Waveform Analysis
 
-   signal/signal_processing
-   signal/spectral_analysis
+   documentation/signal/signal_processing
+   documentation/signal/spectral_analysis
