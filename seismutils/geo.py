@@ -27,26 +27,33 @@ def convert_to_geographical(
     Parameters
     ----------
     utmx : float or list or np.ndarray or pd.Series
-        The UTM x coordinate (easting).
+        Represents the UTM x coordinate(s) (easting), indicating the eastward-measured distance from the meridian of the UTM zone.
+
     utmy : float or list or np.ndarray or pd.Series
-        The UTM y coordinate (northing).
+        Represents the UTM y coordinate(s) (northing), indicating the northward-measured distance from the equator.
+
     zone : int
-        UTM zone number.
+        The UTM zone number that the coordinates fall into, which ranges from 1 to 60. This number helps identify the specific longitudinal band used for the UTM projection.
+
     northern : bool
-        True if the location is in the northern hemisphere; otherwise, False.
+        A boolean flag that specifies the hemisphere of the coordinates. Set to True if the coordinates are in the Northern Hemisphere, and False if they are in the Southern Hemisphere.
+
     units : str
-        The unit of the input UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers.
+        Specifies the units of the input UTM coordinates. Accepted values are 'm' for meters and 'km' for kilometers. This ensures that the conversion process accurately interprets the scale of the input coordinates.
+
     ellps : str, optional
-        The ellipsoid to use. Defaults to 'WGS84'. This parameter defines the shape of the Earth (ellipsoid) for the conversion process.
+        The ellipsoid model used for the Earth's shape in the conversion process, with 'WGS84' as the default. The choice of ellipsoid affects the accuracy of the conversion, as it defines the geometric properties of the Earth model used.
+
     datum : str, optional
-        The geodetic datum to use. Defaults to 'WGS84'. This parameter defines the datum for the conversion process.
+        The geodetic datum that specifies the coordinate system and ellipsoidal model of the Earth, for calculating geographical coordinates. The default is 'WGS84', which is a widely used global datum that provides a good balance of accuracy for global applications.
 
     Returns
     -------
     lon : float or list or np.ndarray or pd.Series
-        Longitude value(s).
+        The longitude value(s) obtained from the conversion, presented in the same format as the input coordinates.
+
     lat : float or list or np.ndarray or pd.Series
-        Latitude value(s).
+        The latitude value(s) obtained from the conversion, presented in the same format as the input coordinates.
 
     See Also
     --------
@@ -97,24 +104,31 @@ def convert_to_utm(
     Parameters
     ----------
     lon : float or list or np.ndarray or pd.Series
-        Longitude value(s).
+        The longitude value(s).
+    
     lat : float or list or np.ndarray or pd.Series
-        Latitude value(s)
+        The latitude value(s)
+        
     zone : int
-        UTM zone number.
+        The UTM zone number that the coordinates fall into, which ranges from 1 to 60. This number helps identify the specific longitudinal band used for the UTM projection.
+
+
     units : str
-        The unit of the input UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers.
+        Specifies the units of the input UTM coordinates. Accepted values are 'm' for meters and 'km' for kilometers. This ensures that the conversion process accurately interprets the scale of the input coordinates.
+
     ellps : str, optional
-        The ellipsoid to use. Defaults to 'WGS84'. This parameter defines the shape of the Earth (ellipsoid) for the conversion process.
+        The ellipsoid model used for the Earth's shape in the conversion process, with 'WGS84' as the default. The choice of ellipsoid affects the accuracy of the conversion, as it defines the geometric properties of the Earth model used.
+
     datum : str, optional
-        The geodetic datum to use. Defaults to 'WGS84'. This parameter defines the datum for the conversion process.
+        The geodetic datum that specifies the coordinate system and ellipsoidal model of the Earth, for calculating geographical coordinates. The default is 'WGS84', which is a widely used global datum that provides a good balance of accuracy for global applications.
 
     Returns
     -------
     utmx : float or list or np.ndarray or pd.Series
-        UTM x value(s).
+        The resulting UTM x coordinates (easting), indicating the distance eastward from the central meridian of the UTM zone, presented in the same format as the input coordinates.
+        
     utmy : float or list or np.ndarray or pd.Series
-        UTM y value(s).
+        The resulting UTM y coordinates (northing), indicating the distance northward from the equator, presented in the same format as the input coordinates.
 
     See Also
     --------
@@ -187,7 +201,7 @@ def cross_sections(
         A range specifying the minimum and maximum depths (in kilometers) for earthquake events to be included. This parameter filters the events by depth to focus the analysis.
 
     zone : int
-        The UTM (Universal Transverse Mercator) zone for mapping the coordinates. This is crucial for converting geographic coordinates (longitude, latitude) to UTM coordinates, facilitating distance measurements in kilometers.
+        The UTM zone number that the coordinates fall into, which ranges from 1 to 60. This number helps identify the specific longitudinal band used for the UTM projection. This is crucial for converting geographic coordinates (longitude, latitude) to UTM coordinates, facilitating distance measurements in kilometers.
 
     section_distance : int, optional
         The spacing between adjacent cross sections in kilometers, with a default value of 1 km. This determines how closely the sections are laid out across the area of interest.
