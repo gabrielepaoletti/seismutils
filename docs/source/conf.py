@@ -65,5 +65,5 @@ html_logo = '_static/logos/seismutils_logo_color.png'
 
 # Ass custom CSS files
 html_css_files = [
-    'logos.css',
+    'edit_logo_theme.js',
 ]
