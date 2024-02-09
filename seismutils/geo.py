@@ -84,34 +84,35 @@ def convert_to_utm(lon: float, lat: float, zone: int, units: str, ellps: str='WG
     Converts geographical (longitude and latitude) coordinates to UTM coordinates.
 
     .. note::
-        This function is designed to handle both individual floating-point numbers and bulk data in the form of arrays or pandas Series for the geographical coordinates. When provided with array or Series inputs, it returns an array containing the converted UTM coordinates (easting and northing) for each set of geographical coordinates.
+        This function is capable of handling both individual floating-point numbers and bulk data in the form of lists, arrays or pandas Series for the UTM coordinates.
 
-    :param lon: Longitude value(s).
-    :type lon: float
-    :param lat: Latitude value(s).
-    :type lat: float
-    :param zone: UTM zone number.
-    :type zone: int
-    :param units: The unit of the output UTM coordinates (``'m'`` for meters, ``'km'`` for kilometers).
-    :type units: str
-    :param ellps: The ellipsoid to use. Defaults to ``'WGS84'``.
-    :type ellps: str, optional
-    :param datum: The geodetic datum to use. Defaults to ``'WGS84'``.
-    :type datum: str, optional
-    :return: A tuple containing the UTM x (easting) and UTM y (northing) coordinates.
-    :rtype: tuple(float, float)
+    Parameters
+    ----------
+    lon : float, list, np.ndarray, pd.Series
+        Longitude value(s).
+    lat : float, list, np.ndarray, pd.Series
+        Latitude value(s)
+    zone : int
+        UTM zone number.
+    units : str
+        The unit of the input UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers.
+    ellps : str, optional
+        The ellipsoid to use. Defaults to 'WGS84'. This parameter defines the shape of the Earth (ellipsoid) for the conversion process.
+    datum : str, optional
+        The geodetic datum to use. Defaults to 'WGS84'. This parameter defines the datum for the conversion process.
 
-    **Parameter details**
+    Returns
+    -------
+    tuple(float, float)
+        A tuple containing UTM x and UTM y value(s).
 
-    - ``units``: Allows specifying the units for the output UTM coordinates. Supporting both meters ``'m'`` and kilometers ``'km'``, this parameter provides flexibility for various application scales.
+    See Also
+    --------
+    :func:`~convert_to_geographical`
+        Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
-    - ``ellps`` and ``datum``: Define the Earth's shape (ellipsoid) and the reference datum for the conversion. The default ``'WGS84'`` is commonly used, but alternative specifications can be used for different GIS needs.
-
-    .. note::
-        Conversion accuracy is influenced by the accuracy of the input longitude and latitude, as well as the chosen UTM zone,.
-
-    **Usage example**
-
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.geo as sug
