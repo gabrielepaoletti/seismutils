@@ -14,5 +14,5 @@ SeismUtils is an open-source Python toolkit developed specifically for the seism
    :maxdepth: 1
    :caption: Getting started
 
-   documentation
+   api_reference
    user_guide
