@@ -12,8 +12,8 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
    :widths: 25 75
    :header-rows: 0
 
-   * - ``seismutils.geo``
+   * - :ref:`seismutils.geo <seismutils-geo-doc>`
      - Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
-   * - ``seismutils.signal``
+   * - :ref:`seismutils.signal <seismutils-signal-doc>`
      - Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
 
