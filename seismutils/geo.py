@@ -16,11 +16,11 @@ def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series,
                             units: str,
                             ellps: str='WGS84',
                             datum: str='WGS84'):
-    """
+    '''
     Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
-    This function is capable of handling both individual floating-point numbers and
-    bulk data in the form of lists, arrays, or pandas Series for the UTM coordinates.
+    .. note::
+        This function is capable of handling both individual floating-point numbers and bulk data in the form of lists, arrays, or pandas Series for the UTM coordinates.
 
     Parameters
     ----------
@@ -41,10 +41,10 @@ def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series,
 
     Returns
     -------
-    longitude : float
-        Longitude of the geographical coordinate.
-    latitude : float
-        Latitude of the geographical coordinate.
+    lon : float or list or np.ndarray or pd.Series
+        Longitude value(s).
+    lat : float or list or np.ndarray or pd.Series
+        Latitude value(s).
 
     See Also
     --------
@@ -52,12 +52,88 @@ def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series,
 
     Examples
     --------
-    >>> import seismutils.geo as sug
-    >>> utmx, utmy = 350, 4300  # UTM coordinates
-    >>> lon, lat = sug.convert_to_geographical(utmx=utmx, utmy=utmy, zone=33, northern=True, units='km')
-    >>> print(f'Longitude: {lon}, Latitude: {lat}')
-    Longitude: 13.271772, Latitude: 38.836032
-    """
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        utmx, utmy = 350, 4300  # UTM coordinates
+        
+        lon, lat = sug.convert_to_geographical(
+            utmx=utmx,
+            utmy=utmy,
+            zone=33,
+            northern=True,
+            units='km',
+        )
+        >>> 'Latitude: 13.271772, Longitude: 38.836032'
+    '''
+    # Define the geographic and UTM CRS based on the zone and hemisphere
+    utm_crs = pyproj.CRS(f'+proj=utm +zone={zone} +{"+north" if northern else "+south"} +ellps={ellps} +datum={datum} +units={units}')
+    geodetic_crs = pyproj.CRS('epsg:4326')
+    
+    # Create a Transformer object to convert between CRSs
+    transformer = pyproj.Transformer.from_crs(utm_crs, geodetic_crs, always_xy=True)
+    
+    # Transform the coordinates
+    lon, lat = transformer.transform(utmx, utmy)
+    return lon, lat
+
+def convert_to_utm(lon: float | List[float] | np.ndarray | pd.Series,
+                   lat: float | List[float] | np.ndarray | pd.Series,
+                   zone: int,
+                   units: str,
+                   ellps: str='WGS84',
+                   datum: str='WGS84'):
+    '''
+    Converts geographical (longitude and latitude) coordinates to UTM coordinates.
+
+    .. note::
+        This function is capable of handling both individual floating-point numbers and bulk data in the form of lists, arrays or pandas Series for the UTM coordinates.
+
+    Parameters
+    ----------
+    lon : float or list or np.ndarray or pd.Series
+        Longitude value(s).
+    lat : float or list or np.ndarray or pd.Series
+        Latitude value(s)
+    zone : int
+        UTM zone number.
+    units : str
+        The unit of the input UTM coordinates. Acceptable values are 'm' for meters and 'km' for kilometers.
+    ellps : str, optional
+        The ellipsoid to use. Defaults to 'WGS84'. This parameter defines the shape of the Earth (ellipsoid) for the conversion process.
+    datum : str, optional
+        The geodetic datum to use. Defaults to 'WGS84'. This parameter defines the datum for the conversion process.
+
+    Returns
+    -------
+    utmx : float or list or np.ndarray or pd.Series
+        UTM x value(s).
+    utmy : float or list or np.ndarray or pd.Series
+        UTM y value(s).
+
+    See Also
+    --------
+    convert_to_geographical : Converts UTM coordinates to geographical (longitude and latitude) coordinates.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import seismutils.geo as sug
+
+        lon, lat = 13.271772, 38.836032  # Geographical coordinates
+
+        utmx, utmy = sug.convert_to_utm(
+            lon=lon,
+            lat=lat,
+            zone=33,
+            units='km'
+        )
+
+        print(f'UTM X: {utmx}, UTM Y: {utmy}')
+        >>> 'UTM X: 350, UTM Y: 4300'
+    '''
     # Create a pyproj Proj object for UTM conversion using the given zone and ellipsoid.
     utm_converter = pyproj.Proj(proj='utm', zone=zone, units=units, ellps=ellps, datum=datum)
 

@@ -35,6 +35,10 @@ extensions = [
     'numpydoc'
 ]
 
+# The default setting is 'signature', but you can change it to 'none'
+# to suppress the type hints in the documentation.
+autodoc_typehints = 'none'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
