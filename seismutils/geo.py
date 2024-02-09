@@ -9,13 +9,15 @@ from tqdm import tqdm
 from matplotlib.ticker import MultipleLocator
 from typing import List, Tuple
 
-def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series, 
-                            utmy: float | List[float] | np.ndarray | pd.Series, 
-                            zone: int, 
-                            northern: bool,
-                            units: str,
-                            ellps: str='WGS84',
-                            datum: str='WGS84'):
+def convert_to_geographical(
+    utmx: float | List[float] | np.ndarray | pd.Series, 
+    utmy: float | List[float] | np.ndarray | pd.Series, 
+    zone: int, 
+    northern: bool,
+    units: str,
+    ellps: str='WGS84',
+    datum: str='WGS84'
+):
     '''
     Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
@@ -78,12 +80,14 @@ def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series,
     lon, lat = transformer.transform(utmx, utmy)
     return lon, lat
 
-def convert_to_utm(lon: float | List[float] | np.ndarray | pd.Series,
-                   lat: float | List[float] | np.ndarray | pd.Series,
-                   zone: int,
-                   units: str,
-                   ellps: str='WGS84',
-                   datum: str='WGS84'):
+def convert_to_utm(
+    lon: float | List[float] | np.ndarray | pd.Series,
+    lat: float | List[float] | np.ndarray | pd.Series,
+    zone: int,
+    units: str,
+    ellps: str='WGS84',
+    datum: str='WGS84'
+):
     '''
     Converts geographical (longitude and latitude) coordinates to UTM coordinates.
 
@@ -141,45 +145,79 @@ def convert_to_utm(lon: float | List[float] | np.ndarray | pd.Series,
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections: Tuple[int, int], event_distance_from_section: int, strike: int, map_length: int, depth_range: Tuple[float, float], zone: int,section_distance: int=1, plot: bool=False, save_figure: bool=False, save_name: str='section', save_extension: str='jpg', return_dataframes: bool=True):
+def cross_sections(
+    data: pd.DataFrame,
+    center: Tuple[float, float],
+    num_sections: Tuple[int, int],
+    event_distance_from_section: int,
+    strike: int,
+    map_length: int,
+    depth_range: Tuple[float, float],
+    zone: int,section_distance: int=1,
+    plot: bool=True,
+    save_figure: bool=False,
+    save_name: str='section',
+    save_extension: str='jpg',
+    return_dataframes: bool=False
+):
     '''
-    Analyzes earthquake data relative to a geological structure's orientation, creating cross sections perpendicular to strike that showcase the spatial distribution of seismic events. Optionally plots these sections for visual inspection.
+    Analyze earthquake data to generate parallel cross sections perpendicular to a given strike, allowing for a comprehensive analysis of seismic activity around a central point of interest.
 
-    This function segments the input earthquake data into cross sections based on their proximity and alignment with a specified geological strike. It can generate a series of parallel cross sections, allowing for a comprehensive analysis of seismic activity around a central point of interest.
+    Parameters
+    ----------
+    data : pd.DataFrame
+        DataFrame including data on earthquake events, specifically containing the columns: 'lon' (longitude), 'lat' (latitude), and 'depth' (below the surface in kilometers).
 
-    :param data: DataFrame containing earthquake event data, with essential columns like 'lon', 'lat' and 'depth'
-    :type data: pd.DataFrame
-    :param center: Coordinates (longitude, latitude) of the central point for the primary cross section.
-    :type center: Tuple[float, float]
-    :param num_sections: Tuple specifying the number of sections to the left and right of the primary section to analyze and plot.
-    :type num_sections: Tuple[int, int]
-    :param event_distance_from_section: Maximum distance from a section within which an earthquake event is considered for inclusion, in kilometers.
-    :type event_distance_from_section: int
-    :param strike: Geological strike direction in degrees from North, determining the orientation of cross sections.
-    :type strike: int
-    :param map_length: Length of the cross section lines in kilometers.
-    :type map_length: int
-    :param depth_range: Tuple specifying the minimum and maximum depths of earthquake events to include.
-    :type depth_range: Tuple[float, float]
-    :param zone: UTM zone for mapping coordinates.
-    :type zone: int
-    :param section_distance: Distance between adjacent cross sections, in kilometers. Default is 1 km.
-    :type section_distance: int
-    :param plot: If True, generates plots for each cross section with earthquake events.
-    :type plot: bool, optional
-    :param save_figure: If True, saves the generated plots in a directory.
-    :type save_figure: bool, optional
-    :param save_name: Name under which the figure will be saved. Default ``'section'``
-    :type save_name: str, optional
-    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
-    :type save_extension: str, optional
-    :param return_dataframes: If True, returns a list of DataFrames for each section. Each DataFrame contains earthquake events that fall within the section.
-    :type return_dataframes: bool, optional
-    :return: List of DataFrames corresponding to each cross section, containing relevant earthquake event data if 'return_dataframes' is True. Otherwise, returns None.
-    :rtype: List[pd.DataFrame] or None
-    
-    **Usage example**
+    center : Tuple[float, float]
+        Represents the geographical coordinates of the central point for the main cross section, provided as a tuple of (longitude, latitude).
 
+    num_sections : Tuple[int, int]
+        A tuple indicating the number of cross sections to be generated to the left and right of the central (main) cross section.
+
+    event_distance_from_section : int
+        Defines the maximum allowable distance in kilometers from a cross section within which an earthquake event is considered relevant and included in the analysis.
+
+    strike : int
+        The geological strike direction, specified in degrees from North. Cross sections are generated perpendicular to this direction.
+
+    map_length : int
+        Specifies the half-length of the cross section lines in kilometers. The total length of the cross section is double this value, extending equally from the center point in both directions.
+
+    depth_range : Tuple[float, float]
+        A range specifying the minimum and maximum depths (in kilometers) for earthquake events to be included. This parameter filters the events by depth to focus the analysis.
+
+    zone : int
+        The UTM (Universal Transverse Mercator) zone for mapping the coordinates. This is crucial for converting geographic coordinates (longitude, latitude) to UTM coordinates, facilitating distance measurements in kilometers.
+
+    section_distance : int, optional
+        The spacing between adjacent cross sections in kilometers, with a default value of 1 km. This determines how closely the sections are laid out across the area of interest.
+
+    plot : bool, optional
+        Determines whether to generate visual plots for each cross section, showing the distribution of earthquake events. The default setting is True, enabling the visualization of results.
+
+    save_figure : bool, optional
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+
+    save_name : str, optional
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'section'.
+
+    save_extension : str, optional
+        The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
+
+    return_dataframes : bool, optional
+        If True, returns a list of DataFrames, each representing a different cross section with included earthquake events, otherwise, it returns None. The default is False.
+
+    Returns
+    -------
+    List[pd.DataFrame] or None
+        If ``return_dataframes`` is True, returns a list of DataFrames, with each DataFrame corresponding to a specific cross section containing the included earthquake events. Otherwise, returns None.
+        
+    See Also
+    --------
+    select_on_section : Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
+
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.geo as sug
@@ -194,19 +232,19 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
             event_distance_from_section=3,
             strike=155,
             map_length=15,
-            depth_range=(-10, 0),
+            depth_range=(0, 10),
             zone=33,
             plot=True
         )
 
-    .. image:: https://imgur.com/0cufUSo.png
+    .. image:: https://imgur.com/a/Whd4bis.png
        :align: center
        :target: seismic_visualization.html#seismutils.geo.cross_section
-    
+
     The catalog used to demonstrate how the function works, specifically the data plotted in the image above, is derived from the `Tan et al. (2021) earthquake catalog <https://zenodo.org/records/4736089>`_.
 
-    .. note::
-        Due to the complexity of using this function, it is recommended for users to consult a full tutorial on how to effectively plot cross sections. This tutorial will guide through the specifics of data preparation, parameter tuning, and interpretation of the results.
+    .. warning::
+        The use of this function could be very complex since there are many parameters to manage at the same time. Make sure you read the full tutorial before using it.
     '''
 
     # Function to calculate the distance of a point from a plane
@@ -251,7 +289,7 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
         
         if plot:
             # Plot sections
-            fig, ax = plt.subplots(figsize=(15, 7))
+            fig, ax = plt.subplots(figsize=(12, 6))
             
             ax.scatter(on_section_coords[close_and_in_depth], data.depth.iloc[close_and_in_depth], marker='.', color='black', s=0.25, alpha=0.75)
             ax.set_title(f'Section {section+1}', fontsize=14, fontweight='bold')
@@ -270,15 +308,15 @@ def cross_sections(data: pd.DataFrame, center: Tuple[float, float], num_sections
             ax.set_xlim(-map_length, map_length)
             ax.set_ylim(*depth_range)
             
-            if save_figure:
-                os.makedirs('./seismutils_figures', exist_ok=True)
-                fig_name = os.path.join('./seismutils_figures', f'{save_name}_{section+1}.{save_extension}')
-                plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
-            
             ax.invert_yaxis()
             ax.set_aspect('equal')
             ax.set_facecolor('#F0F0F0')
             ax.grid(True, alpha=0.25, linestyle=':')
+            
+            if save_figure:
+                os.makedirs('./seismutils_figures', exist_ok=True)
+                fig_name = os.path.join('./seismutils_figures', f'{save_name}_{section+1}.{save_extension}')
+                plt.savefig(fig_name, dpi=300, bbox_inches='tight', facecolor=None)
             
             plt.show()
         
@@ -608,7 +646,7 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
 
     # Plotting logic
     if plot:
-        fig, ax = plt.subplots(figsize=(15, 7))
+        fig, ax = plt.subplots(figsize=(12, 6))
         ax.scatter(x_coords, y_coords, marker='.', color='grey', s=0.25, alpha=0.75)
         ax.scatter(x_coords.iloc[selected_indices], y_coords.iloc[selected_indices], marker='.', color='red', s=0.25, alpha=0.75)
         
