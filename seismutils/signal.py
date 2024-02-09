@@ -7,7 +7,13 @@ import matplotlib.gridspec as gridspec
 from scipy.signal import butter, sosfilt, sosfiltfilt, get_window, hilbert, stft
 from matplotlib.colors import Normalize
 
-def envelope(signals: np.ndarray, envelope_type='positive', plot=False, max_plots: int=10, save_figure: bool=False, save_name: str='envelope', save_extension: str='jpg'):
+def envelope(signals: np.ndarray,
+             envelope_type='positive',
+             plot=False,
+             max_plots: int=10,
+             save_figure: bool=False,
+             save_name: str='envelope',
+             save_extension: str='jpg'):
     '''
     Computes the envelope of a signal using the Hilbert transform. This function can generate the positive, negative, or both envelopes of the input signal(s) and optionally plot the results.
 

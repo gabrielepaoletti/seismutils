@@ -483,8 +483,8 @@ def select_on_map(data: pd.DataFrame,
     --------
     select_on_section : Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.geo as sug
@@ -655,8 +655,8 @@ def select_on_section(data: pd.DataFrame,
     
     select_on_map : Given an earthquake catalog containing latitude and longitude data, facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
     
-    Example
-    -------
+    Examples
+    --------
     
     .. code-block:: python
 
