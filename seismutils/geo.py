@@ -61,7 +61,7 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
         )
 
         print(f'UTMX: {utmx}, UTMY: {utmy}')
-        # Expected output: Latitude: 13.271772, Longitude: 38.836032
+        >>> Latitude: 13.271772, Longitude: 38.836032
     '''
 
     # Define the geographic and UTM CRS based on the zone and hemisphere
