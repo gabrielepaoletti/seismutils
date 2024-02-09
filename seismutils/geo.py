@@ -182,10 +182,10 @@ def cross_sections(
     data : pd.DataFrame
         DataFrame including data on earthquake events, specifically containing the columns: 'lon' (longitude), 'lat' (latitude), and 'depth' (below the surface in kilometers).
 
-    center : Tuple[float, float]
+    center : tuple(float, float)
         Represents the geographical coordinates of the central point for the main cross section, provided as a tuple of (longitude, latitude).
 
-    num_sections : Tuple[int, int]
+    num_sections : tuple(float, float)
         A tuple indicating the number of cross sections to be generated to the left and right of the central (main) cross section.
 
     event_distance_from_section : int
@@ -197,7 +197,7 @@ def cross_sections(
     map_length : int
         Specifies the half-length of the cross section lines in kilometers. The total length of the cross section is double this value, extending equally from the center point in both directions.
 
-    depth_range : Tuple[float, float]
+    depth_range : tuple(float, float)
         A range specifying the minimum and maximum depths (in kilometers) for earthquake events to be included. This parameter filters the events by depth to focus the analysis.
 
     zone : int
@@ -223,7 +223,7 @@ def cross_sections(
 
     Returns
     -------
-    List[pd.DataFrame] or None
+    list[pd.DataFrame] or None
         If ``return_dataframes`` is True, returns a list of DataFrames, with each DataFrame corresponding to a specific cross section containing the included earthquake events. Otherwise, returns None.
         
     See Also
