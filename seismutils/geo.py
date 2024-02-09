@@ -41,8 +41,8 @@ def convert_to_geographical(utmx: float, utmy: float, zone: int, northern: bool,
 
     See Also
     --------
-    - `units` : This parameter allows the user to work with the scale most relevant to their application or dataset.
-    - `ellps` and `datum` : Specify other ellipsoids or datums as needed for specific geographic information system (GIS) applications.
+    - ``units`` : This parameter allows the user to work with the scale most relevant to their application or dataset.
+    - ``ellps`` and ``datum`` : Specify other ellipsoids or datums as needed for specific geographic information system (GIS) applications.
 
     Examples
     --------
