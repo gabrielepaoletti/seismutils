@@ -228,7 +228,7 @@ def cross_sections(
         
     See Also
     --------
-    select_on_section : Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
+    select_on_section : Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data.
 
     Examples
     --------
@@ -487,7 +487,7 @@ def select_on_map(
 
     See Also
     --------
-    select_on_section : Selects and optionally plots a subset of seismic events from a dataset that fall within a specified geometric shape on a map. The selection is based on the shape's center, size, and orientation, after converting geographic coordinates to UTM.
+    select_on_section : Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data.
 
     Example
     -------
@@ -603,7 +603,7 @@ def select_on_map(
     
 def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=True, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_section', save_extension: str='jpg', return_indices: bool=False):
     '''
-    This function enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data. The function supports selections within circular or square shapes, allowing for targeted analysis of events in specific areas, considering both horizontal distance and depth.
+    Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data. The function supports selections within circular or square shapes, allowing for targeted analysis of events in specific areas, considering both horizontal distance and depth.
 
     Parameters
     ----------
@@ -645,6 +645,12 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
     List[int] or pd.DataFrame
         Depending on the ``return_indices`` parameter, this function returns either a list of indices corresponding to the selected points or a DataFrame containing the subset of selected data points.
     
+    See Also
+    --------
+    cross_sections : Analyze earthquake data to generate parallel cross sections perpendicular to a given strike, allowing for a comprehensive analysis of seismic activity around a central point of interest.
+    
+    select_on_map : Given an earthquake catalog containing latitude and longitude data, this function facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
+    
     Example
     -------
     
@@ -665,7 +671,7 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
             plot_center=True
         )
         
-    .. image:: https://imgur.com/Q1OL1o0.png
+    .. image:: https://i.imgur.com/5dEwYsl.png
        :align: center
        :target: data_querying_and_selection.html#seismutils.geo.select
     
@@ -713,7 +719,7 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
             ax.scatter(center[0], center[1], marker='o', color='red', edgecolor='black', linewidth=0.5,  s=150)
         
         plt.title(f'Selection', fontsize=14, fontweight='bold')
-        plt.xlabel('Distance from center [km]', fontsize=12)
+        plt.xlabel('Distance along strike [km]', fontsize=12)
         plt.ylabel('Depth [km]', fontsize=12)
         plt.xlim(round(data['on_section_coords'].min()), round(data['on_section_coords'].max()))
         plt.ylim(round(data['depth'].min()), round(data['depth'].max()))
