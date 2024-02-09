@@ -608,7 +608,7 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
     Parameters
     ----------
     data : pd.DataFrame
-        A DataFrame containing seismic event data, specifically including ``'on_section_coords'`` (horizontal distance along the section) and ``'depth'`` (vertical distance, typically below the surface). This dataset is obtained from :func: `cross_sections` function.
+        A DataFrame containing seismic event data, specifically including ``'on_section_coords'`` (horizontal distance along the section) and ``'depth'`` (vertical distance, typically below the surface). This dataset is obtained from ``cross_sections()`` function.
 
     center : tuple(float, float)
         The coordinates (x, y) representing the center of the geometric shape on the section, where 'x' is the horizontal distance from the starting point of the section and 'y' is the depth.
@@ -647,9 +647,9 @@ def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tup
     
     See Also
     --------
-    cross_sections : Analyze earthquake data to generate parallel cross sections perpendicular to a given strike, allowing for a comprehensive analysis of seismic activity around a central point of interest.
+    cross_sections : Analyze earthquake data to generate parallel cross sections perpendicular to a given strike.
     
-    select_on_map : Given an earthquake catalog containing latitude and longitude data, this function facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
+    select_on_map : Given an earthquake catalog containing latitude and longitude data, facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
     
     Example
     -------
