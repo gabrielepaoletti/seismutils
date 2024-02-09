@@ -9,15 +9,13 @@ from tqdm import tqdm
 from matplotlib.ticker import MultipleLocator
 from typing import List, Tuple
 
-def convert_to_geographical(
-    utmx: float | List[float] | np.ndarray | pd.Series, 
-    utmy: float | List[float] | np.ndarray | pd.Series, 
-    zone: int, 
-    northern: bool,
-    units: str,
-    ellps: str='WGS84',
-    datum: str='WGS84'
-):
+def convert_to_geographical(utmx: float | List[float] | np.ndarray | pd.Series, 
+                            utmy: float | List[float] | np.ndarray | pd.Series, 
+                            zone: int, 
+                            northern: bool,
+                            units: str,
+                            ellps: str='WGS84',
+                            datum: str='WGS84'):
     '''
     Converts UTM coordinates to geographical (longitude and latitude) coordinates.
 
@@ -87,14 +85,12 @@ def convert_to_geographical(
     lon, lat = transformer.transform(utmx, utmy)
     return lon, lat
 
-def convert_to_utm(
-    lon: float | List[float] | np.ndarray | pd.Series,
-    lat: float | List[float] | np.ndarray | pd.Series,
-    zone: int,
-    units: str,
-    ellps: str='WGS84',
-    datum: str='WGS84'
-):
+def convert_to_utm(lon: float | List[float] | np.ndarray | pd.Series,
+                   lat: float | List[float] | np.ndarray | pd.Series,
+                   zone: int,
+                   units: str,
+                   ellps: str='WGS84',
+                   datum: str='WGS84'):
     '''
     Converts geographical (longitude and latitude) coordinates to UTM coordinates.
 
@@ -159,21 +155,19 @@ def convert_to_utm(
     utmx, utmy = utm_converter(np.array(lon), np.array(lat))
     return utmx, utmy
 
-def cross_sections(
-    data: pd.DataFrame,
-    center: Tuple[float, float],
-    num_sections: Tuple[int, int],
-    event_distance_from_section: int,
-    strike: int,
-    map_length: int,
-    depth_range: Tuple[float, float],
-    zone: int,section_distance: int=1,
-    plot: bool=True,
-    save_figure: bool=False,
-    save_name: str='section',
-    save_extension: str='jpg',
-    return_dataframes: bool=False
-):
+def cross_sections(data: pd.DataFrame,
+                   center: Tuple[float, float],
+                   num_sections: Tuple[int, int],
+                   event_distance_from_section: int,
+                   strike: int,
+                   map_length: int,
+                   depth_range: Tuple[float, float],
+                   zone: int,section_distance: int=1,
+                   plot: bool=True,
+                   save_figure: bool=False,
+                   save_name: str='section',
+                   save_extension: str='jpg',
+                   return_dataframes: bool=False):
     '''
     Analyze earthquake data to generate parallel cross sections perpendicular to a given strike, allowing for a comprehensive analysis of seismic activity around a central point of interest.
 
@@ -345,7 +339,9 @@ def cross_sections(
     
     return section_dataframes
 
-def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_interval: float):
+def exclude_close_timed_events(data: pd.DataFrame,
+                               window_length: float,
+                               min_interval: float):
     '''
     Filters out events in a DataFrame that occur too closely in time based on specified criteria.
 
@@ -417,22 +413,20 @@ def exclude_close_timed_events(data: pd.DataFrame, window_length: float, min_int
     
     return data_filtered
 
-def select_on_map(
-    data: pd.DataFrame,
-    center: Tuple[float, float],
-    size: Tuple[int, int],
-    rotation: int,
-    shape_type: str,
-    zone: int,
-    units: str,
-    plot: bool=True,
-    buffer_multiplier: int=10,
-    plot_center: bool=True,
-    save_figure: bool=False,
-    save_name: str='selection_map',
-    save_extension: str='jpg',
-    return_indices: bool=False
-):
+def select_on_map(data: pd.DataFrame,
+                  center: Tuple[float, float],
+                  size: Tuple[int, int],
+                  rotation: int,
+                  shape_type: str,
+                  zone: int,
+                  units: str,
+                  plot: bool=True,
+                  buffer_multiplier: int=10,
+                  plot_center: bool=True,
+                  save_figure: bool=False,
+                  save_name: str='selection_map',
+                  save_extension: str='jpg',
+                  return_indices: bool=False):
     '''
     Given an earthquake catalog containing latitude and longitude data, this function facilitates the selection of a subset of events falling within a specified geometric shape centered at a given point.
 
@@ -601,7 +595,17 @@ def select_on_map(
     else:
         return data.iloc[selected_indices]
     
-def select_on_section(data: pd.DataFrame, center: Tuple[float, float], size: Tuple[int, int], rotation: int, shape_type: str, plot: bool=True, plot_center: bool=True, save_figure: bool=False, save_name: str='selection_section', save_extension: str='jpg', return_indices: bool=False):
+def select_on_section(data: pd.DataFrame,
+                      center: Tuple[float, float],
+                      size: Tuple[int, int],
+                      rotation: int,
+                      shape_type: str,
+                      plot: bool=True,
+                      plot_center: bool=True,
+                      save_figure: bool=False,
+                      save_name: str='selection_section',
+                      save_extension: str='jpg',
+                      return_indices: bool=False):
     '''
     Enables the selection of seismic events within a specified geometric shape on a cross-section derived from earthquake catalog data. It supports selections within circular or square shapes, allowing for targeted analysis of events in specific areas, considering both horizontal distance and depth.
 
