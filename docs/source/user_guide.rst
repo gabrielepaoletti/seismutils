@@ -1,7 +1,7 @@
-User guide
+User Guide
 =====================
 
-This guide is an overview and explains the important features.
+This guide provides a comprehensive overview of key features and functionalities of SeismUtils. It is designed to help you navigate and utilize it effectively.
 
 .. toctree::
    :maxdepth: 1
