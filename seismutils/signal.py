@@ -162,6 +162,9 @@ def filter(signals: np.ndarray,
         - ``'butterworth'``: Known for a flat frequency response in the passband, minimizing amplitude distortion.
         - ``'zero-phase'``: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
 
+        .. html::
+            <br>
+        
         .. image:: https://i.imgur.com/ixHUpSN.png
             :align: center
             :target: signal_processing.html#seismutils.signal.filter
@@ -176,18 +179,18 @@ def filter(signals: np.ndarray,
     --------
     .. code-block:: python
 
-    import seismutils.signal as sus
+        import seismutils.signal as sus
 
-    # Assume waveform is an np.ndarray containing amplitude values
+        # Assume waveform is an np.ndarray containing amplitude values
 
-    filtered_signal = sus.filter(
-        signals=waveform,
-        sampling_rate=100,
-        filter_type='highpass',
-        cutoff=2,
-        taper_window='hann',
-        filter_mode='zero-phase',
-    )
+        filtered_signal = sus.filter(
+            signals=waveform,
+            sampling_rate=100,
+            filter_type='highpass',
+            cutoff=2,
+            taper_window='hann',
+            filter_mode='zero-phase',
+        )
     
     .. image:: https://imgur.com/Z99MknB.png
         :align: center
