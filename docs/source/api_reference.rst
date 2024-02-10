@@ -34,6 +34,9 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
    * - ``seismutils.signal``
      - Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
 
+Geospatial Data
+---------------
+
 .. card:: Coordinate Transformations
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
