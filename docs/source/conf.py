@@ -72,11 +72,6 @@ html_css_files = [
     'logo_size.css'
 ]
 
-# Add custom JS files
-html_js_files = [
-    
-]
-
 html_theme_options = {
    'logo': {
       'image_light': '_static/logos/seismutils_logo_color.png',
