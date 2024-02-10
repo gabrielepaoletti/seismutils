@@ -67,14 +67,19 @@ html_theme = 'pydata_sphinx_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# Add custom CSS files
+html_css_files = [
+    'logo_size.css'
+]
+
+# Add custom JS files
+html_js_files = [
+    
+]
+
 html_theme_options = {
    'logo': {
       'image_light': '_static/logos/seismutils_logo_color.png',
       'image_dark': '_static/logos/seismutils_logo_light.png',
    }
 }
-
-# Ass custom CSS files
-html_css_files = [
-    'logo_size.css'
-]
