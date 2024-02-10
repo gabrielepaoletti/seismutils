@@ -79,4 +79,4 @@ html_theme_options = {
    }
 }
 
-html_favicon = '_static/logos/seismutils_circle_color.png'
+html_favicon = '_static/logos/seismutils_circle_color.ico'
