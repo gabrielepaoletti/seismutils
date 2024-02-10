@@ -166,9 +166,6 @@ def filter(signals: np.ndarray,
     - **Filter Mode**: Influences the signal's phase characteristics post-filtering:
         - ``'butterworth'``: Known for a flat frequency response in the passband, minimizing amplitude distortion.
         - ``'zero-phase'``: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
-
-        .. raw:: html
-        <br>
         
         .. image:: https://i.imgur.com/ixHUpSN.png
             :align: center
