@@ -5,6 +5,7 @@ This guide provides a comprehensive overview of key features and functionalities
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
    :caption: Getting started
 
    user_guide/introduction

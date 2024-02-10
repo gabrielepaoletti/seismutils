@@ -19,7 +19,8 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 
 .. toctree::
    :maxdepth: 1
-   :caption: Geospatial Data
+   :hidden:
+   :caption: seismutils.geo
 
    documentation/geo/coordinate_transformations
    documentation/geo/data_querying_and_selection
@@ -27,7 +28,8 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 
 .. toctree::
    :maxdepth: 1
-   :caption: Waveform Analysis
+   :hidden:
+   :caption: seismutils.signal
 
    documentation/signal/signal_processing
    documentation/signal/spectral_analysis
