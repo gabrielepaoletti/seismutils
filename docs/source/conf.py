@@ -32,7 +32,8 @@ release = '0.3.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'numpydoc'
+    'numpydoc',
+    'sphinx_design'
 ]
 
 # The default setting is 'signature', but you can change it to 'none'
