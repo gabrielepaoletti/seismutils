@@ -61,8 +61,8 @@ def envelope(signals: np.ndarray,
         )
 
     .. image:: https://i.imgur.com/HySfbQk.png
-    :align: center
-    :target: signal_processing.html#seismutils.signal.envelope
+        :align: center
+        :target: signal_processing.html#seismutils.signal.envelope
     '''
     analytical_signal = hilbert(signals, axis=-1)
     positive_envelope = np.abs(analytical_signal)
@@ -108,7 +108,14 @@ def envelope(signals: np.ndarray,
     else:  # 'both'
         return positive_envelope, negative_envelope
 
-def filter(signals: np.ndarray, sampling_rate: int, filter_type: str, cutoff: float, order=5, taper_window=None, taper_params=None, filter_mode='zero-phase'):
+def filter(signals: np.ndarray,
+           sampling_rate: int,
+           filter_type: str,
+           cutoff: float,
+           order: int=5,
+           taper_window: str=None,
+           taper_params: dict=None,
+           filter_mode: str='zero-phase'):
     '''
     Applies a digital filter to the input signal(s) with optional tapering. The function supports various filter types, cutoff frequencies, and filtering modes for flexible signal processing.
 
