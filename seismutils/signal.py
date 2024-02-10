@@ -162,7 +162,7 @@ def filter(signals: np.ndarray,
         - ``'butterworth'``: Known for a flat frequency response in the passband, minimizing amplitude distortion.
         - ``'zero-phase'``: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
 
-        .. image:: https://i.imgur.com/M2FKZy1.png
+        .. image:: https://i.imgur.com/ixHUpSN.png
             :align: center
             :target: signal_processing.html#seismutils.signal.filter
         
@@ -171,6 +171,27 @@ def filter(signals: np.ndarray,
         - A ``None`` value skips tapering, leaving signal edges unaltered.
 
     If you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
+    
+    Examples
+    --------
+    .. code-block:: python
+
+    import seismutils.signal as sus
+
+    # Assume waveform is an np.ndarray containing amplitude values
+
+    filtered_signal = sus.filter(
+        signals=waveform,
+        sampling_rate=100,
+        filter_type='highpass',
+        cutoff=2,
+        taper_window='hann',
+        filter_mode='zero-phase',
+    )
+    
+    .. image:: https://imgur.com/Z99MknB.png
+        :align: center
+        :target: signal_processing.html#seismutils.signal.filter
     '''
     def butter_filter(order, cutoff, sampling_rate, filter_type, mode):
         # Normalize the cutoff frequency with respect to Nyquist frequency
