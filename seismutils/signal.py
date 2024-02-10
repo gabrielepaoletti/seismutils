@@ -237,53 +237,71 @@ def filter(signals: np.ndarray,
     # Return the filtered signals in their original shape
     return np.squeeze(filtered_signals)
 
-def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, plot=True, plot_waveform=True, max_plots=10, save_figure=False, save_name: str='fourier_transform', save_extension: str='jpg'):
+def fourier_transform(signals: np.ndarray,
+                      sampling_rate: int,
+                      log_scale=True,
+                      plot=True,
+                      plot_waveform=True,
+                      max_plots=10,
+                      save_figure=False,
+                      save_name: str='fourier_transform',
+                      save_extension: str='jpg'):
     '''
-    Performs a Fourier Transform on a set of signals and optionally plots the amplitude spectrum.
+    Performs a Fourier Transform on one or more signals, offering optional amplitude spectrum plotting. This function leverages NumPy's Fast Fourier Transform (FFT) to decompose signals into their frequency components.
+    
+    Parameters
+    ----------
+    signals : np.ndarray
+        The input signal(s). This can be a 1D array for a single signal or a 2D array with each row representing a distinct signal.
 
-    This function utilizes NumPy's efficient Fast Fourier Transform (FFT) to analyze the frequency content of signals. It supports visualization of both the original waveform and its corresponding amplitude spectrum, with options for logarithmic amplitude scaling, selective plotting, and figure saving.
+    sampling_rate : int
+        The sampling frequency of the signal(s) in Hz, determining the temporal resolution of the data.
 
-    :param signals: Input signal(s), either a single signal as a 1D array or multiple signals as a 2D array where each row represents a signal.
-    :type signals: np.ndarray
-    :param sampling_rate: Sampling frequency of the signal(s) in Hz, used to calculate the frequency axis for the spectrum.
-    :type sampling_rate: int
-    :param log_scale: If True, the amplitude spectrum is plotted on a logarithmic scale for better visibility of wide amplitude ranges. Defaults to True.
-    :type log_scale: bool
-    :param plot: If True, generates plots for the Fourier Transform results and, optionally, the waveform. Defaults to True.
-    :type plot: bool
-    :param plot_waveform: If True, plots the original waveform(s) above their corresponding amplitude spectrum. Defaults to True.
-    :type plot_waveform: bool
-    :param max_plots: Limits the number of signal plots to this number, useful for datasets with many signals. Defaults to 10.
-    :type max_plots: int
-    :param save_figure: If True, saves the generated plot(s) as image files in a specified directory. Defaults to False.
-    :type save_figure: bool
-    :param save_name: The base filename for saved plots, to which a numeric suffix will be appended for each signal when multiple signals are plotted. Defaults to 'fourier_transform'.
-    :type save_name: str
-    :param save_extension: File extension for the saved plot images (e.g., 'jpg', 'png'). Defaults to 'jpg'.
-    :type save_extension: str
-    :return: The Fourier Transform result up to the Nyquist frequency, providing the positive frequency components of the signal(s) and frequency bins.
-    :rtype: np.ndarray
+    log_scale : bool, optional
+        Determines whether the amplitude spectrum is plotted on a logarithmic scale. This is particularly useful for signals with wide amplitude ranges, enhancing visibility of lower amplitude components. Defaults to True.
 
-    **Usage example**
+    plot : bool, optional
+        If True, generates plots for the Fourier Transform results. This includes the amplitude spectrum and, if ``plot_waveform`` is True, the original waveform(s). Defaults to True.
 
+    plot_waveform : bool, optional
+        When True, and ``plot`` is also True, plots the original waveform(s) alongside their corresponding amplitude spectrum. This visual comparison can provide insights into the time-frequency relationship of the signal(s). Defaults to True.
+
+    max_plots : int, optional
+    Specifies the maximum number of signals to plot when `plot` is True and multiple signals are provided. This limit prevents excessive plotting when dealing with large datasets. Defaults to 10.
+
+    save_figure : bool, optional
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+
+    save_name : str, optional
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'fourier_transform'.
+
+    save_extension : str, optional
+        The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
+
+    Returns
+    -------
+    np.ndarray
+        The computed Fourier Transform of the input signal(s), up to the Nyquist frequency. This includes the positive frequency components and their corresponding frequency bins, structured as a numpy array.
+
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.signal as sus
 
-        # Assuming waveform is an np.ndarray containing amplitude values
-        
-        fft = sus.fourier_transform(
-              signals=waveform,
-              sampling_rate=100,
-              log_scale=True,
-              plot=True
-        )
+        # Assume waveform is a np.ndarray containing amplitude valuesù
 
+        fft = sus.fourier_transform(
+            signals=waveform,
+            sampling_rate=100,
+            log_scale=True,
+            plot=True,
+            plot_waveform=True
+        )
+    
     .. image:: https://imgur.com/njtQn5s.png
        :align: center
        :target: spectral_analysis.html#seismutils.signal.fourier_transform
-
-    The output is a numpy array containing the Fourier Transform of the input signal(s). If ``plot=True``, the function also generates a plot (or plots) illustrating the signal(s) and their frequency spectrum.
     '''
 
     # Adjust for multidimensional input
