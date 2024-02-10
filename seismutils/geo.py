@@ -466,7 +466,7 @@ def select_on_map(data: pd.DataFrame,
         If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
 
     save_name : str, optional
-        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'section'.
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'on_map_selection'.
 
     save_extension : str, optional
         The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
@@ -633,10 +633,10 @@ def select_on_section(data: pd.DataFrame,
         When True (and ``plot`` is also True), marks the geometric center of the selection shape on the plot, aiding in the visualization of the selection's focal point. Defaults to True.
 
     save_figure : bool, optional
-    If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
 
     save_name : str, optional
-        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'section'.
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'on_section_selection'.
 
     save_extension : str, optional
         The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.

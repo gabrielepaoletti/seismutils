@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 import matplotlib.gridspec as gridspec
 
-from scipy.signal import butter, sosfilt, sosfiltfilt, get_window, hilbert, stft
+from scipy.interpolate import interp1d
+from scipy.signal import butter, sosfilt, sosfiltfilt, get_window, hilbert, stft, find_peaks
 from matplotlib.colors import Normalize
 
 def envelope(signals: np.ndarray,
@@ -15,47 +16,53 @@ def envelope(signals: np.ndarray,
              save_name: str='envelope',
              save_extension: str='jpg'):
     '''
-    Computes the envelope of a signal using the Hilbert transform. This function can generate the positive, negative, or both envelopes of the input signal(s) and optionally plot the results.
+    Computes and optionally plots the envelope of one or more signals using the Hilbert transform. This function supports generating positive, negative, or both envelopes for the provided input signal(s). It is capable of processing a single signal or multiple signals batched in a multidimensional array, returning the computed envelope(s) accordingly.
 
-    The Hilbert transform is used to compute the analytical signal, from which the envelope is derived. The envelope can be useful for amplitude modulation analysis, feature extraction, and signal analysis tasks.
+    Parameters
+    ----------
+    signals : np.ndarray
+        The input signal(s). This can be a 1D array for a single signal or a 2D array with each row representing a distinct signal.
 
-    .. note::
-        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It computes and returns the envelope(s) for each waveform, maintaining the input structure.
+    envelope_type : str, optional
+        The type of envelope to compute. Options are 'positive' for the upper envelope, 'negative' for the lower envelope, and 'both' for both envelopes. Defaults to 'positive'.
 
-    :param signals: Input signal(s) as a numpy array. Can be a single signal (1D array) or multiple signals (2D array).
-    :type signals: np.ndarray
-    :param envelope_type: Specifies the type of envelope to compute and return (``positive``, ``negative``, or ``both``).
-    :type envelope_type: str, optional
-    :param plot: If True, plots the input signal(s) along with their computed envelope(s).
-    :type plot: bool, optional
-    :param max_plots: The maximum number of plots to generate when handling multiple signals. Default is 10.
-    :type max_plots: int, optional
-    :param save_figure: If True, saves the generated plots in a directory.
-    :type save_figure: bool, optional
-    :param save_name: Name under which the figure will be saved. Default ``'fourier_transform'``
-    :type save_name: str, optional
-    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
-    :type save_extension: str, optional
-    :return: The computed envelope(s) of the input signal(s). Returns a single array if ``positive`` or ``negative`` is chosen, or two arrays if ``both`` is selected.
-    :rtype: np.ndarray or tuple(np.ndarray, np.ndarray)
+    plot : bool, optional
+        If True, generates plots for the input signal(s) alongside their computed envelope(s). Useful for visual analysis and verification of the envelope computation. Defaults to True.
 
-    **Usage example**
+    max_plots : int, optional
+        Specifies the maximum number of signals to plot when `plot` is True and multiple signals are provided. This limit prevents excessive plotting when dealing with large datasets. Defaults to 10.
 
+    save_figure : bool, optional
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+
+    save_name : str, optional
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'envelope'.
+
+    save_extension : str, optional
+        The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
+
+    Returns
+    -------
+    np.ndarray or tuple(np.ndarray, np.ndarray)
+        The computed envelope(s) of the input signal(s). Returns a single numpy array if 'positive' or 'negative' is chosen for ``envelope_type``, or a tuple of two numpy arrays if 'both' is selected.
+
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.signal as sus
 
-        # Assuming filtered_waveform is an np.ndarray containing amplitude values
-        
+        # Example usage with a numpy array containing signal amplitude values
+
         pos_envelope, neg_envelope = sus.envelope(
             signals=filtered_waveform,
             envelope_type='both',
             plot=True,
         )
 
-    .. image:: https://imgur.com/1gwgsPg.png
-       :align: center
-       :target: signal_processing.html#seismutils.signal.envelope
+    .. image:: https://i.imgur.com/HySfbQk.png
+    :align: center
+    :target: signal_processing.html#seismutils.signal.envelope
     '''
     analytical_signal = hilbert(signals, axis=-1)
     positive_envelope = np.abs(analytical_signal)
@@ -79,10 +86,10 @@ def envelope(signals: np.ndarray,
             if envelope_type in ['negative', 'both']:
                 plt.plot(neg_envelope_plot, color='blue', linewidth=0.75, label='Negative envelope')
         
-            plt.xlabel('Sample', fontsize=12)
-            plt.ylabel('Amplitude', fontsize=12)
+            plt.xlabel('Samples [#]', fontsize=12)
+            # plt.ylabel('Amplitude', fontsize=12)
             plt.xlim(0, len(signal_to_plot))
-            plt.grid(True, alpha=0.25, linestyle=':')
+            plt.grid(True, alpha=0.25, axis='x', linestyle=':')
             plt.legend(loc='best', frameon=False, fontsize=12)
             
             if save_figure:
