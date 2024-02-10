@@ -24,14 +24,14 @@ SeismUtils is an open-source Python toolkit developed specifically for the seism
 
    .. grid-item-card:: Getting Started
       :link: user_guide
-      :link-type: ref
+      :link-type: doc
       :link-alt: Getting Started
 
       Explore the initial setup and basic usage examples to quickly integrate and utilize the module in your projects.
 
    .. grid-item-card:: API Reference
       :link: api_reference
-      :link-type: ref
+      :link-type: doc
       :link-alt: API Reference
 
       Access detailed information on functions, including parameters and return types, for comprehensive module understanding and application.
