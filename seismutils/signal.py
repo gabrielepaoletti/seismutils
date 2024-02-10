@@ -454,8 +454,8 @@ def spectrogram(signals: np.ndarray,
         )
 
     .. image:: https://i.imgur.com/3nmPYmv.png
-    :align: center
-    :target: spectral_analysis.html#seismutils.signal.spectrogram
+        :align: center
+        :target: spectral_analysis.html#seismutils.signal.spectrogram
     '''
 
     spectrogram_data = []
