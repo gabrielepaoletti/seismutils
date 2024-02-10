@@ -15,7 +15,10 @@ def envelope(signals: np.ndarray,
              save_name: str='envelope',
              save_extension: str='jpg'):
     '''
-    Computes and optionally plots the envelope of one or more signals using the Hilbert transform. This function supports generating positive, negative, or both envelopes for the provided input signal(s). It is capable of processing a single signal or multiple signals batched in a multidimensional array, returning the computed envelope(s) accordingly.
+    Computes and optionally plots the envelope of one or more signals using the Hilbert transform. This function supports generating positive, negative, or both envelopes for the provided input signal(s).
+    
+    .. note::
+        The function supports both one-dimensional arrays and multi-dimensional arrays with each row as a separate signal.
 
     Parameters
     ----------
@@ -117,6 +120,9 @@ def filter(signals: np.ndarray,
            filter_mode: str='zero-phase'):
     '''
     Applies a digital filter to input signal(s), offering optional tapering to minimize edge effects.
+    
+    .. note::
+        The function supports both one-dimensional arrays and multi-dimensional arrays with each row as a separate signal.
 
     Parameters
     ----------
@@ -161,8 +167,8 @@ def filter(signals: np.ndarray,
         - ``'butterworth'``: Known for a flat frequency response in the passband, minimizing amplitude distortion.
         - ``'zero-phase'``: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
 
-        .. html::
-            <br>
+        .. raw:: html
+        <br>
         
         .. image:: https://i.imgur.com/ixHUpSN.png
             :align: center
@@ -247,6 +253,9 @@ def fourier_transform(signals: np.ndarray,
                       save_extension: str='jpg'):
     '''
     Performs a Fourier Transform on one or more signals, offering optional amplitude spectrum plotting. This function leverages NumPy's Fast Fourier Transform (FFT) to decompose signals into their frequency components.
+    
+    .. note::
+        The function supports both one-dimensional arrays and multi-dimensional arrays with each row as a separate signal.
     
     Parameters
     ----------
@@ -387,6 +396,9 @@ def spectrogram(signals: np.ndarray,
                 return_data: bool=False,):
     '''
     Generates spectrograms for provided signal(s) using the Short-Time Fourier Transform (STFT), with options for waveform display, log-scale amplitude, and other customizable plotting features.
+    
+    .. note::
+        The function supports both one-dimensional arrays and multi-dimensional arrays with each row as a separate signal.
 
     Parameters
     ----------

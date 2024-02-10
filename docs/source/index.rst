@@ -17,7 +17,7 @@ Documentation
 
 SeismUtils is an open-source Python toolkit developed specifically for the seismology research community. It aims to facilitate an efficient and streamlined approach to seismic data manipulation, visualization, and analysis. By prioritizing simplicity and effectiveness, it reduces the complexity typically associated with seismic data processing tasks.
 
-.. html::
+.. raw:: html
    <br>
 
 .. grid:: 1 1 2 2
