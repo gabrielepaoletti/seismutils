@@ -69,12 +69,12 @@ html_static_path = ['_static']
 
 html_theme_options = {
    'logo': {
-      'image_light': '_static/logos/seismutils_logo_dark.png',
+      'image_light': '_static/logos/seismutils_logo_color.png',
       'image_dark': '_static/logos/seismutils_logo_light.png',
    }
 }
 
 # Ass custom CSS files
 html_css_files = [
-    
+    'logo_size.css'
 ]
