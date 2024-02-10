@@ -108,13 +108,13 @@ def envelope(signals: np.ndarray,
     else:  # 'both'
         return positive_envelope, negative_envelope
 
-def filter(signals: np.ndarray,
+def filter(signals: np.ndarray, 
            sampling_rate: int,
            filter_type: str,
-           cutoff: float,
-           order: int=5,
+           cutoff: int, 
+           order: int=5, 
            taper_window: str=None,
-           taper_params: dict=None,
+           taper_params: dict=None, 
            filter_mode: str='zero-phase'):
     '''
     Applies a digital filter to input signal(s), offering optional tapering to minimize edge effects.
@@ -153,79 +153,65 @@ def filter(signals: np.ndarray,
     Notes
     -----
     - **Filter Type**: Determines the operational frequency range of the filter:
-        - `'lowpass'`: Attenuates frequencies above the cutoff while preserving lower frequencies.
-        - `'highpass'`: Attenuates frequencies below the cutoff while preserving higher frequencies.
-        - `'bandpass'`: Only frequencies within a specified range are preserved, with others attenuated.
-        - `'bandstop'`: Frequencies within a specified range are attenuated, while those outside are preserved.
+        - ``'lowpass'``: Attenuates frequencies above the cutoff while preserving lower frequencies.
+        - ``'highpass'``: Attenuates frequencies below the cutoff while preserving higher frequencies.
+        - ``'bandpass'``: Only frequencies within a specified range are preserved, with others attenuated.
+        - ``'bandstop'``: Frequencies within a specified range are attenuated, while those outside are preserved.
 
     - **Filter Mode**: Influences the signal's phase characteristics post-filtering:
-        - `'butterworth'`: Known for a flat frequency response in the passband, minimizing amplitude distortion.
-        - `'zero-phase'`: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
+        - ``'butterworth'``: Known for a flat frequency response in the passband, minimizing amplitude distortion.
+        - ``'zero-phase'``: Employs forward and reverse filtering to negate phase shifts, maintaining the original signal phase.
 
+        .. image:: https://i.imgur.com/M2FKZy1.png
+            :align: center
+            :target: signal_processing.html#seismutils.signal.filter
+        
     - **Taper Window**: Reduces edge effects by applying a windowing function to the signal before filtering:
-        - Options like `'hann'`, `'hamming'`, `'blackman'`, `'bartlett'`, and `'tukey'` each offer unique trade-offs between frequency leakage and resolution.
-        - A `None` value skips tapering, leaving signal edges unaltered.
+        - Options like ``'hann'``, ``'hamming'``, ``'blackman'``, ``'bartlett'``, and ``'tukey'`` each offer unique trade-offs between frequency leakage and resolution.
+        - A ``None`` value skips tapering, leaving signal edges unaltered.
 
     If you wish to explore more tapering window options beyond those listed, consult the ``scipy.signal.get_window`` available at `SciPy Docs <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.get_window.html>`_.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import seismutils.signal as sus
-
-        # Assume waveform is an np.ndarray containing amplitude values
-
-        filtered_signal = sus.filter(
-            signals=waveform,
-            sampling_rate=100,
-            filter_type='bandpass',
-            cutoff=(1, 10),
-            order=5,
-            taper_window='hann',
-            filter_mode='zero-phase',
-        )
-
-    .. image:: https://imgur.com/bLdbHjF.png
-    :align: center
-    :target: signal_processing.html#seismutils.signal.filter
     '''
-    
     def butter_filter(order, cutoff, sampling_rate, filter_type, mode):
-            nyq = 0.5 * sampling_rate
-            if filter_type in ['lowpass', 'highpass']:
-                norm_cutoff = cutoff / nyq
-            else:
-                norm_cutoff = [c / nyq for c in cutoff]
-            sos = butter(order, norm_cutoff, btype=filter_type, analog=False, output='sos')
-            if mode == 'zero_phase':
-                return lambda x: sosfiltfilt(sos, x)
-            else:
-                return lambda x: sosfilt(sos, x)
-    
-    # Apply tapering if requested
-    def apply_taper(signal, window, params):
-        if window is not None:
-            if params is not None:
-                window = get_window((window, *params.values()), len(signal))
-            else:
-                window = get_window(window, len(signal))
+        # Normalize the cutoff frequency with respect to Nyquist frequency
+        nyq = 0.5 * sampling_rate
+        if isinstance(cutoff, (list, tuple)):  # For bandpass and bandstop filters
+            norm_cutoff = [c / nyq for c in cutoff]
+        else:  # For lowpass and highpass filters
+            norm_cutoff = cutoff / nyq
+        
+        # Create second-order sections for the Butterworth filter
+        sos = butter(order, norm_cutoff, btype=filter_type, analog=False, output='sos')
+        
+        # Return a function that applies the filter to a signal x
+        if mode == 'zero_phase':
+            return lambda x: sosfiltfilt(sos, x)
+        else:
+            return lambda x: sosfilt(sos, x)
+
+    def apply_taper(signal, window_type, params):
+        # Apply a taper to the signal if requested
+        if window_type is not None:
+            # Generate the window with the given parameters
+            window = get_window((window_type, *params), len(signal)) if params else get_window(window_type, len(signal))
             return signal * window
         return signal
     
+    # Ensure signals is a 2D array for consistency
+    signals = np.atleast_2d(signals)
+    
+    # Create the filter function
     filter_func = butter_filter(order, cutoff, sampling_rate, filter_type, filter_mode)
     
-    # Check if signals is a 2D array (multiple signals)
-    if signals.ndim == 1:
-        signals = np.array([signals])  # Convert to 2D array for consistency
-    
+    # Apply the filter and taper to each signal
     filtered_signals = []
     for signal in signals:
         tapered_signal = apply_taper(signal, taper_window, taper_params)
         filtered_signal = filter_func(tapered_signal)
         filtered_signals.append(filtered_signal)
     
-    return np.array(filtered_signals) if len(filtered_signals) > 1 else filtered_signals[0]
+    # Return the filtered signals in their original shape
+    return np.squeeze(filtered_signals)
 
 def fourier_transform(signals: np.ndarray, sampling_rate: int, log_scale=True, plot=True, plot_waveform=True, max_plots=10, save_figure=False, save_name: str='fourier_transform', save_extension: str='jpg'):
     '''
