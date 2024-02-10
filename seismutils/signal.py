@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 
 import matplotlib.gridspec as gridspec
 
-from scipy.interpolate import interp1d
-from scipy.signal import butter, sosfilt, sosfiltfilt, get_window, hilbert, stft, find_peaks
+from scipy.signal import butter, sosfilt, sosfiltfilt, get_window, hilbert, stft
 from matplotlib.colors import Normalize
 
 def envelope(signals: np.ndarray,
@@ -267,7 +266,7 @@ def fourier_transform(signals: np.ndarray,
         When True, and ``plot`` is also True, plots the original waveform(s) alongside their corresponding amplitude spectrum. This visual comparison can provide insights into the time-frequency relationship of the signal(s). Defaults to True.
 
     max_plots : int, optional
-    Specifies the maximum number of signals to plot when `plot` is True and multiple signals are provided. This limit prevents excessive plotting when dealing with large datasets. Defaults to 10.
+        Specifies the maximum number of signals to plot when `plot` is True and multiple signals are provided. This limit prevents excessive plotting when dealing with large datasets. Defaults to 10.
 
     save_figure : bool, optional
         If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
@@ -289,7 +288,7 @@ def fourier_transform(signals: np.ndarray,
 
         import seismutils.signal as sus
 
-        # Assume waveform is a np.ndarray containing amplitude valuesù
+        # Assume waveform is a np.ndarray containing amplitude values
 
         fft = sus.fourier_transform(
             signals=waveform,
@@ -341,7 +340,7 @@ def fourier_transform(signals: np.ndarray,
             if plot_waveform:
                 axs[0].plot(signal, linewidth=0.75, color='k')
                 axs[0].set_title(waveform_title, fontsize=14, fontweight='bold')
-                axs[0].set_xlabel('Samples', fontsize=12)
+                axs[0].set_xlabel('Samples [#]', fontsize=12)
                 axs[0].set_ylabel('Amplitude', fontsize=12)
                 axs[0].set_xlim(0, len(signal))
                 axs[0].grid(True, alpha=0.25, linestyle=':')
@@ -372,63 +371,91 @@ def fourier_transform(signals: np.ndarray,
 
     return np.array(ft_results), np.array(freqs) if multiple_waveforms else ft_results[0], freqs[0]
 
-def spectrogram(signals: np.ndarray, sampling_rate: int, nperseg: int=128, noverlap: float=None, log_scale: bool=False, zero_padding_factor: int=8, return_data: bool=False, plot_waveform: bool=True, max_plots: int=10, colorbar: bool=False, cmap: str='jet', save_figure: bool=False, save_name: str='spectrogram', save_extension: str='jpg'):
+def spectrogram(signals: np.ndarray,
+                sampling_rate: int,
+                nperseg: int=128,
+                noverlap: float=None,
+                log_scale: bool=False,
+                zero_padding_factor: int=8,
+                plot_waveform: bool=True,
+                max_plots: int=10,
+                colorbar: bool=False,
+                cmap: str='jet',
+                save_figure: bool=False,
+                save_name: str='spectrogram',
+                save_extension: str='jpg',
+                return_data: bool=False,):
     '''
-    Generates and optionally plots spectrograms for provided signals, with an option to display the waveform.
+    Generates spectrograms for provided signal(s) using the Short-Time Fourier Transform (STFT), with options for waveform display, log-scale amplitude, and other customizable plotting features.
 
-    This function computes the Short-Time Fourier Transform (STFT) to generate spectrograms for a set of signals. It supports various configurations, including log-scale amplitude, zero padding for higher frequency resolution, and customizable plotting options.
+    Parameters
+    ----------
+    signals : np.ndarray
+        The input signal(s). This can be a 1D array for a single signal or a 2D array with each row representing a distinct signal.
 
-    .. note::
-        When provided with a multidimensional array containing multiple waveforms (one per row), this function processes each waveform independently. It generates and plots a spectrogram for each waveform, adhering to the specified parameters.
+    sampling_rate : int
+        The sampling frequency of the signal(s) in Hz, determining the temporal resolution of the data.
 
-    :param signals: Input signals, a 2D numpy array where each row represents a signal.
-    :type signals: np.ndarray
-    :param sampling_rate: Sampling frequency of the signals in Hz.
-    :type sampling_rate: int
-    :param nperseg: Length of each segment for the STFT, in samples. Defaults to 128.
-    :type nperseg: int, optional
-    :param noverlap: Number of points to overlap between segments. If None, defaults to 75% of `nperseg`.
-    :type noverlap: float, optional
-    :param log_scale: If True, plots the spectrogram's amplitude in logarithmic scale.
-    :type log_scale: bool, optional
-    :param zero_padding_factor: Factor to increase the FFT points via zero-padding, enhancing frequency resolution.
-    :type zero_padding_factor: int, optional
-    :param return_data: If True, returns a list containing the spectrogram data, frequencies, and times for each signal. Defaults to False.
-    :type return_data: bool, optional
-    :param plot_waveform: If True, plots the waveform above its corresponding spectrogram.
-    :type plot_waveform: bool, optional
-    :param max_plots: Maximum number of spectrograms to plot. Useful for large datasets. Defaults to 10.
-    :type max_plots: int, optional
-    :param colorbar: If True, adds a colorbar indicating amplitude or power scale next to the spectrogram.
-    :type colorbar: bool, optional
-    :param cmap: Color map for plotting the spectrogram. Defaults to ``'jet'``.
-    :type cmap: str, optional
-    :param save_figure: If True, saves the generated plots in a directory.
-    :type save_figure: bool, optional
-    :param save_name: Name under which the figure will be saved. Default ``'fourier_transform'``
-    :type save_name: str, optional
-    :param save_extension: Extension with which the image will be saved. Default ``'jpg'``
-    :type save_extension: str, optional
-    :return: None. The function directly plots the spectrogram(s) and optionally saves them as files.
+    nperseg : int, optional
+        The number of samples per segment for computing the STFT. A larger value increases frequency resolution but decreases time resolution. Defaults to 128.
 
-    **Usage Example**
+    noverlap : float, optional
+        The number of samples to overlap between segments. If not specified, it defaults to 75% of ``nperseg``, balancing the trade-off between temporal resolution and spectral leakage.
 
+    log_scale : bool, optional
+        If set to True, the amplitude of the spectrogram is displayed on a logarithmic scale, enhancing the visibility of signals with wide dynamic ranges. Defaults to False.
+
+    zero_padding_factor : int, optional
+        Multiplies the number of FFT points via zero-padding, enhancing frequency resolution by interpolating more points in the frequency domain. Defaults to 8.
+
+    plot_waveform : bool, optional
+        When True, the original waveform is plotted above its corresponding spectrogram, providing a dual view of time-domain and frequency-domain characteristics. Defaults to True.
+
+    max_plots : int, optional
+            Specifies the maximum number of signals to plot when `plot` is True and multiple signals are provided. This limit prevents excessive plotting when dealing with large datasets. Defaults to 10.
+
+    colorbar : bool, optional
+        If True, adds a colorbar to the spectrogram plots, indicating the scale of amplitude or power. Defaults to False.
+
+    cmap : str, optional
+        Specifies the colormap for the spectrogram. Defaults to 'jet', but can be changed to any colormap supported by matplotlib.
+
+    save_figure : bool, optional
+        If set to True, the function saves the generated plots using the provided base name and file extension. The default is False.
+
+    save_name : str, optional
+        The base name used for saving figures when `save_figure` is True. It serves as the prefix for file names. The default base name is 'spectrogram'.
+
+    save_extension : str, optional
+        The file extension to use when saving figures, such as 'jpg', 'png', etc... The default extension is 'jpg'.
+
+    return_data : bool, optional
+        If True, returns a list containing the spectrogram data, frequencies, and time bins for each analyzed signal. This data can be used for further analysis or custom plotting. Defaults to False.
+
+    Returns
+    -------
+    None or list
+        By default, the function does not return data but directly plots the spectrogram(s). If ``return_data`` is True, it returns a list of tuples, each containing the spectrogram matrix, frequency bins, and time bins for each signal.
+
+    Examples
+    --------
     .. code-block:: python
 
         import seismutils.signal as sus
 
-        # Assume waveform is an np.ndarray containing amplitude values
+        # Assuming waveform is an np.ndarray containing amplitude values
 
         spectrogram_data = sus.spectrogram(
             signals=waveform,
             sampling_rate=100,
             plot_waveform=True,
+            colorbar=True,
             return_data=True
         )
 
-    .. image:: https://imgur.com/0J4VGQC.png
-       :align: center
-       :target: spectral_analysis.html#seismutils.signal.spectrogram
+    .. image:: https://i.imgur.com/3nmPYmv.png
+    :align: center
+    :target: spectral_analysis.html#seismutils.signal.spectrogram
     '''
 
     spectrogram_data = []
