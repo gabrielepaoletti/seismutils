@@ -1,4 +1,4 @@
-![Logo](https://i.imgur.com/hWnPggv.png)
+![Logo](https://imgur.com/6QeFtQt.png)
 
 ------------------------------------------
 
