@@ -38,4 +38,4 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
-   Easily transition between geographical coordinates and UTM for precise spatial positioning.
+   Easily convert between geographical coordinates and UTM for precise spatial positioning.
