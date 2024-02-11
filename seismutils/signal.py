@@ -54,7 +54,7 @@ def envelope(signals: np.ndarray,
 
         import seismutils.signal as sus
 
-        # Example usage with a numpy array containing signal amplitude values
+        # Assume filtered_waveform is an np.ndarray containing amplitude values
 
         pos_envelope, neg_envelope = sus.envelope(
             signals=filtered_waveform,
@@ -89,7 +89,7 @@ def envelope(signals: np.ndarray,
                 plt.plot(neg_envelope_plot, color='blue', linewidth=0.75, label='Negative envelope')
         
             plt.xlabel('Samples [#]', fontsize=12)
-            # plt.ylabel('Amplitude', fontsize=12)
+            plt.ylabel('Amplitude', fontsize=12)
             plt.xlim(0, len(signal_to_plot))
             plt.grid(True, alpha=0.25, axis='x', linestyle=':')
             plt.legend(loc='best', frameon=False, fontsize=12)
