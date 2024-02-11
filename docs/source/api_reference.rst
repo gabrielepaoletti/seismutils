@@ -64,3 +64,9 @@ Focuses on the processing and analysis of seismic waveform data, providing tools
    :link-type: doc
 
    Investigate the frequency domain of seismic data for comprehensive frequency-based insights.
+
+
+This is a test
+--------------
+
+A regular icon: :material-regular:`data_exploration;2em`, some more text
