@@ -15,19 +15,19 @@ This guide provides a comprehensive overview of key features and functionalities
 Getting Started
 ---------------
 
-.. card:: What is SeismUtils?
+.. card:: :material-regular:`help;1.7em` What is SeismUtils?
    :link: user_guide/introduction
    :link-type: doc
 
    Discover the purpose and capabilities of this toolkit designed to streamline seismic data analysis.
 
-.. card:: Installation
+.. card:: :material-regular:`download_for_offline;1.7em` Installation
    :link: user_guide/installation
    :link-type: doc
 
    Follow step-by-step instructions to easily set up the toolkit on your system and get started.
 
-.. card:: Tutorials
+.. card:: :material-regular:`draw;1.7em` Tutorials
    :link: user_guide/tutorials
    :link-type: doc
 
