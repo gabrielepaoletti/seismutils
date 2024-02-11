@@ -25,20 +25,12 @@ Module Structure
 
 SeismUtils is structured to meet the diverse demands of seismology experts, featuring two primary submodules for enhanced functionality:
 
-.. list-table:: 
-   :widths: 25 75
-   :header-rows: 0
+``seismutils.geo``
+------------------
 
-   * - ``seismutils.geo``
-   - Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
-   * - ``seismutils.signal``
-   - Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
-
-Geospatial Data
----------------
+Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
 
 .. card:: Coordinate transformations
-   :img-left: _static/logos/seismutils_circle_color.png
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
@@ -56,8 +48,10 @@ Geospatial Data
 
    Offer tools for the effective illustration of seismic activities.
 
-Waveform Analysis
------------------
+``seismutils.signal``
+---------------------
+
+Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination
 
 .. card:: Signal processing
    :link: documentation/signal/signal_processing
@@ -65,8 +59,8 @@ Waveform Analysis
 
    Manipulate waveform data to enhance seismic signal analysis and interpretation.
 
-.. card:: Frequency analysis
-   :link: documentation/signal/frequency_analysis
+.. card:: Spectral analysis
+   :link: documentation/signal/fspectral_analysis
    :link-type: doc
 
    Investigate the frequency domain of seismic data for comprehensive frequency-based insights.
