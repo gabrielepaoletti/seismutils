@@ -12,8 +12,8 @@ User Guide
 
 This guide provides a comprehensive overview of key features and functionalities of SeismUtils. It is designed to help you navigate and utilize it effectively.
 
-Getting Started
----------------
+Start here
+----------
 
 .. card:: :material-regular:`help;1.7em` What is SeismUtils?
    :link: user_guide/introduction

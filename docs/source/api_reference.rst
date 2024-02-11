@@ -20,7 +20,7 @@ API Reference
 
 This reference manual offers detailed explanations of the functions, modules, and objects contained within SeismUtils, outlining their purposes and functionalities. To learn how to apply SeismUtils, please refer to the `tutorials page <https://seismutils.readthedocs.io/en/latest/user_guide/tutorials.html>`_.
 
-Module Structure
+Module structure
 ----------------
 
 SeismUtils is structured to meet the diverse demands of seismology experts, featuring two primary submodules for enhanced functionality:
