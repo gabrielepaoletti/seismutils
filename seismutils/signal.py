@@ -304,7 +304,7 @@ def fourier_transform(signals: np.ndarray,
             plot_waveform=True
         )
     
-    .. image:: https://imgur.com/njtQn5s.png
+    .. image:: https://i.imgur.com/PgASXgs.png
        :align: center
        :target: spectral_analysis.html#seismutils.signal.fourier_transform
     '''
@@ -333,7 +333,7 @@ def fourier_transform(signals: np.ndarray,
         if plot:
             # Plot setup
             if plot_waveform:
-                fig, axs = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [1, 2]})
+                fig, axs = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [1, 3]})
             else:
                 fig, axs = plt.subplots(1, 1, figsize=(10, 6))
                 axs = [axs]  # Make it iterable for the upcoming loop
@@ -349,7 +349,7 @@ def fourier_transform(signals: np.ndarray,
                 axs[0].set_xlabel('Samples [#]', fontsize=12)
                 axs[0].set_ylabel('Amplitude', fontsize=12)
                 axs[0].set_xlim(0, len(signal))
-                axs[0].grid(True, alpha=0.25, linestyle=':')
+                axs[0].grid(True, alpha=0.25, axis='x', linestyle=':')
 
             # Plot the Fourier Transform
             ax = axs[-1]
