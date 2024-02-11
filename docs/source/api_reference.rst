@@ -38,6 +38,7 @@ Geospatial Data
 ---------------
 
 .. card:: Coordinate transformations
+   :img-left: _static/logos/seismutils_circle_color.png
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
