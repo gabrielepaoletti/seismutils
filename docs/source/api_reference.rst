@@ -30,7 +30,7 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 
 Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
 
-.. card:: :material-regular:`data_exploration;2em` Coordinate transformations
+.. card:: :material-regular:`data_exploration;2em`  Coordinate transformations
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
