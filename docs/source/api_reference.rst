@@ -30,7 +30,7 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 
 Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
 
-.. card:: Coordinate transformations
+.. card:: :material-regular:`data_exploration;2em` Coordinate transformations
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
@@ -51,7 +51,7 @@ Tailored for geospatial data handling, it enables users to work with and underst
 ``seismutils.signal``
 """""""""""""""""""""
 
-Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination
+Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
 
 .. card:: Signal processing
    :link: documentation/signal/signal_processing
@@ -64,9 +64,3 @@ Focuses on the processing and analysis of seismic waveform data, providing tools
    :link-type: doc
 
    Investigate the frequency domain of seismic data for comprehensive frequency-based insights.
-
-
-This is a test
---------------
-
-A regular icon: :material-regular:`data_exploration;2em`, some more text
