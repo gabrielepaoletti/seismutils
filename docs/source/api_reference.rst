@@ -60,7 +60,7 @@ Focuses on the processing and analysis of seismic waveform data, providing tools
    Manipulate waveform data to enhance seismic signal analysis and interpretation.
 
 .. card:: Spectral analysis
-   :link: documentation/signal/fspectral_analysis
+   :link: documentation/signal/spectral_analysis
    :link-type: doc
 
    Investigate the frequency domain of seismic data for comprehensive frequency-based insights.
