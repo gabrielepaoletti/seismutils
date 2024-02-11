@@ -4,7 +4,7 @@ User Guide
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Getting Started
+   :caption: Getting started
 
    user_guide/introduction
    user_guide/installation
@@ -12,8 +12,8 @@ User Guide
 
 This guide provides a comprehensive overview of key features and functionalities of SeismUtils. It is designed to help you navigate and utilize it effectively.
 
-Start here
-----------
+Getting started
+---------------
 
 .. card:: :material-regular:`help;1.7em` What is SeismUtils?
    :link: user_guide/introduction
