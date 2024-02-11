@@ -288,6 +288,10 @@ def fourier_transform(signals: np.ndarray,
     np.ndarray
         The computed Fourier Transform of the input signal(s), up to the Nyquist frequency. This includes the positive frequency components and their corresponding frequency bins, structured as a numpy array.
 
+    See Also
+    --------
+    spectrogram : Generates spectrograms for provided signal(s) using the Short-Time Fourier Transform (STFT) algorithm.
+
     Examples
     --------
     .. code-block:: python
@@ -445,6 +449,10 @@ def spectrogram(signals: np.ndarray,
     -------
     None or list
         By default, the function does not return data but directly plots the spectrogram(s). If ``return_data`` is True, it returns a list of tuples, each containing the spectrogram matrix, frequency bins, and time bins for each signal.
+
+    See Also
+    --------
+    fourier_transform : Compute Fourier Transform for provided signal(s) using the Fast Fourier Transform (FFT) algorithm.
 
     Examples
     --------
