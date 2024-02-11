@@ -30,19 +30,19 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 
 Tailored for geospatial data handling, it enables users to work with and understand geographical information, facilitating the mapping and exploration of areas related to seismic activities.
 
-.. card:: :material-regular:`data_exploration;2em`  Coordinate transformations
+.. card:: :material-outlined:`data_exploration;1em`  Coordinate transformations
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
    Easily convert between geographical coordinates and UTM for precise spatial positioning.
 
-.. card:: :material-regular:`travel_explore;2em`  Data querying and selection
+.. card:: :material-regular:`travel_explore;1em`  Data querying and selection
    :link: documentation/geo/data_querying_and_selection
    :link-type: doc
 
    Streamline the creation of data subsets and selections to focus on relevant seismic information.
 
-.. card:: :material-regular:`monitoring;2em`  Seismic visualization
+.. card:: :material-outlined:`monitoring;1em`  Seismic visualization
    :link: documentation/geo/seismic_visualization
    :link-type: doc
 
@@ -53,13 +53,13 @@ Tailored for geospatial data handling, it enables users to work with and underst
 
 Focuses on the processing and analysis of seismic waveform data, providing tools for in-depth signal examination.
 
-.. card:: :material-regular:`earthquake;2em`  Signal processing
+.. card:: :material-outlined:`earthquake;1em`  Signal processing
    :link: documentation/signal/signal_processing
    :link-type: doc
 
    Manipulate waveform data to enhance seismic signal analysis and interpretation.
 
-.. card:: :material-regular:`graphic_eq;2em`  Spectral analysis
+.. card:: :material-regular:`graphic_eq;1em`  Spectral analysis
    :link: documentation/signal/spectral_analysis
    :link-type: doc
 
