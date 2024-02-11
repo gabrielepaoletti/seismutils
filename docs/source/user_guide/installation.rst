@@ -10,7 +10,7 @@ Before proceeding with the installation, ensure that you have a compatible Pytho
 It's strongly recommended creating a virtual environment to maintain a clean workspace and avoid dependency conflicts. Tools such as ``conda`` or ``venv`` are suitable for creating isolated Python environments.
 
 Stable release
----------------------------
+--------------
 The ``seismutils`` package is conveniently available for installation via ``pip``, the Python package manager. To install the latest stable release from the Python Package Index (PyPI), execute the following command in your terminal or command prompt:
 
 .. code-block:: bash
@@ -20,7 +20,7 @@ The ``seismutils`` package is conveniently available for installation via ``pip`
 This command fetches and installs the most recent stable version of ``seismutils``, along with its required dependencies.
 
 Development version
---------------------------------
+-------------------
 For those interested in accessing the latest features and developments, the cutting-edge version of ``seismutils`` can be installed directly from the source code. Begin by cloning the project repository from GitHub with:
 
 .. code-block:: bash
