@@ -37,11 +37,35 @@ SeismUtils is structured to meet the diverse demands of seismology experts, feat
 Geospatial Data
 ---------------
 
-.. card:: Coordinate Transformations
+.. card:: Coordinate transformations
    :link: documentation/geo/coordinate_transformations
    :link-type: doc
 
    Easily convert between geographical coordinates and UTM for precise spatial positioning.
 
+.. card:: Data querying and selection
+   :link: documentation/geo/data_querying_and_selection
+   :link-type: doc
+
+   Streamline the creation of data subsets and selections to focus on relevant seismic information.
+
+.. card:: Seismic visualization
+   :link: documentation/geo/seismic_visualization
+   :link-type: doc
+
+   Offer tools for the effective illustration of seismic activities.
+
 Waveform Analysis
 -----------------
+
+.. card:: Signal processing
+   :link: documentation/signal/signal_processing
+   :link-type: doc
+
+   Manipulate waveform data to enhance seismic signal analysis and interpretation.
+
+.. card:: Frequency analysis
+   :link: documentation/signal/frequency_analysis
+   :link-type: doc
+
+   Investigate the frequency domain of seismic data for comprehensive frequency-based insights.
