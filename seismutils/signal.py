@@ -448,7 +448,7 @@ def spectrogram(signals: np.ndarray,
     Returns
     -------
     None or list
-        By default, the function does not return data but directly plots the spectrogram(s). If ``return_data`` is True, it returns a list of tuples, each containing the spectrogram matrix, frequency bins, and time bins for each signal.
+        By default, the function does not return data but directly plots the spectrogram(s). If ``return_data`` is True, it returns a list of tuples, each containing the time bins, frequency bins, and spectrogram matrix for each signal.
 
     See Also
     --------
@@ -508,7 +508,7 @@ def spectrogram(signals: np.ndarray,
             spectrogram = np.sqrt(spectrogram)*2
             vmin, vmax = np.min(spectrogram), np.max(spectrogram)
 
-        spectrogram_data.append((spectrogram, frequencies, times))
+        spectrogram_data.append((times, frequencies, spectrogram))
 
         # Plot configuration
         fig = plt.figure(figsize=(10, 7))  # Adjust the figure size as needed
