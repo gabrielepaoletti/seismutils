@@ -1,3 +1,10 @@
+'''
+Contains functions for geospatial data handling.
+
+Author: Gabriele Paoletti
+E-Mail: gabriele.paoletti@uniroma1.it
+'''
+
 import os
 import pyproj
 

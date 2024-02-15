@@ -1,3 +1,10 @@
+'''
+Contains functions for process and analyse waveform data.
+
+Author: Gabriele Paoletti
+E-Mail: gabriele.paoletti@uniroma1.it
+'''
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt
